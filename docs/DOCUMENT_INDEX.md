@@ -51,7 +51,8 @@
 
 | Document | Purpose | Audience | Version |
 |----------|---------|----------|---------|
-| [scraped-data/README.md](scraped-data/README.md) | Data schema and structure | Data users | v1.0.0 |
+| [scraped-data/DATASET_SCHEMA.md](scraped-data/DATASET_SCHEMA.md) | Complete data structure specification | Developers, Data Scientists | v1.0.0 |
+| [scraped-data/README.md](scraped-data/README.md) | Data schema overview | Data users | v1.0.0 |
 
 ### Research
 
@@ -75,7 +76,10 @@
 ### "I need to use a specific API"
 → [architecture/API_REFERENCE.md](architecture/API_REFERENCE.md)
 
-### "I want to understand the data"
+### "I want to understand the data structure"
+→ [scraped-data/DATASET_SCHEMA.md](scraped-data/DATASET_SCHEMA.md)
+
+### "I want a quick data overview"
 → [scraped-data/README.md](scraped-data/README.md)
 
 ### "I want to see the project roadmap"

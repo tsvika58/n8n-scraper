@@ -18,6 +18,7 @@ This document tracks all documentation versions in the n8n-scraper project. Each
 | **Project Brief** | `PROJECT_BRIEF.md` | v1.0 | 2025-01-17 | ✅ Active |
 | **API Reference** | `architecture/API_REFERENCE.md` | v1.0.0 | 2025-01-17 | ✅ Active |
 | **Implementation Guide** | `guides/IMPLEMENTATION_GUIDE.md` | v1.0.0 | 2025-01-17 | ✅ Active |
+| **Dataset Schema** | `scraped-data/DATASET_SCHEMA.md` | v1.0.0 | 2025-10-09 | ✅ Active |
 | **Getting Started** | `guides/getting-started.md` | v1.0.0 | 2025-01-09 | ✅ Active |
 | **Architecture Overview** | `architecture/README.md` | v1.0.0 | 2025-01-09 | ✅ Active |
 | **Data Schema Docs** | `scraped-data/README.md` | v1.0.0 | 2025-01-09 | ✅ Active |
@@ -110,6 +111,38 @@ docs/
 
 ---
 
+### 4. Dataset Schema (`scraped-data/DATASET_SCHEMA.md`)
+**Purpose:** Complete data structure specification for the training dataset  
+**Audience:** Developers, data scientists, AI engineers  
+**Current Version:** v1.0.0 (2025-10-09)  
+**Version History:**
+- v1.0.0 (2025-10-09) - Initial comprehensive schema documentation
+
+**Key Sections:**
+- Schema Overview (Design Principles)
+- Core Interfaces (WorkflowData, BasicMetadata)
+- Metadata Structures (Categories, Tags, Setup Instructions)
+- Workflow Content (N8nWorkflowJSON, ConnectionMap)
+- Node Configuration (Complete with all parameters)
+- Explainer Content (Sections, Text, Context)
+- Multimodal Content (Images with OCR, Videos with Transcripts, Code Snippets)
+- Validation Rules (Field validation, Quality checks)
+- Quality Metrics (Completeness score calculation)
+- Export Formats (JSON, JSONL, CSV, SQLite)
+- Complete Examples (Minimal and Rich workflows)
+
+**Content Summary:**
+- **1,266 lines** of comprehensive schema documentation
+- **50+ TypeScript interfaces** for complete type safety
+- **20+ complete examples** showing data structures
+- **Validation rules** for all fields
+- **Quality metrics** for dataset assessment
+- **Multiple export formats** (JSON, JSONL, CSV, SQLite)
+- **Completeness scoring** algorithm
+- **OCR and transcript** integration patterns
+
+---
+
 ## 🔄 VERSION NUMBERING SCHEME
 
 We use **Semantic Versioning** for documentation:
@@ -191,6 +224,9 @@ PATCH: Minor updates, typos, clarifications
 ### Implementation Guide
 - `v1.0.0` (2025-01-17) - Initial release → **CURRENT**
 
+### Dataset Schema
+- `v1.0.0` (2025-10-09) - Initial comprehensive schema → **CURRENT**
+
 ---
 
 ## 🎯 QUALITY CHECKLIST
@@ -217,6 +253,7 @@ Before finalizing any document version:
 | Project Brief | ~8,500 | 18 | 25+ | 2025-01-17 |
 | API Reference | ~4,200 | 12 | 30+ | 2025-01-17 |
 | Implementation Guide | ~6,800 | 15 | 40+ | 2025-01-17 |
+| Dataset Schema | ~9,200 | 11 | 20+ | 2025-10-09 |
 
 ---
 
