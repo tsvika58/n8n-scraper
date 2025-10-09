@@ -1,22 +1,7 @@
-# N8N Workflow Scraper - Optimized Requirements
-# Version: 2.1 (JSON Download Discovery)
+# N8N Workflow Scraper - Production Dependencies
+# Version: 1.0 - SCRAPE-001 Setup
 # Date: October 9, 2025
 # Python: 3.11+
-
-# ============================================================================
-# VERSION 2.1 CHANGES (October 9, 2025)
-# ============================================================================
-# MAJOR DISCOVERY: n8n.io provides official JSON download via "Use for free"
-# button. This eliminates complex iframe extraction.
-#
-# Impact:
-# - Reduced complexity: High → Low
-# - Timeline reduction: 21 days → 17 days (-19%)
-# - Success rate improvement: 95% → 98% (+3%)
-# - Development time: -2 days on workflow extraction
-#
-# No package changes required - existing stack handles this perfectly!
-# ============================================================================
 
 # ============================================================================
 # CORE SCRAPING (Essential)
@@ -39,6 +24,7 @@ tenacity==8.2.3                 # Retry logic with exponential backoff
 pandas==2.1.4                   # Dataset operations
 numpy==1.26.2                   # Numerical operations
 pydantic==2.5.2                 # TypeScript-like validation
+pydantic-settings==2.1.0        # Settings management
 orjson==3.9.10                  # Fast JSON (3-5x faster than stdlib)
 
 # ============================================================================
@@ -68,6 +54,7 @@ pytest==7.4.3                   # Test framework
 pytest-asyncio==0.21.1          # Async test support
 pytest-cov==4.1.0               # Coverage reporting
 pytest-mock==3.12.0             # Mocking support
+faker==20.1.0                   # Test data generation
 
 # ============================================================================
 # EXPORT & SERIALIZATION (Essential)
@@ -81,8 +68,6 @@ zstandard==0.22.0               # Fast compression
 python-dotenv==1.0.0            # Environment variables
 pyyaml==6.0.1                   # YAML config files
 click==8.1.7                    # CLI framework
-httpx==0.25.2                   # Async HTTP client (alternative to aiohttp)
-python-dateutil==2.8.2          # Robust date parsing
 
 # ============================================================================
 # DEVELOPMENT TOOLS (Essential)
@@ -90,18 +75,11 @@ python-dateutil==2.8.2          # Robust date parsing
 black==23.12.1                  # Code formatting
 ruff==0.1.8                     # Fast linting
 mypy==1.7.1                     # Type checking
+ipython==8.18.1                 # Interactive shell
+pre-commit==3.6.0               # Pre-commit hooks
 
 # ============================================================================
-# OPTIONAL (Add Later If Needed)
-# ============================================================================
-# opencv-python==4.8.1          # Advanced image processing
-# psycopg2-binary==2.9.9        # PostgreSQL (if scaling up)
-# boto3==1.34.12                # AWS S3 (if cloud storage needed)
-# prometheus-client==0.19.0     # Metrics (if building service)
-# sentry-sdk==1.39.1            # Error tracking (production only)
-
-# ============================================================================
-# TOTAL: 27 core packages (optimized from 37)
+# Total: 33 packages for production-grade scraping system
 # Installation time: ~3-5 minutes
-# Total size: ~400MB (vs 800MB+ with optional packages)
+# Total size: ~500MB
 # ============================================================================

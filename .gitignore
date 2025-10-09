@@ -1,53 +1,85 @@
-# Dependencies
-node_modules/
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Environment variables
-.env
-.env.local
-.env.*.local
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
 
-# Logs
-logs/
-*.log
-npm-debug.log*
-pnpm-debug.log*
-
-# Raw scraped data (can be regenerated)
-data/raw/*
-!data/raw/.gitkeep
-
-# Processed data (keep in git if needed)
-# data/processed/*
-# !data/processed/.gitkeep
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+.DS_Store
 
 # Testing
-coverage/
-.nyc_output/
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
 
-# Build
-dist/
-build/
+# Logs
+logs/
+*.log
 
-# Misc
-*.cache
-.cache/
+# Database
+data/
+*.db
+*.sqlite
+*.sqlite3
 
+# Media files
+media/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.avi
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Ruff
+.ruff_cache/
+
+# Project specific
+*.bak
+*.tmp
+temp/
+tmp/
