@@ -1,0 +1,104 @@
+# N8N Workflow Scraper - Docker Compose Configuration
+# Version: 1.0 - Persistent Volumes Architecture
+
+version: '3.8'
+
+services:
+  # Main scraper service
+  scraper:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: n8n-scraper
+    volumes:
+      # Code volumes (editable during development)
+      - ../src:/app/src:rw
+      - ../tests:/app/tests:rw
+      - ../scripts:/app/scripts:rw
+      
+      # Persistent data volumes (CRITICAL - survives container restarts)
+      - scraper-data:/app/data
+      - scraper-logs:/app/logs
+      - scraper-media:/app/media
+      
+      # Shared volumes for coordination
+      - ../.coordination:/app/.coordination:rw
+    environment:
+      - DATABASE_URL=sqlite:///data/workflows.db
+      - LOG_LEVEL=INFO
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+    networks:
+      - scraper-network
+    command: python -m pytest tests/ -v
+    restart: unless-stopped
+    
+  # Test runner service
+  test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: n8n-scraper-test
+    volumes:
+      # Code volumes
+      - ../src:/app/src:rw
+      - ../tests:/app/tests:rw
+      
+      # Persistent test data
+      - test-data:/app/data
+      - test-coverage:/app/htmlcov
+    environment:
+      - DATABASE_URL=sqlite:///data/test_workflows.db
+      - LOG_LEVEL=DEBUG
+      - PYTHONPATH=/app
+    command: pytest tests/ --cov=src --cov-report=html --cov-report=term-missing -v
+    networks:
+      - scraper-network
+
+  # Interactive development service
+  dev:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: n8n-scraper-dev
+    volumes:
+      # Full access for development
+      - ../:/app:rw
+      
+      # Persistent volumes
+      - scraper-data:/app/data
+      - scraper-logs:/app/logs
+      - scraper-media:/app/media
+    environment:
+      - DATABASE_URL=sqlite:///data/workflows.db
+      - LOG_LEVEL=DEBUG
+      - PYTHONPATH=/app
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    networks:
+      - scraper-network
+
+# Named volumes for data persistence
+volumes:
+  scraper-data:
+    driver: local
+    name: n8n-scraper-data
+  scraper-logs:
+    driver: local
+    name: n8n-scraper-logs
+  scraper-media:
+    driver: local
+    name: n8n-scraper-media
+  test-data:
+    driver: local
+    name: n8n-scraper-test-data
+  test-coverage:
+    driver: local
+    name: n8n-scraper-test-coverage
+
+networks:
+  scraper-network:
+    driver: bridge
+    name: n8n-scraper-network
+
