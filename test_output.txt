@@ -1,0 +1,44 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.1, pytest-8.4.2, pluggy-1.6.0 -- /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper
+configfile: pytest.ini
+testpaths: tests
+plugins: asyncio-1.2.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 9 items
+
+tests/test_database.py::test_workflow_creation PASSED                    [ 11%]
+tests/test_database.py::test_workflow_query PASSED                       [ 22%]
+tests/test_database.py::test_workflow_update PASSED                      [ 33%]
+tests/test_database.py::test_session_creation PASSED                     [ 44%]
+tests/test_database.py::test_session_metrics PASSED                      [ 55%]
+tests/test_database.py::test_workflow_with_json_data PASSED              [ 66%]
+tests/test_database.py::test_workflow_quality_scoring PASSED             [ 77%]
+tests/test_database.py::test_workflow_repr PASSED                        [ 88%]
+tests/test_database.py::test_async_operations PASSED                     [100%]
+
+=============================== warnings summary ===============================
+src/database/schema.py:12
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/schema.py:12: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.11.1-final-0 _______________
+
+Name                           Stmts   Miss   Cover   Missing
+-------------------------------------------------------------
+src/__init__.py                    0      0 100.00%
+src/database/__init__.py           0      0 100.00%
+src/database/schema.py            99      9  90.91%   159-175, 188-198, 211
+src/models/__init__.py             0      0 100.00%
+src/orchestrator/__init__.py       0      0 100.00%
+src/parsers/__init__.py            0      0 100.00%
+src/scrapers/__init__.py           0      0 100.00%
+src/utils/__init__.py              0      0 100.00%
+src/utils/logging.py              38     38   0.00%   6-121
+-------------------------------------------------------------
+TOTAL                            137     47  65.69%
+Coverage HTML written to dir htmlcov
+========================= 9 passed, 1 warning in 0.16s =========================
