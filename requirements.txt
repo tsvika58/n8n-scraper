@@ -1,8 +1,7 @@
-# N8N Workflow Scraper - Production Requirements
-# Version: 2.0 (RND Approved + Optimizations)
+# N8N Workflow Scraper - Optimized Requirements
+# Version: 2.0 (Post-RND Feedback)
 # Date: October 9, 2025
-# Python: 3.11.0 - 3.11.x (tested on 3.11.6)
-# Note: Python 3.12+ has breaking changes in some dependencies
+# Python: 3.11+
 
 # ============================================================================
 # CORE SCRAPING (Essential)
@@ -18,7 +17,6 @@ aiohttp==3.9.1                  # Async HTTP client
 aiofiles==23.2.1                # Async file operations
 aiolimiter==1.1.0               # Rate limiting (2 req/sec)
 tenacity==8.2.3                 # Retry logic with exponential backoff
-httpx==0.25.2                   # Alternative HTTP client (better errors)
 
 # ============================================================================
 # DATA PROCESSING (Essential)
@@ -27,7 +25,6 @@ pandas==2.1.4                   # Dataset operations
 numpy==1.26.2                   # Numerical operations
 pydantic==2.5.2                 # TypeScript-like validation
 orjson==3.9.10                  # Fast JSON (3-5x faster than stdlib)
-python-dateutil==2.8.2          # Robust date parsing
 
 # ============================================================================
 # MULTIMODAL PROCESSING (Essential)
@@ -41,7 +38,7 @@ yt-dlp==2023.12.30              # Video metadata extraction
 # DATABASE (Essential - SQLite Only)
 # ============================================================================
 sqlalchemy==2.0.23              # ORM for clean database operations
-alembic==1.13.1                 # Database migrations (smart addition!)
+alembic==1.13.1                 # Database migrations
 
 # ============================================================================
 # MONITORING & LOGGING (Essential)
@@ -69,30 +66,27 @@ zstandard==0.22.0               # Fast compression
 python-dotenv==1.0.0            # Environment variables
 pyyaml==6.0.1                   # YAML config files
 click==8.1.7                    # CLI framework
+httpx==0.25.2                   # Async HTTP client (alternative to aiohttp)
+python-dateutil==2.8.2          # Robust date parsing
 
 # ============================================================================
 # DEVELOPMENT TOOLS (Essential)
 # ============================================================================
 black==23.12.1                  # Code formatting
 ruff==0.1.8                     # Fast linting
-mypy==1.7.1                     # Type checking (excellent addition!)
+mypy==1.7.1                     # Type checking
 
 # ============================================================================
 # OPTIONAL (Add Later If Needed)
 # ============================================================================
 # opencv-python==4.8.1          # Advanced image processing
-# psycopg2-binary==2.9.9        # PostgreSQL (if scaling beyond SQLite)
+# psycopg2-binary==2.9.9        # PostgreSQL (if scaling up)
 # boto3==1.34.12                # AWS S3 (if cloud storage needed)
-# prometheus-client==0.19.0     # Metrics (if building long-running service)
-# sentry-sdk==1.39.1            # Error tracking (production monitoring)
+# prometheus-client==0.19.0     # Metrics (if building service)
+# sentry-sdk==1.39.1            # Error tracking (production only)
 
 # ============================================================================
-# INSTALLATION METRICS
-# ============================================================================
-# Total packages: 30 core (optimized from 37 original)
+# TOTAL: 27 core packages (optimized from 37)
 # Installation time: ~3-5 minutes
-# Total size: ~420MB (vs 800MB+ with all optional packages)
-# Target workflows: 2,100+
-# Expected scrape time: 24-30 hours with 95%+ success rate
+# Total size: ~400MB (vs 800MB+ with optional packages)
 # ============================================================================
-

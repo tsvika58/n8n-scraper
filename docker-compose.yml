@@ -1,0 +1,149 @@
+# N8N Workflow Scraper - Docker Compose
+# Version: 2.0
+# Purpose: Complete development and production environment
+
+version: '3.8'
+
+services:
+  # ============================================================================
+  # SCRAPER SERVICE
+  # ============================================================================
+  scraper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: n8n-scraper
+    image: n8n-scraper:2.0
+    
+    # Environment variables
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=INFO
+      - MAX_CONCURRENT=3
+      - RATE_LIMIT=2
+      - HEADLESS=true
+    
+    # Environment file
+    env_file:
+      - .env
+    
+    # Volume mounts
+    volumes:
+      # Persistent data
+      - ./data:/data
+      - ./media:/media
+      - ./logs:/app/logs
+      
+      # Configuration
+      - ./config:/app/config
+      
+      # Development: mount source code (comment out for production)
+      - ./src:/app/src
+      - ./scripts:/app/scripts
+    
+    # Network
+    networks:
+      - scraper-network
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Command (override for different tasks)
+    # command: ["scripts/scrape.py", "--workflows", "1000"]
+
+  # ============================================================================
+  # DATABASE VIEWER (Optional - for development)
+  # ============================================================================
+  db-viewer:
+    image: coleifer/sqlite-web:latest
+    container_name: n8n-scraper-db-viewer
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+    environment:
+      - SQLITE_DATABASE=/data/n8n_workflows.db
+    networks:
+      - scraper-network
+    profiles:
+      - dev
+    restart: unless-stopped
+
+  # ============================================================================
+  # JUPYTER NOTEBOOK (Optional - for data analysis)
+  # ============================================================================
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    container_name: n8n-scraper-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./data:/home/jovyan/data
+      - ./media:/home/jovyan/media
+      - ./notebooks:/home/jovyan/notebooks
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    networks:
+      - scraper-network
+    profiles:
+      - analysis
+    restart: unless-stopped
+
+# ============================================================================
+# NETWORKS
+# ============================================================================
+networks:
+  scraper-network:
+    driver: bridge
+
+# ============================================================================
+# VOLUMES (Named volumes for persistence)
+# ============================================================================
+volumes:
+  scraper-data:
+    driver: local
+  scraper-media:
+    driver: local
+
+# ============================================================================
+# USAGE INSTRUCTIONS
+# ============================================================================
+# 
+# Development Mode (with code hot-reload):
+#   docker-compose up scraper
+# 
+# With Database Viewer:
+#   docker-compose --profile dev up
+# 
+# With Jupyter for Analysis:
+#   docker-compose --profile analysis up
+# 
+# Production Mode (detached):
+#   docker-compose up -d scraper
+# 
+# Run specific scraping task:
+#   docker-compose run --rm scraper scripts/scrape.py --workflows 100
+# 
+# Run validation:
+#   docker-compose run --rm scraper scripts/validate.py
+# 
+# Export data:
+#   docker-compose run --rm scraper scripts/export.py --format jsonl
+# 
+# Stop all services:
+#   docker-compose down
+# 
+# Clean up everything (including volumes):
+#   docker-compose down -v
+# 
+# ============================================================================
