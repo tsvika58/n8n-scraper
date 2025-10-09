@@ -81,8 +81,6 @@ zstandard==0.22.0               # Fast compression
 python-dotenv==1.0.0            # Environment variables
 pyyaml==6.0.1                   # YAML config files
 click==8.1.7                    # CLI framework
-httpx==0.25.2                   # Async HTTP client (alternative to aiohttp)
-python-dateutil==2.8.2          # Robust date parsing
 
 # ============================================================================
 # DEVELOPMENT TOOLS (Essential)
