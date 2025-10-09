@@ -1,0 +1,38 @@
+# Development Dependencies
+# Install with: pip install -r requirements-dev.txt
+# This includes requirements.txt + additional dev tools
+
+-r requirements.txt
+
+# ============================================================================
+# ADDITIONAL DEVELOPMENT TOOLS
+# ============================================================================
+ipython==8.18.1                 # Better Python REPL
+jupyter==1.0.0                  # Notebooks for data exploration
+jupyterlab==4.0.9               # Modern Jupyter interface
+
+# Code Quality
+pylint==3.0.3                   # Additional linting
+flake8==6.1.0                   # Style checking
+bandit==1.7.5                   # Security linting
+safety==2.3.5                   # Dependency security scanner
+
+# Documentation
+sphinx==7.2.6                   # Documentation generation
+sphinx-rtd-theme==2.0.0         # ReadTheDocs theme
+
+# Profiling & Debugging
+memory-profiler==0.61.0         # Memory usage profiling
+line-profiler==4.1.1            # Line-by-line profiling
+py-spy==0.3.14                  # Sampling profiler
+
+# Testing Extras
+pytest-xdist==3.5.0             # Parallel test execution
+pytest-benchmark==4.0.0         # Performance benchmarking
+hypothesis==6.92.1              # Property-based testing
+
+# ============================================================================
+# Note: Only install this for development machines
+# Production deployments should use requirements.txt only
+# ============================================================================
+
