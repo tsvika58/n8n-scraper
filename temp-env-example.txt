@@ -1,0 +1,37 @@
+# n8n Scraper Configuration
+
+# Data source URLs
+N8N_WORKFLOWS_URL=https://n8n.io/workflows
+N8N_DOCS_URL=https://docs.n8n.io
+N8N_API_URL=https://api.n8n.io
+N8N_COMMUNITY_URL=https://community.n8n.io
+
+# Scraper settings
+SCRAPE_DELAY_MS=1000
+MAX_CONCURRENT_REQUESTS=5
+USER_AGENT=Mozilla/5.0 (compatible; n8n-scraper/1.0)
+
+# Output settings
+OUTPUT_FORMAT=json
+SAVE_RAW_HTML=false
+COMPRESS_OUTPUT=true
+
+# Rate limiting
+RATE_LIMIT_ENABLED=true
+REQUESTS_PER_MINUTE=60
+
+# Logging
+LOG_LEVEL=info
+LOG_FILE=logs/scraper.log
+
+# Data storage
+DATA_DIR=./data
+RAW_DATA_DIR=./data/raw
+PROCESSED_DATA_DIR=./data/processed
+
+# Browser automation (for Puppeteer/Playwright)
+HEADLESS=true
+BROWSER_TIMEOUT=30000
+
+# Optional: API authentication (if needed)
+# N8N_API_KEY=your_api_key_here

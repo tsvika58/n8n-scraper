@@ -1,0 +1,48 @@
+{
+  "name": "n8n-scraper",
+  "version": "1.0.0",
+  "description": "Comprehensive data scraper for n8n workflows, nodes, and documentation to enhance the n8n-claude-engine",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "scrape:all": "node scripts/scrape-all.js",
+    "scrape:workflows": "node src/scrapers/workflow-scraper.js",
+    "scrape:nodes": "node src/scrapers/node-scraper.js",
+    "scrape:docs": "node src/scrapers/documentation-scraper.js",
+    "process": "node scripts/process-data.js",
+    "validate": "node scripts/validate-data.js",
+    "clean": "node scripts/clean-data.js",
+    "test": "node --test tests/**/*.test.js",
+    "lint": "eslint src/ tests/",
+    "format": "prettier --write \"src/**/*.js\" \"tests/**/*.js\""
+  },
+  "keywords": [
+    "n8n",
+    "scraper",
+    "workflow",
+    "automation",
+    "data-collection",
+    "ai",
+    "claude"
+  ],
+  "author": "Tsvika Vagman",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.3.1",
+    "puppeteer": "^21.5.0",
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.54.0",
+    "prettier": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
+
