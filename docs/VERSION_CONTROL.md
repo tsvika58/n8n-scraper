@@ -21,6 +21,7 @@ This document tracks all documentation versions in the n8n-scraper project. Each
 | **Dataset Schema** | `scraped-data/DATASET_SCHEMA.md` | v1.0.0 | 2025-10-09 | ✅ Active |
 | **Tech Stack** | `architecture/TECH_STACK.md` | v2.0 | 2025-10-09 | ✅ Active |
 | **Project Structure** | `architecture/PROJECT_STRUCTURE.md` | v2.0 | 2025-10-09 | ✅ Active |
+| **Project Plan** | `PROJECT_PLAN_v1.0.md` | v1.0 | 2025-10-09 | 🔄 Draft |
 | **Getting Started** | `guides/getting-started.md` | v1.0.0 | 2025-01-09 | ✅ Active |
 | **Architecture Overview** | `architecture/README.md` | v1.0.0 | 2025-01-09 | ✅ Active |
 | **Data Schema Docs** | `scraped-data/README.md` | v1.0.0 | 2025-01-09 | ✅ Active |
@@ -234,6 +235,9 @@ PATCH: Minor updates, typos, clarifications
 
 ### Project Structure
 - `v2.0` (2025-10-09) - Complete project organization and workflow → **CURRENT**
+
+### Project Plan
+- `v1.0` (2025-10-09) - Comprehensive 2-week sprint plan → **DRAFT**
 
 ---
 
