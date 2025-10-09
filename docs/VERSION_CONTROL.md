@@ -25,7 +25,10 @@ This document tracks all documentation versions in the n8n-scraper project. Each
 | **Executive Summary** | `EXECUTIVE_SUMMARY_v2.1.md` | v2.1 | 2025-10-09 | ✅ Active |
 | **Update Summary** | `UPDATE_SUMMARY_v2.1.md` | v2.1 | 2025-10-09 | ✅ Active |
 | **Version Changelog** | `VERSION_CHANGELOG_v2.1.md` | v2.1 | 2025-10-09 | ✅ Active |
-| **Documentation Index** | `DOCUMENTATION_INDEX_v2.1.md` | v2.1 | 2025-10-09 | ✅ Active |
+| **Documentation Index** | `DOCUMENTATION_INDEX_v2.1.1.md` | v2.1.1 | 2025-10-09 | ✅ Active |
+| **RND Package Summary** | `RND_PACKAGE_SUMMARY_v2.1.1.md` | v2.1.1 | 2025-10-09 | ✅ Active |
+| **Email to RND** | `EMAIL_TO_RND_v2.1.1.md` | v2.1.1 | 2025-10-09 | ✅ Active |
+| **Dataset Schema Complete** | `DATASET_SCHEMA_COMPLETE_v1.0.md` | v1.0 | 2025-10-09 | ✅ Active |
 | **Getting Started** | `guides/getting-started.md` | v1.0.0 | 2025-01-09 | ✅ Active |
 | **Architecture Overview** | `architecture/README.md` | v1.0.0 | 2025-01-09 | ✅ Active |
 | **Data Schema Docs** | `scraped-data/README.md` | v1.0.0 | 2025-01-09 | ✅ Active |
