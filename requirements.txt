@@ -36,10 +36,11 @@ youtube-transcript-api==0.6.1   # YouTube transcript extraction
 yt-dlp==2023.12.30              # Video metadata extraction
 
 # ============================================================================
-# DATABASE (Essential - SQLite Only)
+# DATABASE (Essential - PostgreSQL)
 # ============================================================================
 sqlalchemy==2.0.23              # ORM for clean database operations
 alembic==1.13.1                 # Database migrations
+psycopg2-binary==2.9.9          # PostgreSQL adapter for Python
 
 # ============================================================================
 # MONITORING & LOGGING (Essential)
@@ -55,6 +56,7 @@ pytest-asyncio==0.21.1          # Async test support
 pytest-cov==4.1.0               # Coverage reporting
 pytest-mock==3.12.0             # Mocking support
 faker==20.1.0                   # Test data generation
+psutil==7.1.0                   # Memory usage monitoring for integration tests
 
 # ============================================================================
 # EXPORT & SERIALIZATION (Essential)
@@ -83,3 +85,4 @@ pre-commit==3.6.0               # Pre-commit hooks
 # Installation time: ~3-5 minutes
 # Total size: ~500MB
 # ============================================================================
+pytest-html==4.1.1   # HTML test reports

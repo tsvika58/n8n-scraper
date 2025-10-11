@@ -1,0 +1,10 @@
+1756|Google Spreadsheet to HTML - Variant with Spreadsheet File|Igor Fediczko@igordisco|2025-10-10 10:06:26.798562
+1832|Sync Zendesk tickets with subsequent comments to GitHub issues|Igor Fediczko@igordisco|2025-10-10 10:06:35.216729
+1923|Unknown Title|Unknown Author|2025-10-10 10:06:50.475942
+1954|AI agent chat|Igor Fediczko@igordisco|2025-10-10 10:05:59.208276
+2087|Streamline data from an n8n form into Google Sheet, Airtable and Email Sending|Igor Fediczko@igordisco|2025-10-10 10:06:58.543443
+2103|Collect and Enrich Form Leads to Gmail, Google Sheets and Discord|Igor Fediczko@igordisco|2025-10-10 10:06:08.818085
+2145|When specific event created in Google Calendar, duplicate & rename Google File|Igor Fediczko@igordisco|2025-10-10 10:07:08.375767
+2156|Generate instant google meet links with a slack command|Igor Fediczko@igordisco|2025-10-10 10:06:43.995258
+2234|AI-Powered Children's Arabic Storytelling on Telegram|Igor Fediczko@igordisco|2025-10-10 10:06:17.921927
+2462|Angie, Personal AI Assistant with Telegram Voice and Text|Igor Fediczko@igordisco|2025-10-10 10:05:50.690432

@@ -141,20 +141,32 @@ npm run dev
 # Run tests
 npm test
 
+# Run tests with beautiful dashboard 🎨
+make test-dash
+
 # Lint code
 npm run lint
 ```
 
 ## 📦 Available Scripts
 
+### JavaScript/Scraping
 - `npm run scrape:all` - Run all scrapers sequentially
 - `npm run scrape:workflows` - Scrape workflow templates
 - `npm run scrape:nodes` - Scrape node documentation
 - `npm run scrape:docs` - Scrape general documentation
 - `npm run process` - Process and clean raw data
 - `npm run validate` - Validate scraped data
-- `npm test` - Run test suite
 - `npm run dev` - Development mode with hot reload
+
+### Python/Testing
+- `npm test` / `make test` - Run test suite with coverage
+- `make test-dash` - Run tests with beautiful real-time dashboard 🎨
+- `make test-dash-fast` - Quick tests without coverage
+- `make test-dash-unit` - Run unit tests with dashboard
+- `make test-dash-integration` - Run integration tests with dashboard
+
+> **New!** Check out the [Pytest Dashboard](PYTEST_DASHBOARD_QUICKSTART.md) for beautiful real-time test monitoring!
 
 ## 🤝 Contributing
 
@@ -175,4 +187,7 @@ MIT
 ## 📞 Support
 
 For questions or issues, please refer to the documentation in the `docs/` folder or create an issue in the repository.
+
+
+
 

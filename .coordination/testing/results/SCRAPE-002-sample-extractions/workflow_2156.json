@@ -1,0 +1,47 @@
+{
+  "workflow_id": "2156",
+  "url": "https://n8n.io/workflows/2156",
+  "extraction_status": "complete",
+  "extraction_time": "6.73s",
+  "error": null,
+  "title": "Generate instant google meet links with a slack command",
+  "description": "How it worksThis template uses a slack app to connect with your google calendar, generate an instant google meet link and post it as a message in a slack...",
+  "author": "Igor Fediczko@igordisco",
+  "use_case": "How it worksThis template uses a slack app to connect with your google calendar, generate an instant google meet link and post it as a message in a slack.",
+  "primary_category": "Strictly necessary",
+  "secondary_categories": [
+    "Performance",
+    "Targeting",
+    "Functionality",
+    "Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.",
+    "Performance cookies are used to see how visitors use the website, eg. analytics cookies. Those cookies cannot be used to directly identify a certain visitor.",
+    "Targeting cookies are used to identify visitors between different websites, eg. content partners, banner networks. Those cookies may be used by companies to build a profile of visitor interests or show relevant ads on other websites.",
+    "Functionality cookies are used to remember visitor information on the website, eg. language, timezone, enhanced content."
+  ],
+  "node_tags": [
+    "github147,080"
+  ],
+  "general_tags": [
+    "Functionality",
+    "Performance",
+    "Targeting",
+    "Strictly necessary"
+  ],
+  "difficulty_level": "intermediate",
+  "views": 0,
+  "upvotes": 0,
+  "created_date": "2025-10-10T10:06:43.995258",
+  "updated_date": "2025-10-10T10:06:43.995258",
+  "setup_instructions": "How it worksThis template uses a slack app to connect with your google calendar, generate an instant google meet link and post it as a message in a slack...",
+  "prerequisites": [
+    "for the website to operate properly are allowed to be set without your permission",
+    ".io\",productApiUrl:\"https://api.n8n.io\",siteUrl:\"https://n8n.io\",nodeLogoDir:\"/no",
+    "reTop guidesTelegram botsOpen-source chatbotOpen-source LLMOpen-source",
+    "{\n\t\tcontent: attr(label);\n\t\tfont-weight: bold;\n\t\twidth: 120px;\n\t\tmin-width: 120px;\n\t}",
+    "csrf_token"
+  ],
+  "estimated_setup_time": "4 minutes 59 sec",
+  "industry": [
+    "Strictly necessary"
+  ]
+}

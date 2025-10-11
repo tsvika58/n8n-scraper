@@ -1,0 +1,67 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.1, pytest-8.4.2, pluggy-1.6.0 -- /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper
+configfile: pytest.ini
+plugins: asyncio-1.2.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 20 items
+
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_discover_iframes_workflow_6270 PASSED [  5%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_discover_iframes_workflow_8527 PASSED [ 10%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_discover_iframes_multiple_workflows PASSED [ 15%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_iframe_discovery_error_handling PASSED [ 20%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_extract_text_workflow_6270 PASSED [ 25%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_extract_text_workflow_8527 PASSED [ 30%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_extract_text_various_iframe_types PASSED [ 35%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_text_extraction_element_classification PASSED [ 40%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_text_extraction_performance PASSED [ 45%]
+tests/integration/test_video_discovery_real.py::TestVideoDiscoveryIntegration::test_discover_videos_workflow_6270 PASSED [ 50%]
+tests/integration/test_video_discovery_real.py::TestVideoDiscoveryIntegration::test_discover_videos_workflow_8527 PASSED [ 55%]
+tests/integration/test_video_discovery_real.py::TestVideoDiscoveryIntegration::test_video_id_extraction_from_discovered_videos PASSED [ 60%]
+tests/integration/test_ocr_processing_real.py::TestOCRProcessingIntegration::test_ocr_with_real_workflow_text_elements PASSED [ 65%]
+tests/integration/test_ocr_processing_real.py::TestOCRProcessingIntegration::test_text_processing_various_content_types PASSED [ 70%]
+tests/integration/test_ocr_processing_real.py::TestOCRProcessingIntegration::test_text_element_deduplication PASSED [ 75%]
+tests/integration/test_workflow_orchestration_real.py::TestWorkflowOrchestrationIntegration::test_end_to_end_workflow_6270 PASSED [ 80%]
+tests/integration/test_workflow_orchestration_real.py::TestWorkflowOrchestrationIntegration::test_end_to_end_workflow_8527 PASSED [ 85%]
+tests/integration/test_workflow_orchestration_real.py::TestWorkflowOrchestrationIntegration::test_orchestration_multiple_workflows_sequential PASSED [ 90%]
+tests/integration/test_error_recovery_real.py::TestErrorRecoveryIntegration::test_error_recovery_invalid_workflow PASSED [ 95%]
+tests/integration/test_error_recovery_real.py::TestErrorRecoveryIntegration::test_error_recovery_network_timeout PASSED [100%]
+
+=============================== warnings summary ===============================
+src/database/schema.py:12
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/schema.py:12: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.11.1-final-0 _______________
+
+Name                                         Stmts   Miss   Cover   Missing
+---------------------------------------------------------------------------
+src/__init__.py                                  0      0 100.00%
+src/database/__init__.py                         0      0 100.00%
+src/database/inventory_schema.py               101    101   0.00%   6-242
+src/database/json_schema.py                     91     91   0.00%   6-195
+src/database/schema.py                          99      9  90.91%   159-175, 188-198, 211
+src/database/validation_schema.py              132    132   0.00%   6-265
+src/models/__init__.py                           0      0 100.00%
+src/orchestrator/__init__.py                     0      0 100.00%
+src/parsers/__init__.py                          0      0 100.00%
+src/scrapers/__init__.py                         0      0 100.00%
+src/scrapers/layer1_metadata.py                346    346   0.00%   12-701
+src/scrapers/layer2_json.py                    100    100   0.00%   6-278
+src/scrapers/layer3_explainer.py               264    264   0.00%   12-592
+src/scrapers/multimodal_processor.py           343    150  56.27%   120-121, 125-127, 144-145, 151-152, 200-203, 217-219, 226, 232, 234, 242, 261-282, 299-300, 318-321, 328-330, 343, 358, 372-459, 506, 596-607, 660-662, 710-735, 740-743, 749, 756-771
+src/scrapers/workflow_inventory_crawler.py      89     89   0.00%   6-174
+src/utils/__init__.py                            0      0 100.00%
+src/utils/logging.py                            38     38   0.00%   6-121
+src/validation/__init__.py                       1      1   0.00%   6
+src/validation/layer1_validator.py              73     73   0.00%   6-157
+src/validation/layer2_validator.py              74     74   0.00%   6-159
+src/validation/layer3_validator.py              67     67   0.00%   6-144
+src/validation/quality_scorer.py                61     61   0.00%   6-200
+---------------------------------------------------------------------------
+TOTAL                                         1879   1596  15.06%
+Coverage HTML written to dir htmlcov
+================== 20 passed, 1 warning in 170.72s (0:02:50) ===================

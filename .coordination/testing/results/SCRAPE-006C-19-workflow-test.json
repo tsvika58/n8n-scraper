@@ -1,0 +1,190 @@
+{
+  "workflows_tested": [
+    "2021",
+    "1847",
+    "2091",
+    "1925",
+    "2134",
+    "1912",
+    "2203",
+    "1865",
+    "2076",
+    "1948",
+    "2221",
+    "1834",
+    "2109",
+    "1974",
+    "2268",
+    "1893",
+    "2183",
+    "1821",
+    "2056"
+  ],
+  "results": [
+    {
+      "workflow_id": "2021",
+      "success": false,
+      "fallback_used": true,
+      "extraction_type": "none",
+      "node_count": 0,
+      "error": "Workflow unavailable (both APIs failed - HTTP 204)"
+    },
+    {
+      "workflow_id": "1847",
+      "success": false,
+      "fallback_used": true,
+      "extraction_type": "none",
+      "node_count": 0,
+      "error": "Workflow unavailable (both APIs failed - HTTP 204)"
+    },
+    {
+      "workflow_id": "2091",
+      "success": false,
+      "fallback_used": true,
+      "extraction_type": "none",
+      "node_count": 0,
+      "error": "Workflow unavailable (both APIs failed - HTTP 204)"
+    },
+    {
+      "workflow_id": "1925",
+      "success": false,
+      "fallback_used": true,
+      "extraction_type": "none",
+      "node_count": 0,
+      "error": "Workflow unavailable (both APIs failed - HTTP 204)"
+    },
+    {
+      "workflow_id": "2134",
+      "success": true,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "node_count": 10,
+      "error": null
+    },
+    {
+      "workflow_id": "1912",
+      "success": false,
+      "fallback_used": true,
+      "extraction_type": "none",
+      "node_count": 0,
+      "error": "Workflow unavailable (both APIs failed - HTTP 204)"
+    },
+    {
+      "workflow_id": "2203",
+      "success": false,
+      "fallback_used": true,
+      "extraction_type": "none",
+      "node_count": 0,
+      "error": "Workflow unavailable (both APIs failed - HTTP 204)"
+    },
+    {
+      "workflow_id": "1865",
+      "success": false,
+      "fallback_used": true,
+      "extraction_type": "none",
+      "node_count": 0,
+      "error": "Workflow unavailable (both APIs failed - HTTP 204)"
+    },
+    {
+      "workflow_id": "2076",
+      "success": true,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "node_count": 13,
+      "error": null
+    },
+    {
+      "workflow_id": "1948",
+      "success": true,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "node_count": 9,
+      "error": null
+    },
+    {
+      "workflow_id": "2221",
+      "success": true,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "node_count": 20,
+      "error": null
+    },
+    {
+      "workflow_id": "1834",
+      "success": true,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "node_count": 3,
+      "error": null
+    },
+    {
+      "workflow_id": "2109",
+      "success": true,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "node_count": 12,
+      "error": null
+    },
+    {
+      "workflow_id": "1974",
+      "success": true,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "node_count": 17,
+      "error": null
+    },
+    {
+      "workflow_id": "2268",
+      "success": false,
+      "fallback_used": true,
+      "extraction_type": "none",
+      "node_count": 0,
+      "error": "Workflow unavailable (both APIs failed - HTTP 204)"
+    },
+    {
+      "workflow_id": "1893",
+      "success": false,
+      "fallback_used": true,
+      "extraction_type": "none",
+      "node_count": 0,
+      "error": "Workflow unavailable (both APIs failed - HTTP 204)"
+    },
+    {
+      "workflow_id": "2183",
+      "success": true,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "node_count": 17,
+      "error": null
+    },
+    {
+      "workflow_id": "1821",
+      "success": true,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "node_count": 7,
+      "error": null
+    },
+    {
+      "workflow_id": "2056",
+      "success": true,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "node_count": 13,
+      "error": null
+    }
+  ],
+  "summary": {
+    "total": 19,
+    "primary_success": 10,
+    "fallback_success": 0,
+    "both_failed": 9,
+    "fallback_success_rate": 0.0
+  },
+  "statistics": {
+    "total": 10,
+    "primary_success": 10,
+    "fallback_success": 0,
+    "both_failed": 9
+  }
+}

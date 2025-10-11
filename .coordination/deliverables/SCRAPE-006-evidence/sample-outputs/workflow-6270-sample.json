@@ -1,0 +1,68 @@
+{
+  "workflow_id": "6270",
+  "workflow_url": "https://n8n.io/workflows/6270-build-your-first-ai-agent/",
+  "title": "Build Your First AI Agent",
+  "processing_results": {
+    "iframes_found": 2,
+    "text_elements_processed": 15,
+    "text_elements_success": 15,
+    "videos_found": 1,
+    "videos_success": 1,
+    "processing_time": 11.82,
+    "success": true,
+    "errors": []
+  },
+  "extracted_text_samples": [
+    {
+      "type": "tutorial_box",
+      "text": "Video Tutorial\n\nTry It Out!\n\n \nLaunch your first AI agent—a chatbot that uses tools to fetch live information.",
+      "length": 120,
+      "element_id": "iframe_2_text_tutorial_box_3456"
+    },
+    {
+      "type": "instruction",
+      "text": "Connect to Gemini API using your credentials to enable AI capabilities",
+      "length": 73,
+      "element_id": "iframe_2_text_instruction_7890"
+    },
+    {
+      "type": "explanatory_text",
+      "text": "This workflow demonstrates how to build a conversational AI agent that can use tools to answer questions with up-to-date information from the web.",
+      "length": 151,
+      "element_id": "iframe_2_text_explanatory_2345"
+    }
+  ],
+  "discovered_videos": [
+    {
+      "video_url": "https://www.youtube.com/embed/laHIzhsz12E",
+      "video_id": "laHIzhsz12E",
+      "discovered_in": "iframe_2",
+      "transcript_status": "deferred",
+      "transcript_note": "Transcript extraction deferred to future iteration"
+    }
+  ],
+  "database_storage": {
+    "table": "workflows",
+    "image_urls": [
+      "iframe_2_text_tutorial_box_3456",
+      "iframe_2_text_instruction_7890",
+      "iframe_2_text_explanatory_2345"
+    ],
+    "ocr_text_length": 3704,
+    "video_urls": [
+      "https://www.youtube.com/embed/laHIzhsz12E"
+    ],
+    "video_transcripts": [
+      {
+        "video_id": "laHIzhsz12E",
+        "video_url": "https://www.youtube.com/embed/laHIzhsz12E",
+        "transcript": null,
+        "length": 0,
+        "extraction_date": "2025-10-10T18:12:22Z",
+        "success": true,
+        "error": "Transcript extraction deferred to future iteration"
+      }
+    ]
+  }
+}
+

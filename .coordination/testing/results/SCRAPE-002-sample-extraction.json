@@ -1,0 +1,42 @@
+[32m2025-10-09 21:17:17[0m | [1mINFO    [0m | [36msrc.utils.logging[0m:[36msetup_logging[0m:[36m73[0m - [1m🚀 Logging configured successfully[0m
+[32m2025-10-09 21:17:17[0m | [1mINFO    [0m | [36msrc.scrapers.layer1_metadata[0m:[36m__init__[0m:[36m36[0m - [1mPageMetadataExtractor initialized[0m
+[32m2025-10-09 21:17:17[0m | [1mINFO    [0m | [36msrc.scrapers.layer1_metadata[0m:[36mextract[0m:[36m61[0m - [1mStarting Layer 1 extraction for workflow 2462[0m
+[32m2025-10-09 21:17:24[0m | [33m[1mWARNING [0m | [36msrc.scrapers.layer1_metadata[0m:[36m_extract_difficulty[0m:[36m408[0m - [33m[1mDifficulty not found, defaulting to intermediate[0m
+[32m2025-10-09 21:17:24[0m | [32m[1mSUCCESS [0m | [36msrc.scrapers.layer1_metadata[0m:[36mextract[0m:[36m145[0m - [32m[1mSuccessfully extracted Layer 1 metadata for workflow 2462 in 7.45s[0m
+{
+  "success": true,
+  "workflow_id": "2462",
+  "data": {
+    "title": "Angie, Personal AI Assistant with Telegram Voice and Text",
+    "description": "How it works: This project creates a personal AI assistant named Angie that operates through Telegram. Angie can summarize daily emails, look up calendar...",
+    "author": "Igor Fediczko@igordisco",
+    "use_case": "How it works: This project creates a personal AI assistant named Angie that operates through Telegram.",
+    "primary_category": "Strictly necessary",
+    "secondary_categories": [
+      "Performance",
+      "Targeting",
+      "Functionality",
+      "Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.",
+      "Performance cookies are used to see how visitors use the website, eg. analytics cookies. Those cookies cannot be used to directly identify a certain visitor.",
+      "Targeting cookies are used to identify visitors between different websites, eg. content partners, banner networks. Those cookies may be used by companies to build a profile of visitor interests or show relevant ads on other websites.",
+      "Functionality cookies are used to remember visitor information on the website, eg. language, timezone, enhanced content."
+    ],
+    "node_tags": [
+      "github147,001"
+    ],
+    "general_tags": [],
+    "difficulty_level": "intermediate",
+    "views": 0,
+    "upvotes": 0,
+    "created_date": "2025-10-09T21:17:24.475338",
+    "updated_date": "2025-10-09T21:17:24.475338",
+    "setup_instructions": "How it works: This project creates a personal AI assistant named Angie that operates through Telegram. Angie can summarize daily emails, look up calendar...",
+    "prerequisites": [],
+    "estimated_setup_time": "Unknown",
+    "industry": [
+      "Strictly necessary"
+    ]
+  },
+  "extraction_time": 7.445489168167114,
+  "error": null
+}

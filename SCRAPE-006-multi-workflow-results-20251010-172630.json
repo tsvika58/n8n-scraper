@@ -1,0 +1,56 @@
+[
+  {
+    "workflow_id": "6270",
+    "workflow_url": "https://n8n.io/workflows/6270-build-your-first-ai-agent/",
+    "success": false,
+    "iframes_found": 2,
+    "images_processed": 15,
+    "images_success": 15,
+    "videos_found": 1,
+    "videos_success": 0,
+    "processing_time": 11.558209,
+    "errors": [],
+    "workflow_info": {
+      "id": "6270",
+      "url": "https://n8n.io/workflows/6270-build-your-first-ai-agent/",
+      "description": "Build Your First AI Agent (known working)"
+    },
+    "test_duration": 11.558228
+  },
+  {
+    "workflow_id": "8527",
+    "workflow_url": "https://n8n.io/workflows/8527-learn-n8n-basics-in-3-easy-steps/",
+    "success": false,
+    "iframes_found": 2,
+    "images_processed": 20,
+    "images_success": 20,
+    "videos_found": 3,
+    "videos_success": 0,
+    "processing_time": 10.562461,
+    "errors": [],
+    "workflow_info": {
+      "id": "8527",
+      "url": "https://n8n.io/workflows/8527-learn-n8n-basics-in-3-easy-steps/",
+      "description": "Learn n8n Basics in 3 Easy Steps"
+    },
+    "test_duration": 10.562471
+  },
+  {
+    "workflow_id": "8237",
+    "workflow_url": "https://n8n.io/workflows/8237-personal-life-manager-with-telegram-google-services-and-voice-enabled-ai/",
+    "success": false,
+    "iframes_found": 2,
+    "images_processed": 33,
+    "images_success": 33,
+    "videos_found": 1,
+    "videos_success": 0,
+    "processing_time": 12.097091,
+    "errors": [],
+    "workflow_info": {
+      "id": "8237",
+      "url": "https://n8n.io/workflows/8237-personal-life-manager-with-telegram-google-services-and-voice-enabled-ai/",
+      "description": "Personal Life Manager with Telegram, Google Services & Voice-Enabled AI"
+    },
+    "test_duration": 12.09713
+  }
+]

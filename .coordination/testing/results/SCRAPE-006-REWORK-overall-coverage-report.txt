@@ -1,0 +1,293 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.1, pytest-8.4.2, pluggy-1.6.0 -- /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper
+configfile: pytest.ini
+plugins: asyncio-1.2.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 140 items
+
+tests/unit/test_multimodal_unified.py::TestMultimodalProcessorInitialization::test_init_default_parameters PASSED [  0%]
+tests/unit/test_multimodal_unified.py::TestMultimodalProcessorInitialization::test_init_custom_parameters PASSED [  1%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_standard_url PASSED [  2%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_short_url PASSED [  2%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_embed_url PASSED [  3%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_with_parameters PASSED [  4%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_invalid_url PASSED [  5%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_empty_url PASSED [  5%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_none_url PASSED [  6%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_hint PASSED [  7%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_instruction PASSED [  7%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_tutorial PASSED [  8%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_tutorial_box PASSED [  9%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_setup_instruction PASSED [ 10%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_general_text PASSED [ 10%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_with_none_inputs PASSED [ 11%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_with_empty_strings PASSED [ 12%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_image_data_creates_new_workflow PASSED [ 12%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_image_data_appends_to_existing_workflow PASSED [ 13%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_video_data_creates_new_workflow PASSED [ 14%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_video_data_appends_to_existing_workflow PASSED [ 15%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_image_data_with_empty_text PASSED [ 15%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_video_data_with_null_transcript PASSED [ 16%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_image_data_with_special_characters PASSED [ 17%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_image_data_with_long_content PASSED [ 17%]
+tests/unit/test_multimodal_unified.py::TestErrorHandling::test_extract_video_id_from_url_with_malformed_url PASSED [ 18%]
+tests/unit/test_multimodal_unified.py::TestErrorHandling::test_determine_element_type_handles_none_gracefully PASSED [ 19%]
+tests/unit/test_multimodal_unified.py::TestErrorHandling::test_determine_element_type_handles_empty_text PASSED [ 20%]
+tests/unit/test_multimodal_unified.py::TestAsyncContextManagement::test_async_context_manager_initialization PASSED [ 20%]
+tests/unit/test_multimodal_unified.py::TestDataIntegrity::test_multiple_operations_maintain_data_integrity PASSED [ 21%]
+tests/unit/test_multimodal_unified.py::TestDataIntegrity::test_json_structure_is_valid PASSED [ 22%]
+tests/integration/test_error_recovery_real.py::TestErrorRecoveryIntegration::test_error_recovery_invalid_workflow PASSED [ 22%]
+tests/integration/test_error_recovery_real.py::TestErrorRecoveryIntegration::test_error_recovery_network_timeout PASSED [ 23%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_discover_iframes_workflow_6270 PASSED [ 24%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_discover_iframes_workflow_8527 PASSED [ 25%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_discover_iframes_multiple_workflows PASSED [ 25%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_iframe_discovery_error_handling PASSED [ 26%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_end_to_end_extraction PASSED [ 27%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_extraction_with_multiple_workflows PASSED [ 27%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_extraction_handles_rate_limiting PASSED [ 28%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_extraction_increments_count PASSED [ 29%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_extract_all_10_target_workflows PASSED [ 30%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_extraction_error_recovery PASSED [ 30%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_real_single_workflow_extraction PASSED [ 31%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_real_multiple_workflow_extraction PASSED [ 32%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_real_invalid_workflow_id PASSED [ 32%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_database_storage_integration PASSED [ 33%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_json_structure_completeness PASSED [ 34%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_performance_under_10_seconds PASSED [ 35%]
+tests/integration/test_layer3_88pct_target.py::TestOverviewExtraction::test_overview_extraction_with_valid_text_length PASSED [ 35%]
+tests/integration/test_layer3_88pct_target.py::TestOverviewExtraction::test_overview_extraction_filters_short_text PASSED [ 36%]
+tests/integration/test_layer3_88pct_target.py::TestExceptionHandling::test_main_page_content_exception_handling PASSED [ 37%]
+tests/integration/test_layer3_88pct_target.py::TestExceptionHandling::test_iframe_selector_exception_handling PASSED [ 37%]
+tests/integration/test_layer3_88pct_target.py::TestExceptionHandling::test_determine_heading_level_exception_handling PASSED [ 38%]
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback PASSED [ 39%]
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_no_iframe_found_path PASSED [ 40%]
+tests/integration/test_layer3_88pct_target.py::TestMainFunction::test_main_function_success_path PASSED [ 40%]
+tests/integration/test_layer3_88pct_target.py::TestMainFunction::test_main_function_with_errors PASSED [ 41%]
+tests/integration/test_layer3_90pct_coverage.py::TestOverviewExtractionPaths::test_overview_with_multiple_selectors PASSED [ 42%]
+tests/integration/test_layer3_90pct_coverage.py::TestOverviewExtractionPaths::test_overview_short_text_filtered PASSED [ 42%]
+tests/integration/test_layer3_90pct_coverage.py::TestIntroductionExtractionPaths::test_introduction_selector_iteration PASSED [ 43%]
+tests/integration/test_layer3_90pct_coverage.py::TestVideoLinkExtraction::test_video_from_anchor_tags PASSED [ 44%]
+tests/integration/test_layer3_90pct_coverage.py::TestVideoLinkExtraction::test_video_pattern_matching PASSED [ 45%]
+tests/integration/test_layer3_90pct_coverage.py::TestCodeSnippetShortFiltering::test_code_snippet_length_threshold PASSED [ 45%]
+tests/integration/test_layer3_90pct_coverage.py::TestCodeSnippetShortFiltering::test_code_snippet_exactly_threshold PASSED [ 46%]
+tests/integration/test_layer3_90pct_coverage.py::TestValidationWithImages::test_validation_succeeds_with_only_images PASSED [ 47%]
+tests/integration/test_layer3_90pct_coverage.py::TestValidationWithImages::test_validation_succeeds_with_only_videos PASSED [ 47%]
+tests/integration/test_layer3_90pct_coverage.py::TestValidationWithImages::test_validation_succeeds_with_only_code PASSED [ 48%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_playwright_timeout_error_handling PASSED [ 49%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_exception_error_handling PASSED [ 50%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_introduction_extraction_paths PASSED [ 50%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_video_url_extraction_paths PASSED [ 51%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_iframe_not_found_path PASSED [ 52%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_code_snippet_edge_cases PASSED [ 52%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_main_function_paths PASSED [ 53%]
+tests/integration/test_layer3_coverage_boost.py::TestRealN8nWorkflows::test_workflow_2462_full_extraction PASSED [ 54%]
+tests/integration/test_layer3_coverage_boost.py::TestRealN8nWorkflows::test_workflow_1954_extraction PASSED [ 55%]
+tests/integration/test_layer3_coverage_boost.py::TestRealN8nWorkflows::test_workflow_2103_extraction PASSED [ 55%]
+tests/integration/test_layer3_final_coverage.py::TestErrorPaths::test_extract_with_playwright_timeout PASSED [ 56%]
+tests/integration/test_layer3_final_coverage.py::TestErrorPaths::test_extract_with_general_exception PASSED [ 57%]
+tests/integration/test_layer3_final_coverage.py::TestMainPageExtractionPaths::test_extract_main_page_no_introduction PASSED [ 57%]
+tests/integration/test_layer3_final_coverage.py::TestMainPageExtractionPaths::test_extract_overview_multiple_sections PASSED [ 58%]
+tests/integration/test_layer3_final_coverage.py::TestMainPageExtractionPaths::test_video_url_extraction_with_links PASSED [ 59%]
+tests/integration/test_layer3_final_coverage.py::TestIframeExtractionPaths::test_iframe_not_found_fallback PASSED [ 60%]
+tests/integration/test_layer3_final_coverage.py::TestIframeExtractionPaths::test_iframe_frame_enumeration PASSED [ 60%]
+tests/integration/test_layer3_final_coverage.py::TestCodeSnippetEdgeCases::test_code_snippet_without_nested_code_tag PASSED [ 61%]
+tests/integration/test_layer3_final_coverage.py::TestCodeSnippetEdgeCases::test_code_snippet_with_short_code PASSED [ 62%]
+tests/integration/test_layer3_final_coverage.py::TestComprehensiveN8nWorkflows::test_workflow_with_code_snippets PASSED [ 62%]
+tests/integration/test_layer3_final_coverage.py::TestComprehensiveN8nWorkflows::test_workflow_minimal_content PASSED [ 63%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extractor_initialization_and_cleanup PASSED [ 64%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_context_manager_full_lifecycle PASSED [ 65%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_with_timeout PASSED [ 65%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_handles_network_error PASSED [ 66%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_handles_404_page PASSED [ 67%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_main_page_content_coverage PASSED [ 67%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_with_valid_html_structure PASSED [ 68%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_iframe_handling_coverage PASSED [ 69%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extraction_validation_logic PASSED [ 70%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_error_handling_in_extract PASSED [ 70%]
+tests/integration/test_layer3_integration.py::TestLayer3MultiplePages::test_multiple_page_extractions PASSED [ 71%]
+tests/integration/test_layer3_integration.py::TestLayer3ContentExtractionMethods::test_image_extraction_from_real_page PASSED [ 72%]
+tests/integration/test_layer3_integration.py::TestLayer3ContentExtractionMethods::test_text_aggregation_from_real_page PASSED [ 72%]
+tests/integration/test_layer3_integration.py::TestLayer3EdgeCases::test_page_with_minimal_content PASSED [ 73%]
+tests/integration/test_layer3_integration.py::TestLayer3EdgeCases::test_page_with_special_characters PASSED [ 74%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_full_workflow_processing_6270 FAILED [ 75%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_full_workflow_processing_8527 FAILED [ 75%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_full_workflow_processing_8237 FAILED [ 76%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_database_integration_with_real_workflow FAILED [ 77%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_error_handling_with_invalid_url FAILED [ 77%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_performance_under_load PASSED [ 78%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_iframe_discovery_and_content_extraction FAILED [ 79%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_video_discovery_in_iframes FAILED [ 80%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_concurrent_processing_simulation PASSED [ 80%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_memory_usage_and_cleanup PASSED [ 81%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorEdgeCases::test_processing_workflow_with_no_iframes PASSED [ 82%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorEdgeCases::test_processing_with_network_timeout PASSED [ 82%]
+tests/integration/test_multimodal_integration.py::TestMultimodalProcessorEdgeCases::test_database_error_handling PASSED [ 83%]
+tests/integration/test_ocr_processing_real.py::TestOCRProcessingIntegration::test_ocr_with_real_workflow_text_elements PASSED [ 84%]
+tests/integration/test_ocr_processing_real.py::TestOCRProcessingIntegration::test_text_processing_various_content_types PASSED [ 85%]
+tests/integration/test_ocr_processing_real.py::TestOCRProcessingIntegration::test_text_element_deduplication PASSED [ 85%]
+tests/integration/test_performance_real.py::TestPerformanceIntegration::test_processing_performance_workflow_6270 PASSED [ 86%]
+tests/integration/test_performance_real.py::TestPerformanceIntegration::test_processing_performance_multiple_workflows PASSED [ 87%]
+tests/integration/test_performance_real.py::TestPerformanceIntegration::test_memory_management_during_processing FAILED [ 87%]
+tests/integration/test_performance_real.py::TestPerformanceIntegration::test_browser_automation_reliability PASSED [ 88%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_extract_text_workflow_6270 PASSED [ 89%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_extract_text_workflow_8527 PASSED [ 90%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_extract_text_various_iframe_types PASSED [ 90%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_text_extraction_element_classification PASSED [ 91%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_text_extraction_performance PASSED [ 92%]
+tests/integration/test_validation_integration.py::TestValidationIntegration::test_end_to_end_validation_pipeline PASSED [ 92%]
+tests/integration/test_validation_integration.py::TestValidationIntegration::test_multi_workflow_validation PASSED [ 93%]
+tests/integration/test_validation_integration.py::TestValidationIntegration::test_quality_classification_distribution PASSED [ 94%]
+tests/integration/test_validation_integration.py::TestValidationIntegration::test_issue_tracking_across_layers PASSED [ 95%]
+tests/integration/test_validation_integration.py::TestValidationIntegration::test_validation_statistics PASSED [ 95%]
+tests/integration/test_video_discovery_real.py::TestVideoDiscoveryIntegration::test_discover_videos_workflow_6270 PASSED [ 96%]
+tests/integration/test_video_discovery_real.py::TestVideoDiscoveryIntegration::test_discover_videos_workflow_8527 PASSED [ 97%]
+tests/integration/test_video_discovery_real.py::TestVideoDiscoveryIntegration::test_video_id_extraction_from_discovered_videos PASSED [ 97%]
+tests/integration/test_workflow_orchestration_real.py::TestWorkflowOrchestrationIntegration::test_end_to_end_workflow_6270 PASSED [ 98%]
+tests/integration/test_workflow_orchestration_real.py::TestWorkflowOrchestrationIntegration::test_end_to_end_workflow_8527 PASSED [ 99%]
+tests/integration/test_workflow_orchestration_real.py::TestWorkflowOrchestrationIntegration::test_orchestration_multiple_workflows_sequential PASSED [100%]/Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/lib/python3.11/site-packages/coverage/inorout.py:521: CoverageWarning: Module src/scrapers/multimodal_processor was never imported. (module-not-imported); see https://coverage.readthedocs.io/en/7.10.7/messages.html#warning-module-not-imported
+  self.warn(f"Module {pkg} was never imported.", slug="module-not-imported")
+
+
+=================================== FAILURES ===================================
+____ TestMultimodalProcessorIntegration.test_full_workflow_processing_6270 _____
+tests/integration/test_multimodal_integration.py:35: in test_full_workflow_processing_6270
+    assert result["url"] == workflow_url
+           ^^^^^^^^^^^^^
+E   KeyError: 'url'
+----------------------------- Captured stdout call -----------------------------
+[32m2025-10-10 19:32:06[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36minitialize[0m:[36m77[0m - [1mMultimodal processor initialized[0m
+[32m2025-10-10 19:32:17[0m | [31m[1mERROR   [0m | [36msrc.scrapers.multimodal_processor[0m:[36mprocess_workflow[0m:[36m742[0m - [31m[1mWorkflow processing error: NOT NULL constraint failed: workflows.workflow_url[0m
+[32m2025-10-10 19:32:17[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36mcleanup[0m:[36m85[0m - [1mMultimodal processor cleaned up[0m
+____ TestMultimodalProcessorIntegration.test_full_workflow_processing_8527 _____
+tests/integration/test_multimodal_integration.py:64: in test_full_workflow_processing_8527
+    assert result["url"] == workflow_url
+           ^^^^^^^^^^^^^
+E   KeyError: 'url'
+----------------------------- Captured stdout call -----------------------------
+[32m2025-10-10 19:32:18[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36minitialize[0m:[36m77[0m - [1mMultimodal processor initialized[0m
+[32m2025-10-10 19:32:21[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36mcleanup[0m:[36m85[0m - [1mMultimodal processor cleaned up[0m
+____ TestMultimodalProcessorIntegration.test_full_workflow_processing_8237 _____
+tests/integration/test_multimodal_integration.py:86: in test_full_workflow_processing_8237
+    assert result["url"] == workflow_url
+           ^^^^^^^^^^^^^
+E   KeyError: 'url'
+----------------------------- Captured stdout call -----------------------------
+[32m2025-10-10 19:32:22[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36minitialize[0m:[36m77[0m - [1mMultimodal processor initialized[0m
+[32m2025-10-10 19:32:26[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36mcleanup[0m:[36m85[0m - [1mMultimodal processor cleaned up[0m
+_ TestMultimodalProcessorIntegration.test_database_integration_with_real_workflow _
+tests/integration/test_multimodal_integration.py:112: in test_database_integration_with_real_workflow
+    session = processor.Session()
+              ^^^^^^^^^^^^^^^^^
+E   AttributeError: 'MultimodalProcessor' object has no attribute 'Session'
+----------------------------- Captured stdout call -----------------------------
+[32m2025-10-10 19:32:26[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36minitialize[0m:[36m77[0m - [1mMultimodal processor initialized[0m
+[32m2025-10-10 19:32:37[0m | [31m[1mERROR   [0m | [36msrc.scrapers.multimodal_processor[0m:[36mprocess_workflow[0m:[36m742[0m - [31m[1mWorkflow processing error: no such table: workflows[0m
+[32m2025-10-10 19:32:37[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36mcleanup[0m:[36m85[0m - [1mMultimodal processor cleaned up[0m
+___ TestMultimodalProcessorIntegration.test_error_handling_with_invalid_url ____
+tests/integration/test_multimodal_integration.py:162: in test_error_handling_with_invalid_url
+    assert result["url"] == workflow_url
+           ^^^^^^^^^^^^^
+E   KeyError: 'url'
+----------------------------- Captured stdout call -----------------------------
+[0m
+_ TestMultimodalProcessorIntegration.test_iframe_discovery_and_content_extraction _
+tests/integration/test_multimodal_integration.py:213: in test_iframe_discovery_and_content_extraction
+    assert result["images_success"] > 0, "Should have successfully extracted some text"
+E   AssertionError: Should have successfully extracted some text
+E   assert 0 > 0
+----------------------------- Captured stdout call -----------------------------
+[32m2025-10-10 19:33:00[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36minitialize[0m:[36m77[0m - [1mMultimodal processor initialized[0m
+[32m2025-10-10 19:33:12[0m | [31m[1mERROR   [0m | [36msrc.scrapers.multimodal_processor[0m:[36mprocess_workflow[0m:[36m742[0m - [31m[1mWorkflow processing error: NOT NULL constraint failed: workflows.workflow_url[0m
+[32m2025-10-10 19:33:12[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36mcleanup[0m:[36m85[0m - [1mMultimodal processor cleaned up[0m
+______ TestMultimodalProcessorIntegration.test_video_discovery_in_iframes ______
+tests/integration/test_multimodal_integration.py:235: in test_video_discovery_in_iframes
+    assert result["success"] is True, "Overall process should succeed even with video discovery"
+E   AssertionError: Overall process should succeed even with video discovery
+E   assert False is True
+----------------------------- Captured stdout call -----------------------------
+[32m2025-10-10 19:33:13[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36minitialize[0m:[36m77[0m - [1mMultimodal processor initialized[0m
+[32m2025-10-10 19:33:29[0m | [31m[1mERROR   [0m | [36msrc.scrapers.multimodal_processor[0m:[36mprocess_workflow[0m:[36m742[0m - [31m[1mWorkflow processing error: database is locked[0m
+[32m2025-10-10 19:33:29[0m | [1mINFO    [0m | [36msrc.scrapers.multimodal_processor[0m:[36mcleanup[0m:[36m85[0m - [1mMultimodal processor cleaned up[0m
+_____ TestPerformanceIntegration.test_memory_management_during_processing ______
+tests/integration/test_performance_real.py:71: in test_memory_management_during_processing
+    import psutil
+E   ModuleNotFoundError: No module named 'psutil'
+=============================== warnings summary ===============================
+src/database/schema.py:12
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/schema.py:12: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+src/database/json_schema.py:17
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/json_schema.py:17: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+src/database/validation_schema.py:16
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/validation_schema.py:16: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:350: DeprecationWarning: The 'text' argument to find()-type methods is deprecated. Use 'string' instead.
+    elements = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
+
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:368: DeprecationWarning: The 'text' argument to find()-type methods is deprecated. Use 'string' instead.
+    elements = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
+
+tests/integration/test_layer3_final_coverage.py::TestErrorPaths::test_extract_with_playwright_timeout
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:118: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    page.set_default_timeout(self.timeout)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.11.1-final-0 _______________
+
+Name                                         Stmts   Miss   Cover   Missing
+---------------------------------------------------------------------------
+src/__init__.py                                  0      0 100.00%
+src/database/__init__.py                         0      0 100.00%
+src/database/inventory_schema.py               101    101   0.00%   6-242
+src/database/json_schema.py                     91     40  56.04%   58-60, 88-93, 109-112, 135-139, 145-180, 185-195
+src/database/schema.py                          99      9  90.91%   159-175, 188-198, 211
+src/database/validation_schema.py              132     39  70.45%   75-77, 94-100, 117-120, 142-145, 156, 173-175, 189, 204-206, 228-229, 245-247, 254-265
+src/models/__init__.py                           0      0 100.00%
+src/orchestrator/__init__.py                     0      0 100.00%
+src/parsers/__init__.py                          0      0 100.00%
+src/scrapers/__init__.py                         0      0 100.00%
+src/scrapers/layer1_metadata.py                346    114  67.05%   149-154, 189-190, 195-197, 220-224, 229-231, 250-251, 256-258, 273-275, 302-303, 306-307, 314-316, 344-345, 377-378, 386-388, 408-418, 424-426, 458-463, 478-485, 495-496, 500-502, 529-548, 557-560, 586-591, 641, 643, 653-655, 678-680, 682-684, 695-697, 701
+src/scrapers/layer2_json.py                    100     38  62.00%   64-65, 114-151, 174-175, 181-182, 186-187, 191-192, 197-199, 233, 237, 263-278
+src/scrapers/layer3_explainer.py               264     36  86.36%   203-205, 208-209, 277-278, 299-317, 352-356, 370-374, 444-446, 491, 494-497, 500-501
+src/scrapers/multimodal_processor.py           343    137  60.06%   120-121, 125-127, 144-145, 151-152, 200-203, 217-219, 242, 261-282, 299-300, 318-321, 328-330, 372-459, 506, 660-662, 710-735, 756-771
+src/scrapers/workflow_inventory_crawler.py      89     89   0.00%   6-174
+src/utils/__init__.py                            0      0 100.00%
+src/utils/logging.py                            38      8  78.95%   91, 96, 101, 106, 111-112, 120-121
+src/validation/__init__.py                       1      0 100.00%
+src/validation/layer1_validator.py              73     23  68.49%   38, 40-41, 48, 50-51, 64, 74-75, 86-87, 100, 108, 125-157
+src/validation/layer2_validator.py              74     29  60.81%   37-38, 45-46, 53, 55, 67-71, 76, 78, 86-87, 92, 97, 105, 110-111, 126-159
+src/validation/layer3_validator.py              67     59  11.94%   32-105, 115-144
+src/validation/quality_scorer.py                61     17  72.13%   123, 154-173, 189-200
+---------------------------------------------------------------------------
+TOTAL                                         1879    739  60.67%
+Coverage HTML written to dir htmlcov
+=========================== short test summary info ============================
+FAILED tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_full_workflow_processing_6270
+FAILED tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_full_workflow_processing_8527
+FAILED tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_full_workflow_processing_8237
+FAILED tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_database_integration_with_real_workflow
+FAILED tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_error_handling_with_invalid_url
+FAILED tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_iframe_discovery_and_content_extraction
+FAILED tests/integration/test_multimodal_integration.py::TestMultimodalProcessorIntegration::test_video_discovery_in_iframes
+FAILED tests/integration/test_performance_real.py::TestPerformanceIntegration::test_memory_management_during_processing
+============ 8 failed, 132 passed, 15 warnings in 650.88s (0:10:50) ============

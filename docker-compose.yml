@@ -1,19 +1,78 @@
-# N8N Workflow Scraper - Docker Compose
-# Version: 2.0
-# Purpose: Complete development and production environment
-
-version: '3.8'
+# N8N Workflow Scraper - Production Docker Compose
+# Version: 2.0 - SCRAPE-008 Storage Layer
+# Purpose: Complete development and production environment with separate PostgreSQL
 
 services:
   # ============================================================================
-  # SCRAPER SERVICE
+  # POSTGRESQL DATABASE SERVICE
   # ============================================================================
-  scraper:
+  n8n-scraper-database:
+    image: postgres:17-alpine
+    container_name: n8n-scraper-database
+    restart: unless-stopped
+    
+    # Environment variables
+    environment:
+      POSTGRES_DB: n8n_scraper
+      POSTGRES_USER: scraper_user
+      POSTGRES_PASSWORD: scraper_pass
+      PGDATA: /var/lib/postgresql/data/pgdata  # Explicit data directory for better management
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+      # Performance tuning (adjust based on available RAM)
+      POSTGRES_SHARED_BUFFERS: "256MB"           # 25% of RAM for caching
+      POSTGRES_EFFECTIVE_CACHE_SIZE: "768MB"     # 75% of RAM for query planning
+      POSTGRES_WORK_MEM: "16MB"                  # Per-query memory
+      POSTGRES_MAINTENANCE_WORK_MEM: "128MB"     # For VACUUM, INDEX creation
+      POSTGRES_MAX_CONNECTIONS: "100"            # Connection limit
+      POSTGRES_RANDOM_PAGE_COST: "1.1"           # SSD optimization (default 4.0 for HDD)
+    
+    # Port mapping (expose for development)
+    ports:
+      - "5432:5432"
+    
+    # Persistent volumes
+    volumes:
+      # Named volume for database (high-survivability, managed by Docker)
+      - postgres_data:/var/lib/postgresql/data
+      # Host-mounted backup directory (accessible for external backup tools)
+      - ./backups/postgres:/backups/postgres
+    
+    # Health check (comprehensive monitoring)
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scraper_user -d n8n_scraper"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    
+    # Network
+    networks:
+      - n8n-scraper-network
+    
+    # Resource limits (production-grade settings)
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  # ============================================================================
+  # N8N SCRAPER APPLICATION SERVICE
+  # ============================================================================
+  n8n-scraper-app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: n8n-scraper
+    container_name: n8n-scraper-app
     image: n8n-scraper:2.0
+    
+    # Dependencies
+    depends_on:
+      n8n-scraper-database:
+        condition: service_healthy
     
     # Environment variables
     environment:
@@ -22,16 +81,17 @@ services:
       - MAX_CONCURRENT=3
       - RATE_LIMIT=2
       - HEADLESS=true
+      - DATABASE_URL=postgresql://scraper_user:scraper_pass@n8n-scraper-database:5432/n8n_scraper
     
-    # Environment file
-    env_file:
-      - .env
+    # Environment file (commented out due to gitignore)
+    # env_file:
+    #   - .env
     
     # Volume mounts
     volumes:
       # Persistent data
-      - ./data:/data
-      - ./media:/media
+      - ./data:/app/data
+      - ./media:/app/media
       - ./logs:/app/logs
       
       # Configuration
@@ -40,10 +100,11 @@ services:
       # Development: mount source code (comment out for production)
       - ./src:/app/src
       - ./scripts:/app/scripts
+      - ./tests:/app/tests
     
     # Network
     networks:
-      - scraper-network
+      - n8n-scraper-network
     
     # Resource limits
     deploy:
@@ -57,93 +118,167 @@ services:
     
     # Restart policy
     restart: unless-stopped
-    
-    # Command (override for different tasks)
-    # command: ["scripts/scrape.py", "--workflows", "1000"]
 
   # ============================================================================
-  # DATABASE VIEWER (Optional - for development)
+  # DATABASE ADMINISTRATION (Optional - for development)
   # ============================================================================
-  db-viewer:
-    image: coleifer/sqlite-web:latest
-    container_name: n8n-scraper-db-viewer
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./data:/data
+  n8n-scraper-db-admin:
+    image: dpage/pgadmin4:latest
+    container_name: n8n-scraper-db-admin
+    restart: unless-stopped
+    
+    # Environment variables
     environment:
-      - SQLITE_DATABASE=/data/n8n_workflows.db
+      PGADMIN_DEFAULT_EMAIL: admin@n8n-scraper.local
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    
+    # Port mapping
+    ports:
+      - "8080:80"
+    
+    # Dependencies
+    depends_on:
+      - n8n-scraper-database
+    
+    # Network
     networks:
-      - scraper-network
+      - n8n-scraper-network
+    
+    # Profiles (only start with dev profile)
     profiles:
       - dev
-    restart: unless-stopped
 
   # ============================================================================
   # JUPYTER NOTEBOOK (Optional - for data analysis)
   # ============================================================================
-  jupyter:
+  n8n-scraper-jupyter:
     image: jupyter/scipy-notebook:latest
     container_name: n8n-scraper-jupyter
+    restart: unless-stopped
+    
+    # Port mapping
     ports:
       - "8888:8888"
+    
+    # Volume mounts
     volumes:
       - ./data:/home/jovyan/data
       - ./media:/home/jovyan/media
       - ./notebooks:/home/jovyan/notebooks
+    
+    # Environment variables
     environment:
       - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=n8n-scraper-2025
+    
+    # Network
     networks:
-      - scraper-network
+      - n8n-scraper-network
+    
+    # Profiles (only start with analysis profile)
     profiles:
       - analysis
-    restart: unless-stopped
 
 # ============================================================================
 # NETWORKS
 # ============================================================================
 networks:
-  scraper-network:
+  n8n-scraper-network:
     driver: bridge
 
 # ============================================================================
-# VOLUMES (Named volumes for persistence)
+# VOLUMES
 # ============================================================================
 volumes:
-  scraper-data:
+  postgres_data:
     driver: local
-  scraper-media:
-    driver: local
+    name: n8n-scraper-postgres-data
 
 # ============================================================================
 # USAGE INSTRUCTIONS
 # ============================================================================
 # 
-# Development Mode (with code hot-reload):
-#   docker-compose up scraper
+# STARTUP:
+#   Production Mode (database + app):
+#     docker-compose up -d
+#   
+#   Development Mode (with pgAdmin):
+#     docker-compose --profile dev up -d
+#   
+#   Analysis Mode (with Jupyter):
+#     docker-compose --profile analysis up -d
+#   
+#   Full Development (all services):
+#     docker-compose --profile dev --profile analysis up -d
+#   
+#   Using helper scripts:
+#     ./scripts/start.sh              # Production startup with health checks
+#     ./scripts/stop.sh               # Graceful shutdown
+#     ./scripts/stop.sh --backup      # Backup then shutdown
 # 
-# With Database Viewer:
-#   docker-compose --profile dev up
+# DATABASE OPERATIONS:
+#   Initialize database:
+#     ./scripts/db-init.sh
+#   
+#   Backup database:
+#     ./scripts/backup.sh
+#   
+#   Restore database:
+#     ./scripts/restore.sh --latest
+#     ./scripts/restore.sh n8n_scraper_backup_YYYYMMDD_HHMMSS
+#   
+#   Monitor performance:
+#     ./scripts/db-monitor.sh
+#   
+#   Run maintenance:
+#     ./scripts/db-maintain.sh
+#   
+#   Health check:
+#     ./scripts/health-check.sh
+#   
+#   Direct SQL access:
+#     docker exec -it n8n-scraper-database psql -U scraper_user -d n8n_scraper
 # 
-# With Jupyter for Analysis:
-#   docker-compose --profile analysis up
+# SCRAPING OPERATIONS:
+#   Run specific scraping task:
+#     docker-compose run --rm n8n-scraper-app python scripts/your_script.py
+#   
+#   Run validation:
+#     docker-compose run --rm n8n-scraper-app python scripts/run_validation.py
+#   
+#   Run tests:
+#     docker-compose run --rm n8n-scraper-app python -m pytest tests/
 # 
-# Production Mode (detached):
-#   docker-compose up -d scraper
+# MONITORING:
+#   Check service status:
+#     docker-compose ps
+#   
+#   View logs:
+#     docker-compose logs -f n8n-scraper-app
+#     docker-compose logs -f n8n-scraper-database
+#   
+#   Resource usage:
+#     docker stats n8n-scraper-app n8n-scraper-database
 # 
-# Run specific scraping task:
-#   docker-compose run --rm scraper scripts/scrape.py --workflows 100
+# CLEANUP:
+#   Stop all services:
+#     docker-compose down
+#   
+#   Clean up (preserves data):
+#     docker-compose down --remove-orphans
+#   
+#   Complete cleanup (WARNING: deletes all data):
+#     docker-compose down -v
 # 
-# Run validation:
-#   docker-compose run --rm scraper scripts/validate.py
-# 
-# Export data:
-#   docker-compose run --rm scraper scripts/export.py --format jsonl
-# 
-# Stop all services:
-#   docker-compose down
-# 
-# Clean up everything (including volumes):
-#   docker-compose down -v
+# DEVELOPMENT TOOLS:
+#   pgAdmin (port 8080):
+#     http://localhost:8080
+#     Email: admin@n8n-scraper.local
+#     Password: admin123
+#   
+#   Jupyter (port 8888):
+#     http://localhost:8888
+#     Token: n8n-scraper-2025
 # 
 # ============================================================================

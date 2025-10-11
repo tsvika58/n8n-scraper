@@ -1,0 +1,136 @@
+21:19:38 | INFO     | ======================================================================
+21:19:38 | INFO     | LAYER 3 - MULTIPLE WORKFLOW VALIDATION TEST
+21:19:38 | INFO     | ======================================================================
+21:19:38 | INFO     | Testing 8 real n8n.io workflows
+
+21:19:39 | INFO     | Layer 3 Explainer extractor initialized
+21:19:39 | INFO     | 
+[1/8] ============================================================
+21:19:39 | INFO     | Testing: Angie, Personal AI Assistant (ID: 2462)
+21:19:39 | INFO     | Starting Layer 3 extraction for workflow 2462
+21:19:39 | DEBUG    | Navigating to https://n8n.io/workflows/2462
+21:19:44 | DEBUG    | Found introduction: How it works:This project creates a personal AI assistant named Angie that operates through Telegram...
+21:19:44 | DEBUG    | Found 23 images
+21:19:44 | DEBUG    | Found 0 videos
+21:19:44 | DEBUG    | Found 0 code snippets
+21:19:44 | DEBUG    | Found iframe with selector: iframe[title*="explainer"]
+21:19:44 | DEBUG    | Aggregated tutorial text: 1131 characters
+21:19:44 | SUCCESS  | Extraction validation passed
+21:19:44 | SUCCESS  | Layer 3 extraction completed for workflow 2462 in 5.85s
+21:19:44 | INFO     |   ✅ SUCCESS | Time: 5.85s | Text: 1131 chars | Images: 23 | Videos: 0
+21:19:46 | INFO     | 
+[2/8] ============================================================
+21:19:46 | INFO     | Testing: AI Agent Chat (ID: 1954)
+21:19:46 | INFO     | Starting Layer 3 extraction for workflow 1954
+21:19:46 | DEBUG    | Navigating to https://n8n.io/workflows/1954
+21:19:52 | DEBUG    | Found introduction: This workflow employs OpenAI's language models and SerpAPI to create a responsive, intelligent conve...
+21:19:52 | DEBUG    | Found 25 images
+21:19:52 | DEBUG    | Found 0 videos
+21:19:52 | DEBUG    | Found 0 code snippets
+21:19:52 | DEBUG    | Found iframe with selector: iframe[title*="explainer"]
+21:19:52 | DEBUG    | Aggregated tutorial text: 292 characters
+21:19:52 | SUCCESS  | Extraction validation passed
+21:19:52 | SUCCESS  | Layer 3 extraction completed for workflow 1954 in 5.71s
+21:19:52 | INFO     |   ✅ SUCCESS | Time: 5.71s | Text: 292 chars | Images: 25 | Videos: 0
+21:19:54 | INFO     | 
+[3/8] ============================================================
+21:19:54 | INFO     | Testing: Slack Bot (ID: 2103)
+21:19:54 | INFO     | Starting Layer 3 extraction for workflow 2103
+21:19:54 | DEBUG    | Navigating to https://n8n.io/workflows/2103
+21:20:00 | DEBUG    | Found introduction: Product Introduction:You can create a form on n8n through which you can collect leads from intereste...
+21:20:00 | DEBUG    | Found 20 images
+21:20:00 | DEBUG    | Found 0 videos
+21:20:00 | DEBUG    | Found 0 code snippets
+21:20:00 | DEBUG    | Found iframe with selector: iframe[title*="explainer"]
+21:20:00 | DEBUG    | Aggregated tutorial text: 2158 characters
+21:20:00 | SUCCESS  | Extraction validation passed
+21:20:00 | SUCCESS  | Layer 3 extraction completed for workflow 2103 in 5.78s
+21:20:00 | INFO     |   ✅ SUCCESS | Time: 5.78s | Text: 2158 chars | Images: 20 | Videos: 0
+21:20:02 | INFO     | 
+[4/8] ============================================================
+21:20:02 | INFO     | Testing: GitHub Issues Tracker (ID: 1870)
+21:20:02 | INFO     | Starting Layer 3 extraction for workflow 1870
+21:20:02 | DEBUG    | Navigating to https://n8n.io/workflows/1870
+21:20:08 | DEBUG    | Found 0 images
+21:20:08 | DEBUG    | Found 0 videos
+21:20:08 | DEBUG    | Found 0 code snippets
+21:20:08 | DEBUG    | Found iframe with selector: iframe[title*="explainer"]
+21:20:08 | DEBUG    | Aggregated tutorial text: 0 characters
+21:20:08 | WARNING  | Tutorial text too short: 0 characters
+21:20:08 | SUCCESS  | Layer 3 extraction completed for workflow 1870 in 5.74s
+21:20:08 | INFO     |   ❌ FAILED | Time: 5.74s | Text: 0 chars | Images: 0 | Videos: 0
+21:20:10 | INFO     | 
+[5/8] ============================================================
+21:20:10 | INFO     | Testing: Email Campaign (ID: 2234)
+21:20:10 | INFO     | Starting Layer 3 extraction for workflow 2234
+21:20:10 | DEBUG    | Navigating to https://n8n.io/workflows/2234
+21:20:15 | DEBUG    | Found introduction: Template for Kids' Story in ArabicThe n8n template for creating kids' stories in Arabic offers a ver...
+21:20:16 | DEBUG    | Found 24 images
+21:20:16 | DEBUG    | Found 0 videos
+21:20:16 | DEBUG    | Found 0 code snippets
+21:20:16 | DEBUG    | Found iframe with selector: iframe[title*="explainer"]
+21:20:16 | DEBUG    | Aggregated tutorial text: 2599 characters
+21:20:16 | SUCCESS  | Extraction validation passed
+21:20:16 | SUCCESS  | Layer 3 extraction completed for workflow 2234 in 5.82s
+21:20:16 | INFO     |   ✅ SUCCESS | Time: 5.82s | Text: 2599 chars | Images: 24 | Videos: 0
+21:20:18 | INFO     | 
+[6/8] ============================================================
+21:20:18 | INFO     | Testing: Data Pipeline (ID: 1756)
+21:20:18 | INFO     | Starting Layer 3 extraction for workflow 1756
+21:20:18 | DEBUG    | Navigating to https://n8n.io/workflows/1756
+21:20:23 | DEBUG    | Found introduction: This workflow shows a no code approach to creating a HTML table based on Google Sheets data.To run t...
+21:20:23 | DEBUG    | Found 27 images
+21:20:23 | DEBUG    | Found 0 videos
+21:20:23 | DEBUG    | Found 0 code snippets
+21:20:23 | DEBUG    | Found iframe with selector: iframe[title*="explainer"]
+21:20:23 | DEBUG    | Aggregated tutorial text: 426 characters
+21:20:23 | SUCCESS  | Extraction validation passed
+21:20:23 | SUCCESS  | Layer 3 extraction completed for workflow 1756 in 5.63s
+21:20:23 | INFO     |   ✅ SUCCESS | Time: 5.63s | Text: 426 chars | Images: 27 | Videos: 0
+21:20:25 | INFO     | 
+[7/8] ============================================================
+21:20:25 | INFO     | Testing: CRM Integration (ID: 2019)
+21:20:25 | INFO     | Starting Layer 3 extraction for workflow 2019
+21:20:25 | DEBUG    | Navigating to https://n8n.io/workflows/2019
+21:20:31 | DEBUG    | Found 0 images
+21:20:31 | DEBUG    | Found 0 videos
+21:20:31 | DEBUG    | Found 0 code snippets
+21:20:31 | DEBUG    | Found iframe with selector: iframe[title*="explainer"]
+21:20:31 | DEBUG    | Aggregated tutorial text: 0 characters
+21:20:31 | WARNING  | Tutorial text too short: 0 characters
+21:20:31 | SUCCESS  | Layer 3 extraction completed for workflow 2019 in 5.45s
+21:20:31 | INFO     |   ❌ FAILED | Time: 5.45s | Text: 0 chars | Images: 0 | Videos: 0
+21:20:33 | INFO     | 
+[8/8] ============================================================
+21:20:33 | INFO     | Testing: Customer Feedback (ID: 1832)
+21:20:33 | INFO     | Starting Layer 3 extraction for workflow 1832
+21:20:33 | DEBUG    | Navigating to https://n8n.io/workflows/1832
+21:20:38 | DEBUG    | Found introduction: This workflow creates a GitHub issue when a new ticket is created in Zendesk. Subsequent comments on...
+21:20:38 | DEBUG    | Found 24 images
+21:20:38 | DEBUG    | Found 0 videos
+21:20:38 | DEBUG    | Found 1 code snippets
+21:20:38 | DEBUG    | Found iframe with selector: iframe[title*="explainer"]
+21:20:38 | DEBUG    | Aggregated tutorial text: 2025 characters
+21:20:38 | SUCCESS  | Extraction validation passed
+21:20:38 | SUCCESS  | Layer 3 extraction completed for workflow 1832 in 5.75s
+21:20:38 | INFO     |   ✅ SUCCESS | Time: 5.75s | Text: 2025 chars | Images: 24 | Videos: 0
+21:20:40 | INFO     | Layer 3 Explainer extractor cleaned up
+21:20:40 | INFO     | 
+======================================================================
+21:20:40 | INFO     | TEST SUMMARY
+21:20:40 | INFO     | ======================================================================
+21:20:40 | INFO     | Total workflows tested: 8
+21:20:40 | INFO     | Successful extractions: 6
+21:20:40 | INFO     | Failed extractions: 2
+21:20:40 | INFO     | Success rate: 75.0%
+21:20:40 | INFO     | 
+Performance Metrics:
+21:20:40 | INFO     |   Average extraction time: 5.76s
+21:20:40 | INFO     |   Average text length: 1438 characters
+21:20:40 | INFO     |   Total images collected: 143
+21:20:40 | INFO     |   Total videos collected: 0
+21:20:40 | INFO     | 
+Total test duration: 62.1s
+21:20:40 | INFO     | ======================================================================
+21:20:40 | SUCCESS  | 
+✅ Multi-workflow test complete! Summary saved to: /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/.coordination/testing/results/SCRAPE-005-multi-workflow-summary.json

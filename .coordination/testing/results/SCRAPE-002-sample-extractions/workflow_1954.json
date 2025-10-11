@@ -1,0 +1,47 @@
+{
+  "workflow_id": "1954",
+  "url": "https://n8n.io/workflows/1954",
+  "extraction_status": "complete",
+  "extraction_time": "6.67s",
+  "error": null,
+  "title": "AI agent chat",
+  "description": "This workflow employs OpenAI's language models and SerpAPI to create a responsive, intelligent conversational agent. It comes equipped with manual chat...",
+  "author": "Igor Fediczko@igordisco",
+  "use_case": "This workflow employs OpenAI's language models and SerpAPI to create a responsive, intelligent conversational agent.",
+  "primary_category": "Strictly necessary",
+  "secondary_categories": [
+    "Performance",
+    "Targeting",
+    "Functionality",
+    "Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.",
+    "Performance cookies are used to see how visitors use the website, eg. analytics cookies. Those cookies cannot be used to directly identify a certain visitor.",
+    "Targeting cookies are used to identify visitors between different websites, eg. content partners, banner networks. Those cookies may be used by companies to build a profile of visitor interests or show relevant ads on other websites.",
+    "Functionality cookies are used to remember visitor information on the website, eg. language, timezone, enhanced content."
+  ],
+  "node_tags": [
+    "github147,080"
+  ],
+  "general_tags": [
+    "Functionality",
+    "Performance",
+    "Targeting",
+    "Strictly necessary"
+  ],
+  "difficulty_level": "intermediate",
+  "views": 0,
+  "upvotes": 0,
+  "created_date": "2025-10-10T10:05:59.208276",
+  "updated_date": "2025-10-10T10:05:59.208276",
+  "setup_instructions": "This workflow employs OpenAI's language models and SerpAPI to create a responsive, intelligent conversational agent. It comes equipped with manual chat...",
+  "prerequisites": [
+    "for the website to operate properly are allowed to be set without your permission",
+    ".io\",productApiUrl:\"https://api.n8n.io\",siteUrl:\"https://n8n.io\",nodeLogoDir:\"/no",
+    "reTop guidesTelegram botsOpen-source chatbotOpen-source LLMOpen-source",
+    "{\n\t\tcontent: attr(label);\n\t\tfont-weight: bold;\n\t\twidth: 120px;\n\t\tmin-width: 120px;\n\t}",
+    "Api\",[],\"1954-ai-agent-chat\",\"/workflows/1954-ai-agen"
+  ],
+  "estimated_setup_time": "4 minutes 59 sec",
+  "industry": [
+    "Strictly necessary"
+  ]
+}

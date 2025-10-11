@@ -1,0 +1,47 @@
+{
+  "workflow_id": "2145",
+  "url": "https://n8n.io/workflows/2145",
+  "extraction_status": "complete",
+  "extraction_time": "7.36s",
+  "error": null,
+  "title": "When specific event created in Google Calendar, duplicate & rename Google File",
+  "description": "Who is this template for? This template is for everyone who has to take notes during a call:Talent Acquisition Managers / Talent Acquisition Specialists /...",
+  "author": "Igor Fediczko@igordisco",
+  "use_case": "Who is this template for? This template is for everyone who has to take notes during a call:Talent Acquisition Managers / Talent Acquisition Specialists /.",
+  "primary_category": "Strictly necessary",
+  "secondary_categories": [
+    "Performance",
+    "Targeting",
+    "Functionality",
+    "Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.",
+    "Performance cookies are used to see how visitors use the website, eg. analytics cookies. Those cookies cannot be used to directly identify a certain visitor.",
+    "Targeting cookies are used to identify visitors between different websites, eg. content partners, banner networks. Those cookies may be used by companies to build a profile of visitor interests or show relevant ads on other websites.",
+    "Functionality cookies are used to remember visitor information on the website, eg. language, timezone, enhanced content."
+  ],
+  "node_tags": [
+    "github147,080"
+  ],
+  "general_tags": [
+    "Functionality",
+    "Performance",
+    "Targeting",
+    "Strictly necessary"
+  ],
+  "difficulty_level": "intermediate",
+  "views": 0,
+  "upvotes": 0,
+  "created_date": "2025-10-10T10:07:08.375767",
+  "updated_date": "2025-10-10T10:07:08.375767",
+  "setup_instructions": "Who is this template for? This template is for everyone who has to take notes during a call:Talent Acquisition Managers / Talent Acquisition Specialists /...",
+  "prerequisites": [
+    "Set up credentials for Google Calendar, Google Drive, and Google Fil",
+    ", and Google File. You'll need a Google Workspace account.",
+    "for the website to operate properly are allowed to be set without your permission",
+    ".io\",productApiUrl:\"https://api.n8n.io\",siteUrl:\"https://n8n.io\",nodeLogoDir:\"/no",
+    "reTop guidesTelegram botsOpen-source chatbotOpen-source LLMOpen-source"
+  ],
+  "estimated_setup_time": "4 minutes 59 sec",
+  "industry": [
+    "Strictly necessary"
+  ]
+}

@@ -1,10 +1,15 @@
 """
 Pytest configuration and fixtures for N8N Workflow Scraper tests.
+
+Provides shared fixtures for unit testing with mocked external dependencies.
 """
 
 import pytest
 import sys
+import asyncio
 from pathlib import Path
+from unittest.mock import Mock, AsyncMock, patch
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -167,3 +172,195 @@ def mock_layer3_data():
         "extraction_time": 11.2
     }
 
+
+# ============================================================================
+# MOCK EXTERNAL DEPENDENCIES (For Unit Tests)
+# ============================================================================
+
+@pytest.fixture
+def mock_aiohttp_response():
+    """Mock aiohttp response object."""
+    response = AsyncMock()
+    response.status = 200
+    response.json = AsyncMock(return_value={'success': True})
+    response.text = AsyncMock(return_value='<html>Success</html>')
+    response.headers = {'content-type': 'application/json'}
+    return response
+
+
+@pytest.fixture
+def mock_aiohttp_session():
+    """Mock aiohttp ClientSession."""
+    session = AsyncMock()
+    session.get = AsyncMock()
+    session.post = AsyncMock()
+    session.close = AsyncMock()
+    return session
+
+
+@pytest.fixture
+def mock_playwright_page():
+    """Mock Playwright page object."""
+    page = AsyncMock()
+    page.goto = AsyncMock()
+    page.content = AsyncMock(return_value='<html>Test content</html>')
+    page.query_selector = AsyncMock()
+    page.query_selector_all = AsyncMock(return_value=[])
+    page.wait_for_selector = AsyncMock()
+    page.evaluate = AsyncMock()
+    page.close = AsyncMock()
+    return page
+
+
+@pytest.fixture
+def mock_playwright_browser():
+    """Mock Playwright browser object."""
+    browser = AsyncMock()
+    browser.new_page = AsyncMock()
+    browser.close = AsyncMock()
+    return browser
+
+
+# ============================================================================
+# ENHANCED MOCK DATA (For Layer 2 Testing)
+# ============================================================================
+
+@pytest.fixture
+def mock_layer2_workflow_json():
+    """Mock Layer 2 workflow JSON response (template API format)."""
+    return {
+        'id': '2462',
+        'name': 'Test Workflow',
+        'workflow': {
+            'nodes': [
+                {
+                    'id': 'node1',
+                    'name': 'Start',
+                    'type': 'n8n-nodes-base.start',
+                    'position': [100, 200],
+                    'parameters': {}
+                },
+                {
+                    'id': 'node2',
+                    'name': 'HTTP Request',
+                    'type': 'n8n-nodes-base.httpRequest',
+                    'position': [300, 200],
+                    'parameters': {
+                        'url': 'https://api.example.com',
+                        'method': 'GET'
+                    }
+                }
+            ],
+            'connections': {
+                'Start': {
+                    'main': [
+                        [
+                            {
+                                'node': 'HTTP Request',
+                                'type': 'main',
+                                'index': 0
+                            }
+                        ]
+                    ]
+                }
+            }
+        }
+    }
+
+
+@pytest.fixture
+def mock_layer3_content():
+    """Mock Layer 3 content response."""
+    return {
+        'explainer_text': 'This workflow automates email sending',
+        'explainer_html': '<p>This workflow automates email sending</p>',
+        'setup_instructions': '1. Configure API credentials\n2. Set up email template',
+        'use_instructions': '1. Run the workflow\n2. Check results',
+        'has_videos': True,
+        'videos': [
+            {
+                'url': 'https://youtube.com/watch?v=test123',
+                'video_id': 'test123',
+                'platform': 'youtube',
+                'transcript': {
+                    'text': 'Welcome to this workflow tutorial',
+                    'duration': 300,
+                    'language': 'en'
+                }
+            }
+        ],
+        'has_iframes': True,
+        'iframe_count': 2
+    }
+
+
+# ============================================================================
+# TEST DATA UTILITIES
+# ============================================================================
+
+@pytest.fixture
+def sample_workflow_id():
+    """Sample workflow ID for testing."""
+    return '2462'
+
+
+@pytest.fixture
+def sample_workflow_url():
+    """Sample workflow URL for testing."""
+    return 'https://n8n.io/workflows/2462'
+
+
+@pytest.fixture
+def mock_extraction_result(mock_layer1_data, mock_layer2_workflow_json, mock_layer3_content):
+    """Complete mock extraction result."""
+    return {
+        'workflow_id': '2462',
+        'url': 'https://n8n.io/workflows/2462',
+        'processing_time': 14.5,
+        'quality_score': 85.3,
+        'layers': {
+            'layer1': {
+                'success': True,
+                'data': mock_layer1_data['data']
+            },
+            'layer2': {
+                'success': True,
+                'node_count': 2,
+                'connection_count': 1,
+                'node_types': ['start', 'httpRequest'],
+                'extraction_type': 'full',
+                'fallback_used': False,
+                'data': mock_layer2_workflow_json
+            },
+            'layer3': {
+                'success': True,
+                'data': mock_layer3_content
+            }
+        }
+    }
+
+
+# ============================================================================
+# ASYNC TEST HELPERS
+# ============================================================================
+
+@pytest.fixture
+def event_loop():
+    """Create an instance of the default event loop for the test session."""
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
+
+
+# ============================================================================
+# PATCH DECORATORS (Global Mocks)
+# ============================================================================
+
+@pytest.fixture
+def mock_youtube_api():
+    """Patch YouTube API for transcript tests."""
+    with patch('youtube_transcript_api.YouTubeTranscriptApi') as mock:
+        mock.get_transcript.return_value = [
+            {'text': 'Welcome to this tutorial', 'start': 0.0, 'duration': 5.0}
+        ]
+        yield mock

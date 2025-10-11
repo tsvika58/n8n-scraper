@@ -1,0 +1,62 @@
+21:12:52 | INFO     | ============================================================
+21:12:52 | INFO     | LAYER 3 EXPLAINER - REAL WORKFLOW TEST
+21:12:52 | INFO     | ============================================================
+21:12:52 | INFO     | 
+============================================================
+21:12:52 | INFO     | Testing: Angie, Personal AI Assistant (ID: 2462)
+21:12:52 | INFO     | ============================================================
+
+21:12:52 | INFO     | Starting test extraction for workflow 2462
+21:12:52 | INFO     | URL: https://n8n.io/workflows/2462
+21:12:52 | INFO     | Layer 3 Explainer extractor initialized
+21:12:52 | INFO     | Starting Layer 3 extraction for workflow 2462
+21:12:52 | DEBUG    | Navigating to https://n8n.io/workflows/2462
+21:12:58 | DEBUG    | Found introduction: How it works:This project creates a personal AI assistant named Angie that operates through Telegram...
+21:12:58 | DEBUG    | Found 23 images
+21:12:58 | DEBUG    | Found 0 videos
+21:12:58 | DEBUG    | Found 0 code snippets
+21:12:58 | DEBUG    | Found iframe with selector: iframe[title*="explainer"]
+21:12:58 | DEBUG    | Aggregated tutorial text: 1131 characters
+21:12:58 | SUCCESS  | Extraction validation passed
+21:12:58 | SUCCESS  | Layer 3 extraction completed for workflow 2462 in 5.56s
+21:12:58 | INFO     | Extraction completed in 5.56s
+21:12:58 | INFO     | Success: True
+21:12:58 | INFO     | Errors: 0
+21:12:58 | INFO     | 
+============================================================
+21:12:58 | INFO     | EXTRACTION RESULTS:
+21:12:58 | INFO     | ============================================================
+21:12:58 | INFO     | Introduction length: 1131 chars
+21:12:58 | INFO     | Overview length: 0 chars
+21:12:58 | INFO     | Tutorial text length: 1131 chars
+21:12:58 | INFO     | Tutorial sections: 0
+21:12:58 | INFO     | Step-by-step items: 0
+21:12:58 | INFO     | Best practices: 0
+21:12:58 | INFO     | Common pitfalls: 0
+21:12:58 | INFO     | Image URLs: 23
+21:12:58 | INFO     | Video URLs: 0
+21:12:58 | INFO     | Code snippets: 0
+21:12:58 | INFO     | ============================================================
+21:12:58 | INFO     | 
+Introduction (first 200 chars):
+How it works:This project creates a personal AI assistant named Angie that operates through Telegram. Angie can summarize daily emails, look up calendar entries, remind users of upcoming tasks, and re...
+21:12:58 | INFO     | 
+Tutorial text (first 300 chars):
+How it works:This project creates a personal AI assistant named Angie that operates through Telegram. Angie can summarize daily emails, look up calendar entries, remind users of upcoming tasks, and retrieve contact information. The assistant can interact with users via both voice and text inputs.Ste...
+21:12:58 | INFO     | 
+First 3 image URLs:
+21:12:58 | INFO     |   - https://n8n.io/nodes/telegram.svg
+21:12:58 | INFO     |   - https://gravatar.com/avatar/1d8dbb30401a76425734d4319abbaa38548b7572064ca080740bbfe60324772a?r=pg&d=retro&size=200
+21:12:58 | INFO     |   - https://n8n.io/nodes/http-request.svg
+21:12:58 | SUCCESS  | Full extraction saved to: /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/.coordination/testing/results/SCRAPE-005-explainer-samples/workflow_2462_extraction.json
+21:12:58 | INFO     | Layer 3 Explainer extractor cleaned up
+21:13:00 | INFO     | 
+============================================================
+21:13:00 | INFO     | TEST SUMMARY
+21:13:00 | INFO     | ============================================================
+21:13:00 | INFO     | Total workflows tested: 1
+21:13:00 | INFO     | Successful extractions: 1
+21:13:00 | INFO     | Success rate: 100.0%
+21:13:00 | INFO     | Average extraction time: 5.56s
+21:13:00 | INFO     | ============================================================
+21:13:00 | SUCCESS  | Real workflow testing complete!

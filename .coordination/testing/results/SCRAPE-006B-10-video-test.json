@@ -1,0 +1,89 @@
+{
+  "total": 10,
+  "successful": 8,
+  "failed": 2,
+  "success_rate": 80.0,
+  "average_time": 13.631,
+  "videos": [
+    {
+      "video_id": "laHIzhsz12E",
+      "name": "AI Agent Tutorial",
+      "success": true,
+      "transcript_length": 4339,
+      "extraction_time": 11.14,
+      "error": null
+    },
+    {
+      "video_id": "dQw4w9WgXcQ",
+      "name": "Rick Astley",
+      "success": true,
+      "transcript_length": 2089,
+      "extraction_time": 10.36,
+      "error": null
+    },
+    {
+      "video_id": "9bZkp7q19f0",
+      "name": "Gangnam Style",
+      "success": true,
+      "transcript_length": 251,
+      "extraction_time": 10.17,
+      "error": null
+    },
+    {
+      "video_id": "OPf0YbXqDm0",
+      "name": "Mark Ronson Uptown Funk",
+      "success": true,
+      "transcript_length": 3673,
+      "extraction_time": 10.56,
+      "error": null
+    },
+    {
+      "video_id": "kJQP7kiw5Fk",
+      "name": "Luis Fonsi Despacito",
+      "success": true,
+      "transcript_length": 2990,
+      "extraction_time": 10.34,
+      "error": null
+    },
+    {
+      "video_id": "JGwWNGJdvx8",
+      "name": "Ed Sheeran Shape",
+      "success": true,
+      "transcript_length": 3443,
+      "extraction_time": 10.36,
+      "error": null
+    },
+    {
+      "video_id": "RgKAFK5djSk",
+      "name": "Wiz Khalifa See You",
+      "success": true,
+      "transcript_length": 2720,
+      "extraction_time": 11.12,
+      "error": null
+    },
+    {
+      "video_id": "fRh_vgS2dFE",
+      "name": "Justin Bieber Sorry",
+      "success": true,
+      "transcript_length": 1788,
+      "extraction_time": 10.93,
+      "error": null
+    },
+    {
+      "video_id": "lYBUbBu4W08",
+      "name": "Macklemore Cant Hold",
+      "success": false,
+      "transcript_length": 0,
+      "extraction_time": 25.02,
+      "error": "Could not open transcript panel"
+    },
+    {
+      "video_id": "nfWlot6h_JM",
+      "name": "Taylor Swift Shake",
+      "success": false,
+      "transcript_length": 0,
+      "extraction_time": 26.31,
+      "error": "Could not open transcript panel"
+    }
+  ]
+}

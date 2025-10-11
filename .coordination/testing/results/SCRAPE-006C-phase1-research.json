@@ -1,0 +1,46 @@
+{
+  "tested_workflows": [
+    "2021",
+    "1847",
+    "2091",
+    "1925",
+    "2134"
+  ],
+  "results": [
+    {
+      "workflow_id": "2021",
+      "success": false,
+      "status": 204,
+      "error": "HTTP 204"
+    },
+    {
+      "workflow_id": "1847",
+      "success": false,
+      "status": 204,
+      "error": "HTTP 204"
+    },
+    {
+      "workflow_id": "2091",
+      "success": false,
+      "status": 204,
+      "error": "HTTP 204"
+    },
+    {
+      "workflow_id": "1925",
+      "success": false,
+      "status": 204,
+      "error": "HTTP 204"
+    },
+    {
+      "workflow_id": "2134",
+      "success": false,
+      "error": "sequence item 0: expected str instance, dict found"
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "successful": 0,
+    "failed": 5,
+    "success_rate": 0.0
+  }
+}

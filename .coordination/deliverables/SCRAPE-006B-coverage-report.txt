@@ -1,0 +1,700 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.1, pytest-8.4.2, pluggy-1.6.0 -- /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper
+configfile: pytest.ini
+testpaths: tests
+plugins: asyncio-1.2.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 380 items
+
+tests/integration/test_error_recovery_real.py::TestErrorRecoveryIntegration::test_error_recovery_invalid_workflow PASSED [  0%]
+tests/integration/test_error_recovery_real.py::TestErrorRecoveryIntegration::test_error_recovery_network_timeout PASSED [  0%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_discover_iframes_workflow_6270 PASSED [  0%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_discover_iframes_workflow_8527 PASSED [  1%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_discover_iframes_multiple_workflows PASSED [  1%]
+tests/integration/test_iframe_discovery_real.py::TestIframeDiscoveryIntegration::test_iframe_discovery_error_handling PASSED [  1%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_end_to_end_extraction PASSED [  1%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_extraction_with_multiple_workflows PASSED [  2%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_extraction_handles_rate_limiting PASSED [  2%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_extraction_increments_count PASSED [  2%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_extract_all_10_target_workflows PASSED [  2%]
+tests/integration/test_layer1_integration.py::TestLayer1Integration::test_extraction_error_recovery PASSED [  3%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_real_single_workflow_extraction PASSED [  3%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_real_multiple_workflow_extraction PASSED [  3%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_real_invalid_workflow_id PASSED [  3%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_database_storage_integration PASSED [  4%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_json_structure_completeness PASSED [  4%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_performance_under_10_seconds PASSED [  4%]
+tests/integration/test_layer3_88pct_target.py::TestOverviewExtraction::test_overview_extraction_with_valid_text_length PASSED [  5%]
+tests/integration/test_layer3_88pct_target.py::TestOverviewExtraction::test_overview_extraction_filters_short_text PASSED [  5%]
+tests/integration/test_layer3_88pct_target.py::TestExceptionHandling::test_main_page_content_exception_handling PASSED [  5%]
+tests/integration/test_layer3_88pct_target.py::TestExceptionHandling::test_iframe_selector_exception_handling PASSED [  5%]
+tests/integration/test_layer3_88pct_target.py::TestExceptionHandling::test_determine_heading_level_exception_handling PASSED [  6%]
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback PASSED [  6%]
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_no_iframe_found_path PASSED [  6%]
+tests/integration/test_layer3_88pct_target.py::TestMainFunction::test_main_function_success_path PASSED [  6%]
+tests/integration/test_layer3_88pct_target.py::TestMainFunction::test_main_function_with_errors PASSED [  7%]
+tests/integration/test_layer3_90pct_coverage.py::TestOverviewExtractionPaths::test_overview_with_multiple_selectors PASSED [  7%]
+tests/integration/test_layer3_90pct_coverage.py::TestOverviewExtractionPaths::test_overview_short_text_filtered PASSED [  7%]
+tests/integration/test_layer3_90pct_coverage.py::TestIntroductionExtractionPaths::test_introduction_selector_iteration PASSED [  7%]
+tests/integration/test_layer3_90pct_coverage.py::TestVideoLinkExtraction::test_video_from_anchor_tags PASSED [  8%]
+tests/integration/test_layer3_90pct_coverage.py::TestVideoLinkExtraction::test_video_pattern_matching PASSED [  8%]
+tests/integration/test_layer3_90pct_coverage.py::TestCodeSnippetShortFiltering::test_code_snippet_length_threshold PASSED [  8%]
+tests/integration/test_layer3_90pct_coverage.py::TestCodeSnippetShortFiltering::test_code_snippet_exactly_threshold PASSED [  8%]
+tests/integration/test_layer3_90pct_coverage.py::TestValidationWithImages::test_validation_succeeds_with_only_images PASSED [  9%]
+tests/integration/test_layer3_90pct_coverage.py::TestValidationWithImages::test_validation_succeeds_with_only_videos PASSED [  9%]
+tests/integration/test_layer3_90pct_coverage.py::TestValidationWithImages::test_validation_succeeds_with_only_code PASSED [  9%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_playwright_timeout_error_handling PASSED [ 10%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_exception_error_handling PASSED [ 10%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_introduction_extraction_paths PASSED [ 10%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_video_url_extraction_paths PASSED [ 10%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_iframe_not_found_path PASSED [ 11%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_code_snippet_edge_cases PASSED [ 11%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_main_function_paths PASSED [ 11%]
+tests/integration/test_layer3_coverage_boost.py::TestRealN8nWorkflows::test_workflow_2462_full_extraction PASSED [ 11%]
+tests/integration/test_layer3_coverage_boost.py::TestRealN8nWorkflows::test_workflow_1954_extraction PASSED [ 12%]
+tests/integration/test_layer3_coverage_boost.py::TestRealN8nWorkflows::test_workflow_2103_extraction PASSED [ 12%]
+tests/integration/test_layer3_final_coverage.py::TestErrorPaths::test_extract_with_playwright_timeout PASSED [ 12%]
+tests/integration/test_layer3_final_coverage.py::TestErrorPaths::test_extract_with_general_exception PASSED [ 12%]
+tests/integration/test_layer3_final_coverage.py::TestMainPageExtractionPaths::test_extract_main_page_no_introduction PASSED [ 13%]
+tests/integration/test_layer3_final_coverage.py::TestMainPageExtractionPaths::test_extract_overview_multiple_sections PASSED [ 13%]
+tests/integration/test_layer3_final_coverage.py::TestMainPageExtractionPaths::test_video_url_extraction_with_links PASSED [ 13%]
+tests/integration/test_layer3_final_coverage.py::TestIframeExtractionPaths::test_iframe_not_found_fallback PASSED [ 13%]
+tests/integration/test_layer3_final_coverage.py::TestIframeExtractionPaths::test_iframe_frame_enumeration PASSED [ 14%]
+tests/integration/test_layer3_final_coverage.py::TestCodeSnippetEdgeCases::test_code_snippet_without_nested_code_tag PASSED [ 14%]
+tests/integration/test_layer3_final_coverage.py::TestCodeSnippetEdgeCases::test_code_snippet_with_short_code PASSED [ 14%]
+tests/integration/test_layer3_final_coverage.py::TestComprehensiveN8nWorkflows::test_workflow_with_code_snippets PASSED [ 15%]
+tests/integration/test_layer3_final_coverage.py::TestComprehensiveN8nWorkflows::test_workflow_minimal_content PASSED [ 15%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extractor_initialization_and_cleanup PASSED [ 15%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_context_manager_full_lifecycle PASSED [ 15%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_with_timeout PASSED [ 16%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_handles_network_error PASSED [ 16%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_handles_404_page PASSED [ 16%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_main_page_content_coverage PASSED [ 16%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_with_valid_html_structure PASSED [ 17%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_iframe_handling_coverage PASSED [ 17%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extraction_validation_logic PASSED [ 17%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_error_handling_in_extract PASSED [ 17%]
+tests/integration/test_layer3_integration.py::TestLayer3MultiplePages::test_multiple_page_extractions PASSED [ 18%]
+tests/integration/test_layer3_integration.py::TestLayer3ContentExtractionMethods::test_image_extraction_from_real_page PASSED [ 18%]
+tests/integration/test_layer3_integration.py::TestLayer3ContentExtractionMethods::test_text_aggregation_from_real_page PASSED [ 18%]
+tests/integration/test_layer3_integration.py::TestLayer3EdgeCases::test_page_with_minimal_content PASSED [ 18%]
+tests/integration/test_layer3_integration.py::TestLayer3EdgeCases::test_page_with_special_characters PASSED [ 19%]
+tests/integration/test_ocr_processing_real.py::TestTextElementProcessingIntegration::test_ocr_with_real_workflow_text_elements PASSED [ 19%]
+tests/integration/test_ocr_processing_real.py::TestTextElementProcessingIntegration::test_text_processing_various_content_types PASSED [ 19%]
+tests/integration/test_ocr_processing_real.py::TestTextElementProcessingIntegration::test_text_element_deduplication PASSED [ 20%]
+tests/integration/test_performance_real.py::TestPerformanceIntegration::test_processing_performance_workflow_6270 PASSED [ 20%]
+tests/integration/test_performance_real.py::TestPerformanceIntegration::test_processing_performance_multiple_workflows PASSED [ 20%]
+tests/integration/test_performance_real.py::TestPerformanceIntegration::test_memory_management_during_processing PASSED [ 20%]
+tests/integration/test_performance_real.py::TestPerformanceIntegration::test_browser_automation_reliability PASSED [ 21%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_extract_text_workflow_6270 PASSED [ 21%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_extract_text_workflow_8527 PASSED [ 21%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_extract_text_various_iframe_types PASSED [ 21%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_text_extraction_element_classification PASSED [ 22%]
+tests/integration/test_text_extraction_real.py::TestTextExtractionIntegration::test_text_extraction_performance PASSED [ 22%]
+tests/integration/test_transcript_extractor_real.py::TestTranscriptExtractorRealVideos::test_extract_transcript_ai_agent_video PASSED [ 22%]
+tests/integration/test_transcript_extractor_real.py::TestTranscriptExtractorRealVideos::test_extract_transcript_music_video PASSED [ 22%]
+tests/integration/test_transcript_extractor_real.py::TestTranscriptExtractorRealVideos::test_extract_transcript_short_content PASSED [ 23%]
+tests/integration/test_transcript_extractor_real.py::TestTranscriptExtractorPerformance::test_extraction_speed_under_target PASSED [ 23%]
+tests/integration/test_transcript_extractor_real.py::TestTranscriptExtractorPerformance::test_multiple_sequential_extractions PASSED [ 23%]
+tests/integration/test_transcript_extractor_real.py::TestTranscriptExtractorErrorHandling::test_invalid_video_url PASSED [ 23%]
+tests/integration/test_transcript_extractor_real.py::TestTranscriptExtractorErrorHandling::test_video_without_transcript PASSED [ 24%]
+tests/integration/test_transcript_extractor_real.py::TestTranscriptExtractorBrowserManagement::test_browser_cleanup_after_extraction PASSED [ 24%]
+tests/integration/test_transcript_extractor_real.py::TestTranscriptExtractorBrowserManagement::test_context_manager_cleanup PASSED [ 24%]
+tests/integration/test_transcript_extractor_real.py::test_benchmark_extraction_times PASSED [ 25%]
+tests/integration/test_validation_integration.py::TestValidationIntegration::test_end_to_end_validation_pipeline PASSED [ 25%]
+tests/integration/test_validation_integration.py::TestValidationIntegration::test_multi_workflow_validation PASSED [ 25%]
+tests/integration/test_validation_integration.py::TestValidationIntegration::test_quality_classification_distribution PASSED [ 25%]
+tests/integration/test_validation_integration.py::TestValidationIntegration::test_issue_tracking_across_layers PASSED [ 26%]
+tests/integration/test_validation_integration.py::TestValidationIntegration::test_validation_statistics PASSED [ 26%]
+tests/integration/test_video_discovery_real.py::TestVideoDiscoveryIntegration::test_discover_videos_workflow_6270 PASSED [ 26%]
+tests/integration/test_video_discovery_real.py::TestVideoDiscoveryIntegration::test_discover_videos_workflow_8527 PASSED [ 26%]
+tests/integration/test_video_discovery_real.py::TestVideoDiscoveryIntegration::test_video_id_extraction_from_discovered_videos PASSED [ 27%]
+tests/integration/test_workflow_orchestration_real.py::TestWorkflowOrchestrationIntegration::test_end_to_end_workflow_6270 PASSED [ 27%]
+tests/integration/test_workflow_orchestration_real.py::TestWorkflowOrchestrationIntegration::test_end_to_end_workflow_8527 PASSED [ 27%]
+tests/integration/test_workflow_orchestration_real.py::TestWorkflowOrchestrationIntegration::test_orchestration_multiple_workflows_sequential PASSED [ 27%]
+tests/test_database.py::test_workflow_creation PASSED                    [ 28%]
+tests/test_database.py::test_workflow_query PASSED                       [ 28%]
+tests/test_database.py::test_workflow_update PASSED                      [ 28%]
+tests/test_database.py::test_session_creation PASSED                     [ 28%]
+tests/test_database.py::test_session_metrics PASSED                      [ 29%]
+tests/test_database.py::test_workflow_with_json_data PASSED              [ 29%]
+tests/test_database.py::test_workflow_quality_scoring PASSED             [ 29%]
+tests/test_database.py::test_workflow_repr PASSED                        [ 30%]
+tests/test_database.py::test_async_operations PASSED                     [ 30%]
+tests/test_logging.py::test_setup_logging_default PASSED                 [ 30%]
+tests/test_logging.py::test_setup_logging_levels PASSED                  [ 30%]
+tests/test_logging.py::test_setup_logging_console_only PASSED            [ 31%]
+tests/test_logging.py::test_setup_logging_file_only PASSED               [ 31%]
+tests/test_logging.py::test_log_extraction_start PASSED                  [ 31%]
+tests/test_logging.py::test_log_extraction_success PASSED                [ 31%]
+tests/test_logging.py::test_log_extraction_failure PASSED                [ 32%]
+tests/test_logging.py::test_log_session_start PASSED                     [ 32%]
+tests/test_logging.py::test_log_session_complete PASSED                  [ 32%]
+tests/test_logging.py::test_log_progress PASSED                          [ 32%]
+tests/test_logging.py::test_logging_with_various_messages PASSED         [ 33%]
+tests/test_logging.py::test_log_directory_creation PASSED                [ 33%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extractor_initialization PASSED [ 33%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_basic_metadata_success PASSED [ 33%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_all_required_fields_present PASSED [ 34%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_title_not_empty PASSED [ 34%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_description_type PASSED [ 34%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_categories_structure PASSED [ 35%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_structure PASSED [ 35%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_difficulty_valid_value PASSED [ 35%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_types PASSED [ 35%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_dates_format PASSED [ 36%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_structure PASSED [ 36%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_structure PASSED [ 36%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_performance_timing PASSED [ 36%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_invalid_workflow_id_handling PASSED [ 37%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_malformed_url_handling PASSED [ 37%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extraction_count_increments PASSED [ 37%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_multiple_workflows PASSED [ 37%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_result_completeness_high PASSED [ 38%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_error_handling_paths PASSED [ 38%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_title_error_handling PASSED [ 38%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_description_error_handling PASSED [ 38%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_author_error_handling PASSED [ 39%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_categories_error_handling PASSED [ 39%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_error_handling PASSED [ 39%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_difficulty_error_handling PASSED [ 40%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_error_handling PASSED [ 40%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_dates_error_handling PASSED [ 40%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_error_handling PASSED [ 40%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_error_handling PASSED [ 41%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_timeout PASSED [ 41%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_network_error PASSED [ 41%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_page_load_error PASSED [ 41%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_browser_close_error PASSED [ 42%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_use_case_field PASSED [ 42%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_secondary_categories_type PASSED [ 42%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_multiple_calls_increment_count PASSED [ 42%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_returns_workflow_id PASSED [ 43%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_has_extraction_time PASSED [ 43%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_node_tags_is_list PASSED [ 43%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_prerequisites_is_list PASSED [ 43%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_is_list PASSED [ 44%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_result_has_success_field PASSED [ 44%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_result_has_error_field PASSED [ 44%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_empty_page_content PASSED [ 45%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_handles_unicode_content PASSED [ 45%]
+tests/unit/test_layer1_metadata.py::test_integration_extraction_pipeline PASSED [ 45%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extractor_initialization PASSED [ 45%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_successful PASSED [ 46%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_404_not_found PASSED [ 46%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_http_error PASSED [ 46%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_json_decode_error PASSED [ 46%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_timeout PASSED [ 47%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_general_exception PASSED [ 47%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_json_structure_valid PASSED [ 47%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_json_structure_missing_workflow PASSED [ 47%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_json_structure_missing_nodes PASSED [ 48%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_json_structure_nodes_not_list PASSED [ 48%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_json_structure_missing_connections PASSED [ 48%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_invalid_structure PASSED [ 48%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_increments_count PASSED [ 49%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_returns_correct_fields PASSED [ 49%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_calculates_metrics PASSED [ 49%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_batch_single_workflow PASSED [ 50%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_batch_multiple_workflows PASSED [ 50%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_batch_calculates_timing PASSED [ 50%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_batch_empty_list PASSED [ 50%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_exception_handling PASSED [ 51%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_database_initialization PASSED [ 51%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_create_tables PASSED [ 51%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_store_workflow_json_new PASSED [ 51%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_store_workflow_json_update PASSED [ 52%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_get_workflow_json PASSED [ 52%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_get_workflow_json_not_found PASSED [ 52%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_get_stats_empty_database PASSED [ 52%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_get_stats_with_data PASSED [ 53%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_extract_and_store_integration PASSED [ 53%]
+tests/unit/test_layer3_explainer.py::TestExplainerContentExtractorInit::test_init_default_params PASSED [ 53%]
+tests/unit/test_layer3_explainer.py::TestExplainerContentExtractorInit::test_init_custom_params PASSED [ 53%]
+tests/unit/test_layer3_explainer.py::TestEmptyStructure::test_get_empty_layer3_structure PASSED [ 54%]
+tests/unit/test_layer3_explainer.py::TestImageExtraction::test_extract_image_urls_basic PASSED [ 54%]
+tests/unit/test_layer3_explainer.py::TestImageExtraction::test_extract_image_urls_no_images PASSED [ 54%]
+tests/unit/test_layer3_explainer.py::TestImageExtraction::test_extract_image_urls_duplicates PASSED [ 55%]
+tests/unit/test_layer3_explainer.py::TestVideoExtraction::test_extract_video_urls_youtube PASSED [ 55%]
+tests/unit/test_layer3_explainer.py::TestVideoExtraction::test_extract_video_urls_no_videos PASSED [ 55%]
+tests/unit/test_layer3_explainer.py::TestCodeSnippetExtraction::test_extract_code_snippets_basic PASSED [ 55%]
+tests/unit/test_layer3_explainer.py::TestCodeSnippetExtraction::test_extract_code_snippets_no_language PASSED [ 56%]
+tests/unit/test_layer3_explainer.py::TestTutorialSectionExtraction::test_extract_tutorial_sections_basic PASSED [ 56%]
+tests/unit/test_layer3_explainer.py::TestTutorialSectionExtraction::test_extract_tutorial_sections_no_sections PASSED [ 56%]
+tests/unit/test_layer3_explainer.py::TestStepByStepExtraction::test_extract_step_by_step_ordered_list PASSED [ 56%]
+tests/unit/test_layer3_explainer.py::TestStepByStepExtraction::test_extract_step_by_step_no_steps PASSED [ 57%]
+tests/unit/test_layer3_explainer.py::TestBestPracticesExtraction::test_extract_best_practices_basic PASSED [ 57%]
+tests/unit/test_layer3_explainer.py::TestBestPracticesExtraction::test_extract_best_practices_limit PASSED [ 57%]
+tests/unit/test_layer3_explainer.py::TestCommonPitfallsExtraction::test_extract_common_pitfalls_basic PASSED [ 57%]
+tests/unit/test_layer3_explainer.py::TestTextAggregation::test_aggregate_tutorial_text_complete PASSED [ 58%]
+tests/unit/test_layer3_explainer.py::TestTextAggregation::test_aggregate_tutorial_text_minimal PASSED [ 58%]
+tests/unit/test_layer3_explainer.py::TestExtractionValidation::test_validate_extraction_success PASSED [ 58%]
+tests/unit/test_layer3_explainer.py::TestExtractionValidation::test_validate_extraction_minimal_content PASSED [ 58%]
+tests/unit/test_layer3_explainer.py::TestExtractionValidation::test_validate_extraction_empty_legitimate PASSED [ 59%]
+tests/unit/test_layer3_explainer.py::TestHeadingLevel::test_determine_heading_level PASSED [ 59%]
+tests/unit/test_layer3_explainer.py::TestHeadingLevel::test_determine_heading_level_none PASSED [ 59%]
+tests/unit/test_layer3_explainer.py::test_extract_with_minimal_content PASSED [ 60%]
+tests/unit/test_layer3_explainer.py::test_context_manager_usage PASSED   [ 60%]
+tests/unit/test_layer3_explainer.py::test_result_structure_fields PASSED [ 60%]
+tests/unit/test_layer3_explainer.py::test_extract_image_urls_performance PASSED [ 60%]
+tests/unit/test_layer3_explainer.py::test_extract_code_snippets_long_code PASSED [ 61%]
+tests/unit/test_multimodal_processor.py::TestMultimodalProcessorInitialization::test_init_default_parameters FAILED [ 61%]
+tests/unit/test_multimodal_processor.py::TestMultimodalProcessorInitialization::test_init_custom_parameters FAILED [ 61%]
+tests/unit/test_multimodal_processor.py::TestMultimodalProcessorInitialization::test_init_creates_database_connection PASSED [ 61%]
+tests/unit/test_multimodal_processor.py::TestVideoIdExtraction::test_extract_youtube_video_id_standard_url PASSED [ 62%]
+tests/unit/test_multimodal_processor.py::TestVideoIdExtraction::test_extract_youtube_video_id_short_url PASSED [ 62%]
+tests/unit/test_multimodal_processor.py::TestVideoIdExtraction::test_extract_youtube_video_id_embed_url PASSED [ 62%]
+tests/unit/test_multimodal_processor.py::TestVideoIdExtraction::test_extract_youtube_video_id_nocookie_url PASSED [ 62%]
+tests/unit/test_multimodal_processor.py::TestVideoIdExtraction::test_extract_youtube_video_id_with_parameters PASSED [ 63%]
+tests/unit/test_multimodal_processor.py::TestVideoIdExtraction::test_extract_youtube_video_id_invalid_url PASSED [ 63%]
+tests/unit/test_multimodal_processor.py::TestVideoIdExtraction::test_extract_youtube_video_id_empty_url PASSED [ 63%]
+tests/unit/test_multimodal_processor.py::TestElementTypeDetermination::test_determine_element_type_hint PASSED [ 63%]
+tests/unit/test_multimodal_processor.py::TestElementTypeDetermination::test_determine_element_type_instruction PASSED [ 64%]
+tests/unit/test_multimodal_processor.py::TestElementTypeDetermination::test_determine_element_type_tutorial PASSED [ 64%]
+tests/unit/test_multimodal_processor.py::TestElementTypeDetermination::test_determine_element_type_tutorial_box PASSED [ 64%]
+tests/unit/test_multimodal_processor.py::TestElementTypeDetermination::test_determine_element_type_setup_instruction PASSED [ 65%]
+tests/unit/test_multimodal_processor.py::TestElementTypeDetermination::test_determine_element_type_explanatory_text FAILED [ 65%]
+tests/unit/test_multimodal_processor.py::TestElementTypeDetermination::test_determine_element_type_general_text PASSED [ 65%]
+tests/unit/test_multimodal_processor.py::TestDatabaseOperations::test_store_image_data_success FAILED [ 65%]
+tests/unit/test_multimodal_processor.py::TestDatabaseOperations::test_store_image_data_failure FAILED [ 66%]
+tests/unit/test_multimodal_processor.py::TestDatabaseOperations::test_store_video_data_success FAILED [ 66%]
+tests/unit/test_multimodal_processor.py::TestDatabaseOperations::test_store_video_data_failure FAILED [ 66%]
+tests/unit/test_multimodal_processor.py::TestAsyncContextManagement::test_async_context_manager FAILED [ 66%]
+tests/unit/test_multimodal_processor.py::TestAsyncContextManagement::test_async_context_manager_with_exception FAILED [ 67%]
+tests/unit/test_multimodal_processor.py::TestErrorHandling::test_extract_video_id_from_url_with_none PASSED [ 67%]
+tests/unit/test_multimodal_processor.py::TestErrorHandling::test_extract_video_id_from_url_with_malformed_url PASSED [ 67%]
+tests/unit/test_multimodal_processor.py::TestErrorHandling::test_determine_element_type_with_none_inputs PASSED [ 67%]
+tests/unit/test_multimodal_processor.py::TestErrorHandling::test_determine_element_type_with_empty_strings PASSED [ 68%]
+tests/unit/test_multimodal_processor.py::TestDataValidation::test_store_image_data_with_long_content FAILED [ 68%]
+tests/unit/test_multimodal_processor.py::TestDataValidation::test_store_video_data_with_special_characters FAILED [ 68%]
+tests/unit/test_multimodal_processor.py::TestProcessorWithTempDb::test_processor_with_temp_db_initialization FAILED [ 68%]
+tests/unit/test_multimodal_processor.py::TestProcessorWithTempDb::test_database_operations_with_temp_db FAILED [ 69%]
+tests/unit/test_multimodal_processor_simple.py::TestMultimodalProcessorInitialization::test_init_default_parameters FAILED [ 69%]
+tests/unit/test_multimodal_processor_simple.py::TestMultimodalProcessorInitialization::test_init_custom_parameters FAILED [ 69%]
+tests/unit/test_multimodal_processor_simple.py::TestVideoIdExtraction::test_extract_youtube_video_id_standard_url PASSED [ 70%]
+tests/unit/test_multimodal_processor_simple.py::TestVideoIdExtraction::test_extract_youtube_video_id_short_url PASSED [ 70%]
+tests/unit/test_multimodal_processor_simple.py::TestVideoIdExtraction::test_extract_youtube_video_id_embed_url PASSED [ 70%]
+tests/unit/test_multimodal_processor_simple.py::TestVideoIdExtraction::test_extract_youtube_video_id_with_parameters PASSED [ 70%]
+tests/unit/test_multimodal_processor_simple.py::TestVideoIdExtraction::test_extract_youtube_video_id_invalid_url PASSED [ 71%]
+tests/unit/test_multimodal_processor_simple.py::TestVideoIdExtraction::test_extract_youtube_video_id_empty_url PASSED [ 71%]
+tests/unit/test_multimodal_processor_simple.py::TestVideoIdExtraction::test_extract_youtube_video_id_none_url PASSED [ 71%]
+tests/unit/test_multimodal_processor_simple.py::TestElementTypeDetermination::test_determine_element_type_hint PASSED [ 71%]
+tests/unit/test_multimodal_processor_simple.py::TestElementTypeDetermination::test_determine_element_type_instruction PASSED [ 72%]
+tests/unit/test_multimodal_processor_simple.py::TestElementTypeDetermination::test_determine_element_type_tutorial PASSED [ 72%]
+tests/unit/test_multimodal_processor_simple.py::TestElementTypeDetermination::test_determine_element_type_tutorial_box PASSED [ 72%]
+tests/unit/test_multimodal_processor_simple.py::TestElementTypeDetermination::test_determine_element_type_setup_instruction PASSED [ 72%]
+tests/unit/test_multimodal_processor_simple.py::TestElementTypeDetermination::test_determine_element_type_explanatory_text FAILED [ 73%]
+tests/unit/test_multimodal_processor_simple.py::TestElementTypeDetermination::test_determine_element_type_general_text PASSED [ 73%]
+tests/unit/test_multimodal_processor_simple.py::TestElementTypeDetermination::test_determine_element_type_with_none_inputs PASSED [ 73%]
+tests/unit/test_multimodal_processor_simple.py::TestElementTypeDetermination::test_determine_element_type_with_empty_strings PASSED [ 73%]
+tests/unit/test_multimodal_processor_simple.py::TestDatabaseOperations::test_store_image_data_success ERROR [ 74%]
+tests/unit/test_multimodal_processor_simple.py::TestDatabaseOperations::test_store_image_data_failure ERROR [ 74%]
+tests/unit/test_multimodal_processor_simple.py::TestDatabaseOperations::test_store_video_data_success ERROR [ 74%]
+tests/unit/test_multimodal_processor_simple.py::TestDatabaseOperations::test_store_video_data_failure ERROR [ 75%]
+tests/unit/test_multimodal_processor_simple.py::TestAsyncContextManagement::test_async_context_manager FAILED [ 75%]
+tests/unit/test_multimodal_processor_simple.py::TestAsyncContextManagement::test_async_context_manager_with_exception FAILED [ 75%]
+tests/unit/test_multimodal_processor_simple.py::TestErrorHandling::test_extract_video_id_from_url_with_malformed_url PASSED [ 75%]
+tests/unit/test_multimodal_processor_simple.py::TestDataValidation::test_store_image_data_with_long_content ERROR [ 76%]
+tests/unit/test_multimodal_processor_simple.py::TestDataValidation::test_store_video_data_with_special_characters ERROR [ 76%]
+tests/unit/test_multimodal_processor_simple.py::TestProcessorWithTempDb::test_processor_with_temp_db_initialization ERROR [ 76%]
+tests/unit/test_multimodal_processor_simple.py::TestProcessorWithTempDb::test_database_operations_with_temp_db ERROR [ 76%]
+tests/unit/test_multimodal_unified.py::TestMultimodalProcessorInitialization::test_init_default_parameters PASSED [ 77%]
+tests/unit/test_multimodal_unified.py::TestMultimodalProcessorInitialization::test_init_custom_parameters PASSED [ 77%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_standard_url PASSED [ 77%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_short_url PASSED [ 77%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_embed_url PASSED [ 78%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_with_parameters PASSED [ 78%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_invalid_url PASSED [ 78%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_empty_url PASSED [ 78%]
+tests/unit/test_multimodal_unified.py::TestVideoIdExtraction::test_extract_youtube_video_id_none_url PASSED [ 79%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_hint PASSED [ 79%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_instruction PASSED [ 79%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_tutorial PASSED [ 80%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_tutorial_box PASSED [ 80%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_setup_instruction PASSED [ 80%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_general_text PASSED [ 80%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_with_none_inputs PASSED [ 81%]
+tests/unit/test_multimodal_unified.py::TestElementTypeDetermination::test_determine_element_type_with_empty_strings PASSED [ 81%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_image_data_creates_new_workflow PASSED [ 81%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_image_data_appends_to_existing_workflow PASSED [ 81%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_video_data_creates_new_workflow PASSED [ 82%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_video_data_appends_to_existing_workflow PASSED [ 82%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_image_data_with_empty_text PASSED [ 82%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_video_data_with_null_transcript PASSED [ 82%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_image_data_with_special_characters PASSED [ 83%]
+tests/unit/test_multimodal_unified.py::TestDatabaseOperations::test_store_image_data_with_long_content PASSED [ 83%]
+tests/unit/test_multimodal_unified.py::TestErrorHandling::test_extract_video_id_from_url_with_malformed_url PASSED [ 83%]
+tests/unit/test_multimodal_unified.py::TestErrorHandling::test_determine_element_type_handles_none_gracefully PASSED [ 83%]
+tests/unit/test_multimodal_unified.py::TestErrorHandling::test_determine_element_type_handles_empty_text PASSED [ 84%]
+tests/unit/test_multimodal_unified.py::TestAsyncContextManagement::test_async_context_manager_initialization PASSED [ 84%]
+tests/unit/test_multimodal_unified.py::TestDataIntegrity::test_multiple_operations_maintain_data_integrity PASSED [ 84%]
+tests/unit/test_multimodal_unified.py::TestDataIntegrity::test_json_structure_is_valid PASSED [ 85%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorInitialization::test_init_with_defaults PASSED [ 85%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorInitialization::test_init_with_custom_params PASSED [ 85%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorInitialization::test_context_manager_enter PASSED [ 85%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorInitialization::test_context_manager_exit PASSED [ 86%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorExtraction::test_extract_transcript_success PASSED [ 86%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorExtraction::test_extract_transcript_panel_not_found PASSED [ 86%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorExtraction::test_extract_transcript_exception_handling PASSED [ 86%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorPanelOpening::test_open_transcript_panel_success PASSED [ 87%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorPanelOpening::test_open_transcript_panel_no_show_more_button PASSED [ 87%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorTextExtraction::test_extract_transcript_text_success PASSED [ 87%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorTextExtraction::test_extract_transcript_text_empty_segments PASSED [ 87%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorTextExtraction::test_extract_transcript_text_short_content PASSED [ 88%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorEdgeCases::test_browser_crash_handling PASSED [ 88%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorEdgeCases::test_timeout_handling PASSED [ 88%]
+tests/unit/test_transcript_extractor.py::TestTranscriptExtractorEdgeCases::test_multiple_extractions_sequential PASSED [ 88%]
+tests/unit/test_validation.py::TestLayer1Validator::test_validator_initialization PASSED [ 89%]
+tests/unit/test_validation.py::TestLayer1Validator::test_validate_perfect_metadata PASSED [ 89%]
+tests/unit/test_validation.py::TestLayer1Validator::test_validate_poor_metadata PASSED [ 89%]
+tests/unit/test_validation.py::TestLayer1Validator::test_validate_missing_title PASSED [ 90%]
+tests/unit/test_validation.py::TestLayer1Validator::test_validate_short_description PASSED [ 90%]
+tests/unit/test_validation.py::TestLayer1Validator::test_validate_no_tags PASSED [ 90%]
+tests/unit/test_validation.py::TestLayer2Validator::test_validator_initialization PASSED [ 90%]
+tests/unit/test_validation.py::TestLayer2Validator::test_validate_perfect_json PASSED [ 91%]
+tests/unit/test_validation.py::TestLayer2Validator::test_validate_empty_json PASSED [ 91%]
+tests/unit/test_validation.py::TestLayer2Validator::test_validate_missing_nodes PASSED [ 91%]
+tests/unit/test_validation.py::TestLayer2Validator::test_validate_invalid_node_structure PASSED [ 91%]
+tests/unit/test_validation.py::TestLayer3Validator::test_validator_initialization PASSED [ 92%]
+tests/unit/test_validation.py::TestLayer3Validator::test_validate_perfect_content PASSED [ 92%]
+tests/unit/test_validation.py::TestLayer3Validator::test_validate_missing_content PASSED [ 92%]
+tests/unit/test_validation.py::TestLayer3Validator::test_validate_short_tutorial_text PASSED [ 92%]
+tests/unit/test_validation.py::TestQualityScorer::test_scorer_initialization PASSED [ 93%]
+tests/unit/test_validation.py::TestQualityScorer::test_calculate_perfect_score PASSED [ 93%]
+tests/unit/test_validation.py::TestQualityScorer::test_calculate_good_score PASSED [ 93%]
+tests/unit/test_validation.py::TestQualityScorer::test_calculate_fair_score PASSED [ 93%]
+tests/unit/test_validation.py::TestQualityScorer::test_calculate_poor_score PASSED [ 94%]
+tests/unit/test_validation.py::TestQualityScorer::test_calculate_with_missing_layers PASSED [ 94%]
+tests/unit/test_validation.py::TestQualityScorer::test_classify_excellent PASSED [ 94%]
+tests/unit/test_validation.py::TestQualityScorer::test_classify_good PASSED [ 95%]
+tests/unit/test_validation.py::TestQualityScorer::test_classify_fair PASSED [ 95%]
+tests/unit/test_validation.py::TestQualityScorer::test_classify_poor PASSED [ 95%]
+tests/unit/test_validation.py::TestQualityScorer::test_consistency_all_layers PASSED [ 95%]
+tests/unit/test_validation.py::TestQualityScorer::test_consistency_two_layers PASSED [ 96%]
+tests/unit/test_validation.py::TestQualityScorer::test_consistency_one_layer PASSED [ 96%]
+tests/unit/test_validation.py::TestQualityScorer::test_consistency_no_layers PASSED [ 96%]
+tests/unit/test_validation.py::TestValidationDatabase::test_database_initialization PASSED [ 96%]
+tests/unit/test_validation.py::TestValidationDatabase::test_create_tables PASSED [ 97%]
+tests/unit/test_validation.py::TestValidationDatabase::test_store_quality_score PASSED [ 97%]
+tests/unit/test_validation.py::TestValidationDatabase::test_store_validation_issue PASSED [ 97%]
+tests/unit/test_validation.py::TestValidationDatabase::test_get_quality_scores_filtered PASSED [ 97%]
+tests/unit/test_validation.py::TestValidationDatabase::test_get_stats PASSED [ 98%]
+tests/unit/test_validation.py::TestValidationDatabase::test_update_existing_score PASSED [ 98%]
+tests/unit/test_validation.py::TestIntegratedValidation::test_complete_validation_flow PASSED [ 98%]
+tests/unit/test_validation.py::TestIntegratedValidation::test_layer1_medium_quality_metadata PASSED [ 98%]
+tests/unit/test_validation.py::TestIntegratedValidation::test_layer2_with_one_node_type PASSED [ 99%]
+tests/unit/test_validation.py::TestIntegratedValidation::test_layer3_with_minimal_sections PASSED [ 99%]
+tests/unit/test_validation.py::TestIntegratedValidation::test_scorer_get_classification_summary PASSED [ 99%]
+tests/unit/test_validation.py::TestIntegratedValidation::test_scorer_empty_scores_list PASSED [100%]
+
+==================================== ERRORS ====================================
+____ ERROR at setup of TestDatabaseOperations.test_store_image_data_success ____
+tests/unit/test_multimodal_processor_simple.py:174: in setup_method
+    from src.database.multimodal_schema import create_multimodal_tables
+E   ModuleNotFoundError: No module named 'src.database.multimodal_schema'
+____ ERROR at setup of TestDatabaseOperations.test_store_image_data_failure ____
+tests/unit/test_multimodal_processor_simple.py:174: in setup_method
+    from src.database.multimodal_schema import create_multimodal_tables
+E   ModuleNotFoundError: No module named 'src.database.multimodal_schema'
+____ ERROR at setup of TestDatabaseOperations.test_store_video_data_success ____
+tests/unit/test_multimodal_processor_simple.py:174: in setup_method
+    from src.database.multimodal_schema import create_multimodal_tables
+E   ModuleNotFoundError: No module named 'src.database.multimodal_schema'
+____ ERROR at setup of TestDatabaseOperations.test_store_video_data_failure ____
+tests/unit/test_multimodal_processor_simple.py:174: in setup_method
+    from src.database.multimodal_schema import create_multimodal_tables
+E   ModuleNotFoundError: No module named 'src.database.multimodal_schema'
+_ ERROR at setup of TestDataValidation.test_store_image_data_with_long_content _
+tests/unit/test_multimodal_processor_simple.py:350: in setup_method
+    from src.database.multimodal_schema import create_multimodal_tables
+E   ModuleNotFoundError: No module named 'src.database.multimodal_schema'
+_ ERROR at setup of TestDataValidation.test_store_video_data_with_special_characters _
+tests/unit/test_multimodal_processor_simple.py:350: in setup_method
+    from src.database.multimodal_schema import create_multimodal_tables
+E   ModuleNotFoundError: No module named 'src.database.multimodal_schema'
+_ ERROR at setup of TestProcessorWithTempDb.test_processor_with_temp_db_initialization _
+tests/unit/test_multimodal_processor_simple.py:420: in processor_with_temp_db
+    from src.database.multimodal_schema import create_multimodal_tables
+E   ModuleNotFoundError: No module named 'src.database.multimodal_schema'
+_ ERROR at setup of TestProcessorWithTempDb.test_database_operations_with_temp_db _
+tests/unit/test_multimodal_processor_simple.py:420: in processor_with_temp_db
+    from src.database.multimodal_schema import create_multimodal_tables
+E   ModuleNotFoundError: No module named 'src.database.multimodal_schema'
+=================================== FAILURES ===================================
+______ TestMultimodalProcessorInitialization.test_init_default_parameters ______
+tests/unit/test_multimodal_processor.py:31: in test_init_default_parameters
+    assert processor.db_path == "data/workflows.db"
+E   AssertionError: assert PosixPath('data/workflows.db') == 'data/workflows.db'
+E    +  where PosixPath('data/workflows.db') = <src.scrapers.multimodal_processor.MultimodalProcessor object at 0x1096f4450>.db_path
+______ TestMultimodalProcessorInitialization.test_init_custom_parameters _______
+tests/unit/test_multimodal_processor.py:44: in test_init_custom_parameters
+    assert processor.db_path == "test.db"
+E   AssertionError: assert PosixPath('test.db') == 'test.db'
+E    +  where PosixPath('test.db') = <src.scrapers.multimodal_processor.MultimodalProcessor object at 0x109187010>.db_path
+__ TestElementTypeDetermination.test_determine_element_type_explanatory_text ___
+tests/unit/test_multimodal_processor.py:152: in test_determine_element_type_explanatory_text
+    assert element_type == "explanatory_text"
+E   AssertionError: assert 'instruction' == 'explanatory_text'
+E     
+E     - explanatory_text
+E     + instruction
+_____________ TestDatabaseOperations.test_store_image_data_success _____________
+tests/unit/test_multimodal_processor.py:179: in test_store_image_data_success
+    from src.database.multimodal_schema import create_multimodal_tables
+E   ModuleNotFoundError: No module named 'src.database.multimodal_schema'
+_____________ TestDatabaseOperations.test_store_image_data_failure _____________
+tests/unit/test_multimodal_processor.py:214: in test_store_image_data_failure
+    self.processor.store_image_data(workflow_id, image_url, success, content, error)
+src/scrapers/multimodal_processor.py:511: in store_image_data
+    cursor.execute("""
+E   sqlite3.OperationalError: no such table: workflows
+_____________ TestDatabaseOperations.test_store_video_data_success _____________
+tests/unit/test_multimodal_processor.py:238: in test_store_video_data_success
+    self.processor.store_video_data(workflow_id, video_url, video_id, success, transcript, error)
+src/scrapers/multimodal_processor.py:584: in store_video_data
+    cursor.execute("""
+E   sqlite3.OperationalError: no such table: workflows
+_____________ TestDatabaseOperations.test_store_video_data_failure _____________
+tests/unit/test_multimodal_processor.py:265: in test_store_video_data_failure
+    self.processor.store_video_data(workflow_id, video_url, video_id, success, transcript, error)
+src/scrapers/multimodal_processor.py:584: in store_video_data
+    cursor.execute("""
+E   sqlite3.OperationalError: no such table: workflows
+____________ TestAsyncContextManagement.test_async_context_manager _____________
+tests/unit/test_multimodal_processor.py:293: in test_async_context_manager
+    async with MultimodalProcessor() as processor:
+src/scrapers/multimodal_processor.py:66: in __aenter__
+    await self.initialize()
+src/scrapers/multimodal_processor.py:75: in initialize
+    self.playwright = await async_playwright().start()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: object AsyncMock can't be used in 'await' expression
+_____ TestAsyncContextManagement.test_async_context_manager_with_exception _____
+tests/unit/test_multimodal_processor.py:318: in test_async_context_manager_with_exception
+    mock_browser.close.assert_called_once()
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:912: in assert_called_once
+    raise AssertionError(msg)
+E   AssertionError: Expected 'close' to have been called once. Called 0 times.
+__________ TestDataValidation.test_store_image_data_with_long_content __________
+tests/unit/test_multimodal_processor.py:372: in test_store_image_data_with_long_content
+    self.processor.store_image_data(workflow_id, image_url, success, content, error)
+src/scrapers/multimodal_processor.py:511: in store_image_data
+    cursor.execute("""
+E   sqlite3.OperationalError: no such table: workflows
+_______ TestDataValidation.test_store_video_data_with_special_characters _______
+tests/unit/test_multimodal_processor.py:395: in test_store_video_data_with_special_characters
+    self.processor.store_video_data(workflow_id, video_url, video_id, success, transcript, error)
+src/scrapers/multimodal_processor.py:584: in store_video_data
+    cursor.execute("""
+E   sqlite3.OperationalError: no such table: workflows
+______ TestProcessorWithTempDb.test_processor_with_temp_db_initialization ______
+tests/unit/test_multimodal_processor.py:432: in test_processor_with_temp_db_initialization
+    assert processor_with_temp_db.engine is not None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'MultimodalProcessor' object has no attribute 'engine'
+________ TestProcessorWithTempDb.test_database_operations_with_temp_db _________
+tests/unit/test_multimodal_processor.py:443: in test_database_operations_with_temp_db
+    processor_with_temp_db.store_image_data(workflow_id, image_url, success, content, error)
+src/scrapers/multimodal_processor.py:511: in store_image_data
+    cursor.execute("""
+E   sqlite3.OperationalError: no such table: workflows
+______ TestMultimodalProcessorInitialization.test_init_default_parameters ______
+tests/unit/test_multimodal_processor_simple.py:31: in test_init_default_parameters
+    assert processor.db_path == "data/workflows.db"
+E   AssertionError: assert PosixPath('data/workflows.db') == 'data/workflows.db'
+E    +  where PosixPath('data/workflows.db') = <src.scrapers.multimodal_processor.MultimodalProcessor object at 0x1095cd110>.db_path
+______ TestMultimodalProcessorInitialization.test_init_custom_parameters _______
+tests/unit/test_multimodal_processor_simple.py:45: in test_init_custom_parameters
+    assert processor.db_path == "test.db"
+E   AssertionError: assert PosixPath('test.db') == 'test.db'
+E    +  where PosixPath('test.db') = <src.scrapers.multimodal_processor.MultimodalProcessor object at 0x10910f750>.db_path
+__ TestElementTypeDetermination.test_determine_element_type_explanatory_text ___
+tests/unit/test_multimodal_processor_simple.py:144: in test_determine_element_type_explanatory_text
+    assert element_type == "explanatory_text"
+E   AssertionError: assert 'instruction' == 'explanatory_text'
+E     
+E     - explanatory_text
+E     + instruction
+____________ TestAsyncContextManagement.test_async_context_manager _____________
+tests/unit/test_multimodal_processor_simple.py:298: in test_async_context_manager
+    async with MultimodalProcessor() as processor:
+src/scrapers/multimodal_processor.py:66: in __aenter__
+    await self.initialize()
+src/scrapers/multimodal_processor.py:75: in initialize
+    self.playwright = await async_playwright().start()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: object AsyncMock can't be used in 'await' expression
+_____ TestAsyncContextManagement.test_async_context_manager_with_exception _____
+tests/unit/test_multimodal_processor_simple.py:323: in test_async_context_manager_with_exception
+    mock_browser.close.assert_called_once()
+/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/unittest/mock.py:912: in assert_called_once
+    raise AssertionError(msg)
+E   AssertionError: Expected 'close' to have been called once. Called 0 times.
+=============================== warnings summary ===============================
+src/database/schema.py:12
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/schema.py:12: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+src/database/json_schema.py:17
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/json_schema.py:17: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+src/database/validation_schema.py:16
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/validation_schema.py:16: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+tests/integration/test_layer3_88pct_target.py: 5 warnings
+tests/unit/test_layer3_explainer.py: 10 warnings
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:350: DeprecationWarning: The 'text' argument to find()-type methods is deprecated. Use 'string' instead.
+    elements = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
+
+tests/integration/test_layer3_88pct_target.py: 6 warnings
+tests/unit/test_layer3_explainer.py: 6 warnings
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:368: DeprecationWarning: The 'text' argument to find()-type methods is deprecated. Use 'string' instead.
+    elements = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
+
+tests/integration/test_layer3_final_coverage.py::TestErrorPaths::test_extract_with_playwright_timeout
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:118: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    page.set_default_timeout(self.timeout)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_description_error_handling
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_error_handling
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_empty_page_content
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:224: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_author_error_handling
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_empty_page_content
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:251: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_categories_error_handling
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:303: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:345: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:378: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_difficulty_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:418: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:463: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:485: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_dates_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:548: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:591: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:684: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_empty_page_content
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_handles_unicode_content
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:190: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.11.1-final-0 _______________
+
+Name                                         Stmts   Miss   Cover   Missing
+---------------------------------------------------------------------------
+src/__init__.py                                  0      0 100.00%
+src/database/__init__.py                         0      0 100.00%
+src/database/inventory_schema.py               101    101   0.00%   6-242
+src/database/json_schema.py                     91     20  78.02%   58-60, 109-112, 137-139, 176-178, 185-195
+src/database/schema.py                          99      9  90.91%   159-175, 188-198, 211
+src/database/validation_schema.py              132     29  78.03%   75-77, 117-120, 142-145, 173-175, 189, 204-206, 245-247, 254-265
+src/models/__init__.py                           0      0 100.00%
+src/orchestrator/__init__.py                     0      0 100.00%
+src/parsers/__init__.py                          0      0 100.00%
+src/scrapers/__init__.py                         0      0 100.00%
+src/scrapers/layer1_metadata.py                346     79  77.17%   195-197, 220-222, 229-231, 256-258, 273-275, 314-316, 386-388, 408-416, 424-426, 458-461, 478-483, 495-496, 500-502, 529-546, 557-560, 586-589, 641, 643, 678-680, 682, 695-697
+src/scrapers/layer2_json.py                    100     14  86.00%   233, 237, 263-278
+src/scrapers/layer3_explainer.py               264      7  97.35%   203-205, 208-209, 277-278
+src/scrapers/multimodal_processor.py           350    151  56.86%   120-121, 125-127, 144-145, 151-152, 200-203, 217-219, 242, 261-282, 299-300, 318-321, 328-330, 373-389, 393-464, 468-485, 532, 686-688, 740-765, 770-773, 779, 786-801
+src/scrapers/transcript_extractor.py           125     26  79.20%   107, 110-112, 153-154, 193-209, 212-213, 218-220, 256-257, 262-264
+src/scrapers/workflow_inventory_crawler.py      89     89   0.00%   6-174
+src/utils/__init__.py                            0      0 100.00%
+src/utils/logging.py                            38      0 100.00%
+src/validation/__init__.py                       1      0 100.00%
+src/validation/layer1_validator.py              73     14  80.82%   40-41, 86-87, 125-157
+src/validation/layer2_validator.py              74     19  74.32%   45-46, 53, 68-69, 76, 86-87, 92, 126-159
+src/validation/layer3_validator.py              67     11  83.58%   56-57, 72, 74-75, 115-144
+src/validation/quality_scorer.py                61      8  86.89%   189-200
+---------------------------------------------------------------------------
+TOTAL                                         2011    577  71.31%
+Coverage HTML written to dir htmlcov
+=========================== short test summary info ============================
+FAILED tests/unit/test_multimodal_processor.py::TestMultimodalProcessorInitialization::test_init_default_parameters
+FAILED tests/unit/test_multimodal_processor.py::TestMultimodalProcessorInitialization::test_init_custom_parameters
+FAILED tests/unit/test_multimodal_processor.py::TestElementTypeDetermination::test_determine_element_type_explanatory_text
+FAILED tests/unit/test_multimodal_processor.py::TestDatabaseOperations::test_store_image_data_success
+FAILED tests/unit/test_multimodal_processor.py::TestDatabaseOperations::test_store_image_data_failure
+FAILED tests/unit/test_multimodal_processor.py::TestDatabaseOperations::test_store_video_data_success
+FAILED tests/unit/test_multimodal_processor.py::TestDatabaseOperations::test_store_video_data_failure
+FAILED tests/unit/test_multimodal_processor.py::TestAsyncContextManagement::test_async_context_manager
+FAILED tests/unit/test_multimodal_processor.py::TestAsyncContextManagement::test_async_context_manager_with_exception
+FAILED tests/unit/test_multimodal_processor.py::TestDataValidation::test_store_image_data_with_long_content
+FAILED tests/unit/test_multimodal_processor.py::TestDataValidation::test_store_video_data_with_special_characters
+FAILED tests/unit/test_multimodal_processor.py::TestProcessorWithTempDb::test_processor_with_temp_db_initialization
+FAILED tests/unit/test_multimodal_processor.py::TestProcessorWithTempDb::test_database_operations_with_temp_db
+FAILED tests/unit/test_multimodal_processor_simple.py::TestMultimodalProcessorInitialization::test_init_default_parameters
+FAILED tests/unit/test_multimodal_processor_simple.py::TestMultimodalProcessorInitialization::test_init_custom_parameters
+FAILED tests/unit/test_multimodal_processor_simple.py::TestElementTypeDetermination::test_determine_element_type_explanatory_text
+FAILED tests/unit/test_multimodal_processor_simple.py::TestAsyncContextManagement::test_async_context_manager
+FAILED tests/unit/test_multimodal_processor_simple.py::TestAsyncContextManagement::test_async_context_manager_with_exception
+ERROR tests/unit/test_multimodal_processor_simple.py::TestDatabaseOperations::test_store_image_data_success
+ERROR tests/unit/test_multimodal_processor_simple.py::TestDatabaseOperations::test_store_image_data_failure
+ERROR tests/unit/test_multimodal_processor_simple.py::TestDatabaseOperations::test_store_video_data_success
+ERROR tests/unit/test_multimodal_processor_simple.py::TestDatabaseOperations::test_store_video_data_failure
+ERROR tests/unit/test_multimodal_processor_simple.py::TestDataValidation::test_store_image_data_with_long_content
+ERROR tests/unit/test_multimodal_processor_simple.py::TestDataValidation::test_store_video_data_with_special_characters
+ERROR tests/unit/test_multimodal_processor_simple.py::TestProcessorWithTempDb::test_processor_with_temp_db_initialization
+ERROR tests/unit/test_multimodal_processor_simple.py::TestProcessorWithTempDb::test_database_operations_with_temp_db
+====== 18 failed, 354 passed, 48 warnings, 8 errors in 1107.26s (0:18:27) ======

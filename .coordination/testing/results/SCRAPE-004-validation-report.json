@@ -1,0 +1,33 @@
+{
+  "task_id": "SCRAPE-004",
+  "validation_date": "2025-10-10T18:30:07.077736",
+  "workflows_validated": 40,
+  "layer1_validation_results": {
+    "workflows_validated": 10,
+    "validation_rate": 100.0
+  },
+  "layer2_validation_results": {
+    "workflows_validated": 36,
+    "validation_rate": 97.2
+  },
+  "layer3_validation_results": {
+    "workflows_validated": 20,
+    "validation_rate": 95.0
+  },
+  "quality_scores": {
+    "total": 40,
+    "avg_score": 74.1,
+    "excellent": 8,
+    "good": 15,
+    "fair": 12,
+    "poor": 5,
+    "excellent_pct": 20.0,
+    "good_pct": 37.5,
+    "fair_pct": 30.0,
+    "poor_pct": 12.5
+  },
+  "total_issues_found": 23,
+  "critical_issues": 3,
+  "warning_issues": 15,
+  "info_issues": 5
+}

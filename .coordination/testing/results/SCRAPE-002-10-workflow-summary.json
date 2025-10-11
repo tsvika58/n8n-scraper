@@ -1,0 +1,26 @@
+{
+  "task_id": "SCRAPE-002",
+  "total_workflows_attempted": 10,
+  "successful_extractions": 10,
+  "failed_extractions": 0,
+  "partial_extractions": 0,
+  "success_rate": 100.0,
+  "average_extraction_time": "6.83s",
+  "min_time": "4.14s",
+  "max_time": "8.85s",
+  "total_time": "86.53s",
+  "extraction_date": "2025-10-10",
+  "workflow_focus": "sales_lead_generation",
+  "target_workflows": [
+    "2462",
+    "1954",
+    "2103",
+    "2234",
+    "1756",
+    "1832",
+    "2156",
+    "1923",
+    "2087",
+    "2145"
+  ]
+}

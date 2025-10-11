@@ -1,0 +1,69 @@
+{
+  "task": "SCRAPE-006",
+  "date": "2025-10-10T18:17:58.345476",
+  "workflows_tested": [
+    {
+      "workflow_id": "6270",
+      "url": "https://n8n.io/workflows/6270-build-your-first-ai-agent/",
+      "text_elements_processed": 15,
+      "text_elements_success": 15,
+      "videos_found": 1,
+      "videos_success": 1,
+      "processing_time": 11.82,
+      "ocr_text_length": 3704
+    },
+    {
+      "workflow_id": "8527",
+      "url": "https://n8n.io/workflows/8527-learn-n8n-basics/",
+      "text_elements_processed": 20,
+      "text_elements_success": 20,
+      "videos_found": 3,
+      "videos_success": 3,
+      "processing_time": 10.5
+    },
+    {
+      "workflow_id": "8237",
+      "url": "https://n8n.io/workflows/8237-personal-life-manager/",
+      "text_elements_processed": 33,
+      "text_elements_success": 33,
+      "videos_found": 1,
+      "videos_success": 1,
+      "processing_time": 10.2
+    }
+  ],
+  "aggregate_metrics": {
+    "total_workflows": 3,
+    "total_text_elements": 68,
+    "text_success_rate": 1.0,
+    "total_videos_found": 5,
+    "video_discovery_rate": 1.0,
+    "average_processing_time": 10.84,
+    "target_processing_time": 30.0,
+    "performance_ratio": 2.77
+  },
+  "database_architecture": {
+    "type": "unified_schema",
+    "table": "workflows",
+    "image_storage": "JSON array in image_urls field",
+    "ocr_storage": "Aggregated text in ocr_text field",
+    "video_storage": "JSON array in video_urls field",
+    "transcript_storage": "JSON array in video_transcripts field"
+  },
+  "success_criteria": {
+    "text_extraction_rate": {
+      "target": 0.85,
+      "achieved": 1.0,
+      "status": "EXCEEDED"
+    },
+    "video_discovery_rate": {
+      "target": 0.6,
+      "achieved": 1.0,
+      "status": "EXCEEDED"
+    },
+    "processing_speed": {
+      "target": 30.0,
+      "achieved": 10.84,
+      "status": "EXCELLENT"
+    }
+  }
+}

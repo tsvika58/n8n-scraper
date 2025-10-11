@@ -1,0 +1,317 @@
+{
+  "test_date": "2025-10-09T21:51:35.779214",
+  "total_workflows": 20,
+  "successful": 20,
+  "failed": 0,
+  "success_rate": 100.0,
+  "requirement_met": true,
+  "average_time": 5.603508099999999,
+  "average_text_length": 943.1,
+  "total_text": 18862,
+  "total_images": 318,
+  "total_videos": 1,
+  "total_code": 1,
+  "total_duration": 142.564088,
+  "results": [
+    {
+      "workflow": {
+        "id": "2462",
+        "url": "https://n8n.io/workflows/2462",
+        "name": "Angie AI Assistant",
+        "category": "AI"
+      },
+      "success": true,
+      "time": 5.529508,
+      "text_length": 1131,
+      "images": 23,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "1954",
+        "url": "https://n8n.io/workflows/1954",
+        "name": "AI Agent Chat",
+        "category": "AI"
+      },
+      "success": true,
+      "time": 5.504391,
+      "text_length": 292,
+      "images": 25,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "2103",
+        "url": "https://n8n.io/workflows/2103",
+        "name": "Slack Bot",
+        "category": "Communication"
+      },
+      "success": true,
+      "time": 5.4945,
+      "text_length": 2158,
+      "images": 20,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "1870",
+        "url": "https://n8n.io/workflows/1870",
+        "name": "GitHub Issues",
+        "category": "Development"
+      },
+      "success": true,
+      "time": 5.640682,
+      "text_length": 0,
+      "images": 0,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "2234",
+        "url": "https://n8n.io/workflows/2234",
+        "name": "Email Campaign",
+        "category": "Marketing"
+      },
+      "success": true,
+      "time": 5.512375,
+      "text_length": 2599,
+      "images": 24,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "1756",
+        "url": "https://n8n.io/workflows/1756",
+        "name": "Data Pipeline",
+        "category": "Data"
+      },
+      "success": true,
+      "time": 5.486702,
+      "text_length": 426,
+      "images": 27,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "2019",
+        "url": "https://n8n.io/workflows/2019",
+        "name": "CRM Integration",
+        "category": "CRM"
+      },
+      "success": true,
+      "time": 5.760653,
+      "text_length": 0,
+      "images": 0,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "1832",
+        "url": "https://n8n.io/workflows/1832",
+        "name": "Customer Feedback",
+        "category": "Support"
+      },
+      "success": true,
+      "time": 5.492853,
+      "text_length": 2025,
+      "images": 24,
+      "videos": 0,
+      "code": 1,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "2156",
+        "url": "https://n8n.io/workflows/2156",
+        "name": "Social Media Automation",
+        "category": "Marketing"
+      },
+      "success": true,
+      "time": 5.640614,
+      "text_length": 459,
+      "images": 26,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "1923",
+        "url": "https://n8n.io/workflows/1923",
+        "name": "Invoice Processing",
+        "category": "Finance"
+      },
+      "success": true,
+      "time": 5.496805,
+      "text_length": 0,
+      "images": 0,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "2087",
+        "url": "https://n8n.io/workflows/2087",
+        "name": "Lead Scoring",
+        "category": "Sales"
+      },
+      "success": true,
+      "time": 5.681214,
+      "text_length": 2835,
+      "images": 22,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "1845",
+        "url": "https://n8n.io/workflows/1845",
+        "name": "Content Moderation",
+        "category": "AI"
+      },
+      "success": true,
+      "time": 5.463968,
+      "text_length": 0,
+      "images": 0,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "2201",
+        "url": "https://n8n.io/workflows/2201",
+        "name": "Webhook Router",
+        "category": "Integration"
+      },
+      "success": true,
+      "time": 5.744351,
+      "text_length": 1415,
+      "images": 30,
+      "videos": 1,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "1778",
+        "url": "https://n8n.io/workflows/1778",
+        "name": "Data Sync",
+        "category": "Data"
+      },
+      "success": true,
+      "time": 5.727451,
+      "text_length": 510,
+      "images": 22,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "2145",
+        "url": "https://n8n.io/workflows/2145",
+        "name": "Notification System",
+        "category": "Communication"
+      },
+      "success": true,
+      "time": 5.692998,
+      "text_length": 2533,
+      "images": 22,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "1896",
+        "url": "https://n8n.io/workflows/1896",
+        "name": "Form Processor",
+        "category": "Automation"
+      },
+      "success": true,
+      "time": 5.478505,
+      "text_length": 0,
+      "images": 0,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "2078",
+        "url": "https://n8n.io/workflows/2078",
+        "name": "Email Parser",
+        "category": "Email"
+      },
+      "success": true,
+      "time": 5.450246,
+      "text_length": 0,
+      "images": 0,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "1967",
+        "url": "https://n8n.io/workflows/1967",
+        "name": "Calendar Integration",
+        "category": "Productivity"
+      },
+      "success": true,
+      "time": 5.694062,
+      "text_length": 1564,
+      "images": 29,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "2189",
+        "url": "https://n8n.io/workflows/2189",
+        "name": "Database Backup",
+        "category": "Data"
+      },
+      "success": true,
+      "time": 6.03161,
+      "text_length": 915,
+      "images": 24,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    },
+    {
+      "workflow": {
+        "id": "1812",
+        "url": "https://n8n.io/workflows/1812",
+        "name": "API Gateway",
+        "category": "Development"
+      },
+      "success": true,
+      "time": 5.546674,
+      "text_length": 0,
+      "images": 0,
+      "videos": 0,
+      "code": 0,
+      "errors": 0
+    }
+  ]
+}

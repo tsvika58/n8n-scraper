@@ -1,0 +1,80 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.1, pytest-8.4.2, pluggy-1.6.0 -- /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper
+configfile: pytest.ini
+plugins: asyncio-1.2.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 29 items
+
+tests/unit/test_layer3_explainer.py::TestExplainerContentExtractorInit::test_init_default_params PASSED [  3%]
+tests/unit/test_layer3_explainer.py::TestExplainerContentExtractorInit::test_init_custom_params PASSED [  6%]
+tests/unit/test_layer3_explainer.py::TestEmptyStructure::test_get_empty_layer3_structure PASSED [ 10%]
+tests/unit/test_layer3_explainer.py::TestImageExtraction::test_extract_image_urls_basic PASSED [ 13%]
+tests/unit/test_layer3_explainer.py::TestImageExtraction::test_extract_image_urls_no_images PASSED [ 17%]
+tests/unit/test_layer3_explainer.py::TestImageExtraction::test_extract_image_urls_duplicates PASSED [ 20%]
+tests/unit/test_layer3_explainer.py::TestVideoExtraction::test_extract_video_urls_youtube PASSED [ 24%]
+tests/unit/test_layer3_explainer.py::TestVideoExtraction::test_extract_video_urls_no_videos PASSED [ 27%]
+tests/unit/test_layer3_explainer.py::TestCodeSnippetExtraction::test_extract_code_snippets_basic PASSED [ 31%]
+tests/unit/test_layer3_explainer.py::TestCodeSnippetExtraction::test_extract_code_snippets_no_language PASSED [ 34%]
+tests/unit/test_layer3_explainer.py::TestTutorialSectionExtraction::test_extract_tutorial_sections_basic PASSED [ 37%]
+tests/unit/test_layer3_explainer.py::TestTutorialSectionExtraction::test_extract_tutorial_sections_no_sections PASSED [ 41%]
+tests/unit/test_layer3_explainer.py::TestStepByStepExtraction::test_extract_step_by_step_ordered_list PASSED [ 44%]
+tests/unit/test_layer3_explainer.py::TestStepByStepExtraction::test_extract_step_by_step_no_steps PASSED [ 48%]
+tests/unit/test_layer3_explainer.py::TestBestPracticesExtraction::test_extract_best_practices_basic PASSED [ 51%]
+tests/unit/test_layer3_explainer.py::TestBestPracticesExtraction::test_extract_best_practices_limit PASSED [ 55%]
+tests/unit/test_layer3_explainer.py::TestCommonPitfallsExtraction::test_extract_common_pitfalls_basic PASSED [ 58%]
+tests/unit/test_layer3_explainer.py::TestTextAggregation::test_aggregate_tutorial_text_complete PASSED [ 62%]
+tests/unit/test_layer3_explainer.py::TestTextAggregation::test_aggregate_tutorial_text_minimal PASSED [ 65%]
+tests/unit/test_layer3_explainer.py::TestExtractionValidation::test_validate_extraction_success PASSED [ 68%]
+tests/unit/test_layer3_explainer.py::TestExtractionValidation::test_validate_extraction_too_short PASSED [ 72%]
+tests/unit/test_layer3_explainer.py::TestExtractionValidation::test_validate_extraction_no_content PASSED [ 75%]
+tests/unit/test_layer3_explainer.py::TestHeadingLevel::test_determine_heading_level PASSED [ 79%]
+tests/unit/test_layer3_explainer.py::TestHeadingLevel::test_determine_heading_level_none PASSED [ 82%]
+tests/unit/test_layer3_explainer.py::test_extract_with_minimal_content PASSED [ 86%]
+tests/unit/test_layer3_explainer.py::test_context_manager_usage PASSED   [ 89%]
+tests/unit/test_layer3_explainer.py::test_result_structure_fields PASSED [ 93%]
+tests/unit/test_layer3_explainer.py::test_extract_image_urls_performance PASSED [ 96%]
+tests/unit/test_layer3_explainer.py::test_extract_code_snippets_long_code PASSED [100%]/Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/lib/python3.11/site-packages/coverage/inorout.py:521: CoverageWarning: Module src/scrapers/layer3_explainer was never imported. (module-not-imported); see https://coverage.readthedocs.io/en/7.10.7/messages.html#warning-module-not-imported
+  self.warn(f"Module {pkg} was never imported.", slug="module-not-imported")
+
+
+=============================== warnings summary ===============================
+src/database/schema.py:12
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/schema.py:12: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+tests/unit/test_layer3_explainer.py: 10 warnings
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:350: DeprecationWarning: The 'text' argument to find()-type methods is deprecated. Use 'string' instead.
+    elements = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
+
+tests/unit/test_layer3_explainer.py::TestCommonPitfallsExtraction::test_extract_common_pitfalls_basic
+tests/unit/test_layer3_explainer.py::TestCommonPitfallsExtraction::test_extract_common_pitfalls_basic
+tests/unit/test_layer3_explainer.py::TestCommonPitfallsExtraction::test_extract_common_pitfalls_basic
+tests/unit/test_layer3_explainer.py::TestCommonPitfallsExtraction::test_extract_common_pitfalls_basic
+tests/unit/test_layer3_explainer.py::TestCommonPitfallsExtraction::test_extract_common_pitfalls_basic
+tests/unit/test_layer3_explainer.py::TestCommonPitfallsExtraction::test_extract_common_pitfalls_basic
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:368: DeprecationWarning: The 'text' argument to find()-type methods is deprecated. Use 'string' instead.
+    elements = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.11.1-final-0 _______________
+
+Name                               Stmts   Miss   Cover   Missing
+-----------------------------------------------------------------
+src/__init__.py                        0      0 100.00%
+src/database/__init__.py               0      0 100.00%
+src/database/schema.py                99      9  90.91%   159-175, 188-198, 211
+src/models/__init__.py                 0      0 100.00%
+src/orchestrator/__init__.py           0      0 100.00%
+src/parsers/__init__.py                0      0 100.00%
+src/scrapers/__init__.py               0      0 100.00%
+src/scrapers/layer1_metadata.py      325    325   0.00%   12-650
+src/scrapers/layer3_explainer.py     264    110  58.33%   59-60, 64, 68-70, 74-78, 98-161, 173-224, 232-278, 449-450, 469-470, 565-581
+src/utils/__init__.py                  0      0 100.00%
+src/utils/logging.py                  38     38   0.00%   6-121
+-----------------------------------------------------------------
+TOTAL                                726    482  33.61%
+Coverage HTML written to dir htmlcov
+======================= 29 passed, 17 warnings in 0.79s ========================

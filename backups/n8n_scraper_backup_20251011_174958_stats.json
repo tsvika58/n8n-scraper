@@ -1,0 +1,26 @@
+{
+  "backup_name": "n8n_scraper_backup_20251011_174958",
+  "timestamp": "2025-10-11T14:49:58Z",
+  "database": {
+    "name": "n8n_scraper",
+    "size": "7507kB",
+    "tables": {
+      "workflows": 0,
+      "workflow_metadata": 0,
+      "workflow_structure": 0,
+      "workflow_content": 0,
+      "video_transcripts": 0
+    },
+    "total_records": 0
+  },
+  "system_info": {
+    "docker_version": "Docker version 28.4.0, build d8eb465",
+    "hostname": "macbookpro.lan",
+    "user": "tsvikavagman"
+  },
+  "backup_files": {
+    "sql_dump": "n8n_scraper_backup_20251011_174958_database.sql",
+    "custom_dump": "n8n_scraper_backup_20251011_174958_database.dump",
+    "volume_backup": "n8n_scraper_backup_20251011_174958_volume.tar.gz"
+  }
+}

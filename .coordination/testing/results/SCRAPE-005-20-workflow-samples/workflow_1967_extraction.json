@@ -1,0 +1,59 @@
+{
+  "success": true,
+  "data": {
+    "introduction": "This workflow generates CSV files containing a list of 10 random users with specific characteristics using OpenAI's GPT-4 model. It then splits this data into batches, converts it to CSV format, and saves it to disk for further use.The execution of the workflow begins from here when triggered manually.\"OpenAI\" Node. This uses the OpenAI API to generate random user data. The input to the OpenAI API is a fixed string, which asks for a list of 10 random users with some specific attributes. The attributes include a name and surname starting with the same letter, a subscription status, and a subscription date (if they are subscribed). There is also a short example of the JSON object structure. This technique is called one-shot prompting.\"Split In Batches\" Node. This node is used to handle the OpenAI responses one by one.\"Parse JSON\" Node. This node converts the content of the message received from the OpenAI node (which is in string format) into a JSON object.\"Make JSON Table\" Node. This node is used to convert the JSON data into a tabular format, which is easier to handle for further data processing.\"Convert to CSV\" Node. This node converts the table format data received from the \"Make JSON Table\" node into CSV format and assigns a file name.\"Save to Disk\" Node. This node is used to save the CSV generated in the previous node to disk in the \".n8n\" directory.The workflow is designed in a circular manner. So, after saving the file to disk, it goes back to the \"Split In Batches\" node to process the OpenAI output, until all batches are processed.",
+    "overview": "",
+    "tutorial_text": "This workflow generates CSV files containing a list of 10 random users with specific characteristics using OpenAI's GPT-4 model. It then splits this data into batches, converts it to CSV format, and saves it to disk for further use.The execution of the workflow begins from here when triggered manually.\"OpenAI\" Node. This uses the OpenAI API to generate random user data. The input to the OpenAI API is a fixed string, which asks for a list of 10 random users with some specific attributes. The attributes include a name and surname starting with the same letter, a subscription status, and a subscription date (if they are subscribed). There is also a short example of the JSON object structure. This technique is called one-shot prompting.\"Split In Batches\" Node. This node is used to handle the OpenAI responses one by one.\"Parse JSON\" Node. This node converts the content of the message received from the OpenAI node (which is in string format) into a JSON object.\"Make JSON Table\" Node. This node is used to convert the JSON data into a tabular format, which is easier to handle for further data processing.\"Convert to CSV\" Node. This node converts the table format data received from the \"Make JSON Table\" node into CSV format and assigns a file name.\"Save to Disk\" Node. This node is used to save the CSV generated in the previous node to disk in the \".n8n\" directory.The workflow is designed in a circular manner. So, after saving the file to disk, it goes back to the \"Split In Batches\" node to process the OpenAI output, until all batches are processed.",
+    "tutorial_sections": [],
+    "step_by_step": [],
+    "best_practices": [],
+    "common_pitfalls": [],
+    "image_urls": [
+      "https://gravatar.com/avatar/b3d1a47322f05a8be3d2e7bad6a80c29161bd58b91e4762cbb3ac25e5d0db5a8?r=pg&d=retro&size=200",
+      "https://n8n.io/nodes/github-trigger.svg",
+      "https://n8n.io/nodes/http-request.svg",
+      "https://n8n.io/nodes/mautic.svg",
+      "https://n8n.io/nodes/calendly-trigger.svg",
+      "https://gravatar.com/avatar/7ee0febc0cbec2f1f6b24ddec3c4322e27c82c91dc729cfecf6ce12bfddd058d?r=pg&d=retro&size=200",
+      "https://n8n.io/nodes/google-drive.svg",
+      "https://gravatar.com/avatar/4cda9c7c1c24fdb61896cac588296d1dad03655a439ab71ef34f4c62c0ba8524?r=pg&d=retro&size=200",
+      "https://n8n.io/nodes/notion.svg",
+      "https://n8n.io/nodes/google-drive-trigger.svg",
+      "https://gravatar.com/avatar/a3f78329cbd3f3239726910fb8b0f8e5e7bb340868f57b959989e7f8d8ea1608?r=pg&d=retro&size=200",
+      "https://n8n.io/nodes/merge.svg",
+      "https://gravatar.com/avatar/e7ca218dfc87b68344bbd66f40da01546d2f6fc1cf884267821e8a77e3e8410a?r=pg&d=retro&size=200",
+      "https://n8n.io/nodes/google-sheets.svg",
+      "https://gravatar.com/avatar/988a46579257f9e8c522aeb7b906f1ee96e47c4298faa548e41b04957f455ae3?r=pg&d=retro&size=200",
+      "https://gravatar.com/avatar/d41b8a0aa81139243509c58870f5b4be292824a507ab57d10ed066d8628ed8da?r=pg&d=retro&size=200",
+      "https://n8n.io/images/stars-footer.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_igordisco_9243b86232_cd9a5c94ce.jpg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/neutral_avatar_purple_fee36bffe3.PNG",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_anderoav_589989fc39_ceb1c71a0c.jpg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_maxim_poulsen_48f450887b_852d0439bc.jpeg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Felix_Leber_f7a5b3c776_130aeca79d.jpeg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_Ironben_0a4b3e7d12_e35805265c.jpg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Francois_lassl_d5cfb504c7_710c87121d.jpeg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twitter_x_62a44e965e.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/github_e1f217d7a3_b9a271324f.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/discord_253947c90b_191e8f60fa.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/linkedin_d710e84d63_6ed0dc28aa.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/youtube_de4bdef50a_4b3a8b8aac.svg"
+    ],
+    "video_urls": [],
+    "code_snippets": [],
+    "conclusion": "",
+    "troubleshooting": {
+      "common_issues": [],
+      "error_messages": []
+    },
+    "related_workflows": []
+  },
+  "errors": [],
+  "extraction_time": 5.694062,
+  "metadata": {
+    "workflow_id": "1967",
+    "url": "https://n8n.io/workflows/1967",
+    "extracted_at": "2025-10-09T21:53:36.533023",
+    "extractor_version": "1.0.0"
+  }
+}

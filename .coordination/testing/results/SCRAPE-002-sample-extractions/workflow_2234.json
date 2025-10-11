@@ -1,0 +1,47 @@
+{
+  "workflow_id": "2234",
+  "url": "https://n8n.io/workflows/2234",
+  "extraction_status": "complete",
+  "extraction_time": "7.07s",
+  "error": null,
+  "title": "AI-Powered Children's Arabic Storytelling on Telegram",
+  "description": "Template for Kids' Story in Arabic The n8n template for creating kids' stories in Arabic offers a versatile platform for storytellers to captivate young...",
+  "author": "Igor Fediczko@igordisco",
+  "use_case": "Template for Kids' Story in Arabic The n8n template for creating kids' stories in Arabic offers a versatile platform for storytellers to captivate young.",
+  "primary_category": "Strictly necessary",
+  "secondary_categories": [
+    "Performance",
+    "Targeting",
+    "Functionality",
+    "Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.",
+    "Performance cookies are used to see how visitors use the website, eg. analytics cookies. Those cookies cannot be used to directly identify a certain visitor.",
+    "Targeting cookies are used to identify visitors between different websites, eg. content partners, banner networks. Those cookies may be used by companies to build a profile of visitor interests or show relevant ads on other websites.",
+    "Functionality cookies are used to remember visitor information on the website, eg. language, timezone, enhanced content."
+  ],
+  "node_tags": [
+    "github147,080"
+  ],
+  "general_tags": [
+    "Functionality",
+    "Performance",
+    "Targeting",
+    "Strictly necessary"
+  ],
+  "difficulty_level": "intermediate",
+  "views": 0,
+  "upvotes": 0,
+  "created_date": "2025-10-10T10:06:17.921927",
+  "updated_date": "2025-10-10T10:06:17.921927",
+  "setup_instructions": "Template for Kids' Story in Arabic The n8n template for creating kids' stories in Arabic offers a versatile platform for storytellers to captivate young...",
+  "prerequisites": [
+    "Prompt Setup: Configures prompt for textless image creation wi",
+    "for the website to operate properly are allowed to be set without your permission",
+    ".io\",productApiUrl:\"https://api.n8n.io\",siteUrl:\"https://n8n.io\",nodeLogoDir:\"/no",
+    "reTop guidesTelegram botsOpen-source chatbotOpen-source LLMOpen-source",
+    "rytelling-on-telegram/\",[],{\"id\":5,\"attributes\":194},{\"content\":195,\"co"
+  ],
+  "estimated_setup_time": "4 minutes 59 sec",
+  "industry": [
+    "Strictly necessary"
+  ]
+}

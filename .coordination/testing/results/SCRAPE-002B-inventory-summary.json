@@ -1,0 +1,29 @@
+{
+  "task_id": "SCRAPE-002B",
+  "inventory_date": "2025-10-10T15:37:43.798295",
+  "total_workflows_discovered": 6022,
+  "total_pages_crawled": 1,
+  "crawl_duration_seconds": 0.164986,
+  "crawl_method": "sitemap_xml",
+  "sitemap_url": "https://n8n.io/sitemap-workflows.xml",
+  "duplicate_workflows_found": 0,
+  "invalid_urls_found": 0,
+  "crawl_start_time": "2025-10-10T15:37:42.250945",
+  "crawl_end_time": "2025-10-10T15:37:42.415931",
+  "workflow_id_ranges": {
+    "lowest": "1",
+    "highest": "9390"
+  },
+  "database_status": {
+    "table_created": true,
+    "total_records": 6022,
+    "duplicates_removed": 0,
+    "indexes_created": 2
+  },
+  "storage_stats": {
+    "total_attempted": 6022,
+    "stored": 6022,
+    "duplicates_skipped": 0,
+    "errors": 0
+  }
+}

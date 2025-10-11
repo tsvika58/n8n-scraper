@@ -1,0 +1,158 @@
+[
+  {
+    "workflow_id": "2462",
+    "url": "https://n8n.io/workflows/2462",
+    "result": {
+      "success": true,
+      "workflow_id": "2462",
+      "data": {
+        "title": "Angie, Personal AI Assistant with Telegram Voice and Text",
+        "description": "How it works: This project creates a personal AI assistant named Angie that operates through Telegram. Angie can summarize daily emails, look up calendar...",
+        "author": "Igor Fediczko@igordisco",
+        "use_case": "How it works: This project creates a personal AI assistant named Angie that operates through Telegram.",
+        "primary_category": "Strictly necessary",
+        "secondary_categories": [
+          "Performance",
+          "Targeting",
+          "Functionality",
+          "Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.",
+          "Performance cookies are used to see how visitors use the website, eg. analytics cookies. Those cookies cannot be used to directly identify a certain visitor.",
+          "Targeting cookies are used to identify visitors between different websites, eg. content partners, banner networks. Those cookies may be used by companies to build a profile of visitor interests or show relevant ads on other websites.",
+          "Functionality cookies are used to remember visitor information on the website, eg. language, timezone, enhanced content."
+        ],
+        "node_tags": [
+          "github147,010"
+        ],
+        "general_tags": [
+          "Performance",
+          "Functionality",
+          "Targeting",
+          "Strictly necessary"
+        ],
+        "difficulty_level": "intermediate",
+        "views": 0,
+        "upvotes": 0,
+        "created_date": "2025-10-09T22:29:48.504579",
+        "updated_date": "2025-10-09T22:29:48.504579",
+        "setup_instructions": "How it works: This project creates a personal AI assistant named Angie that operates through Telegram. Angie can summarize daily emails, look up calendar...",
+        "prerequisites": [
+          "retrieved and transcribed to text using OpenAI's API Speech to Text",
+          "{\n\t\tcontent: attr(label);\n\t\tfont-weight: bold;\n\t\twidth: 120px;\n\t\tmin-width: 120px;\n\t}",
+          "__sec__token",
+          ".hockeystack.com",
+          "{\n    background-color: #FFFFFF;\n}\n#cookiescript_injected"
+        ],
+        "estimated_setup_time": "4 minutes 59 sec",
+        "industry": [
+          "Strictly necessary"
+        ]
+      },
+      "extraction_time": 7.698160886764526,
+      "error": null
+    }
+  },
+  {
+    "workflow_id": "2463",
+    "url": "https://n8n.io/workflows/2463",
+    "result": {
+      "success": true,
+      "workflow_id": "2463",
+      "data": {
+        "title": "Enrich Company Data from Google Sheet with OpenAI Agent and ScrapingBee",
+        "description": "This workflow demonstrates how to enrich data from a list of companies in a spreadsheet. While this workflow is production-ready if all steps are followed,...",
+        "author": "Igor Fediczko@igordisco",
+        "use_case": "This workflow demonstrates how to enrich data from a list of companies in a spreadsheet.",
+        "primary_category": "Strictly necessary",
+        "secondary_categories": [
+          "Performance",
+          "Targeting",
+          "Functionality",
+          "Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.",
+          "Performance cookies are used to see how visitors use the website, eg. analytics cookies. Those cookies cannot be used to directly identify a certain visitor.",
+          "Targeting cookies are used to identify visitors between different websites, eg. content partners, banner networks. Those cookies may be used by companies to build a profile of visitor interests or show relevant ads on other websites.",
+          "Functionality cookies are used to remember visitor information on the website, eg. language, timezone, enhanced content."
+        ],
+        "node_tags": [
+          "github147,010"
+        ],
+        "general_tags": [
+          "Performance",
+          "Functionality",
+          "Targeting",
+          "Strictly necessary"
+        ],
+        "difficulty_level": "intermediate",
+        "views": 0,
+        "upvotes": 0,
+        "created_date": "2025-10-09T22:29:55.647725",
+        "updated_date": "2025-10-09T22:29:55.647725",
+        "setup_instructions": "This workflow demonstrates how to enrich data from a list of companies in a spreadsheet. While this workflow is production-ready if all steps are followed,...",
+        "prerequisites": [
+          "{\n\t\tcontent: attr(label);\n\t\tfont-weight: bold;\n\t\twidth: 120px;\n\t\tmin-width: 120px;\n\t}",
+          "ScrapingBee is recommended, as it allows you to configur",
+          "__sec__token",
+          "at this step",
+          "kflow: This sub-node calls the workflow to use ScrapingBee and retrieves the scraped data."
+        ],
+        "estimated_setup_time": "4 minutes 59 sec",
+        "industry": [
+          "Strictly necessary"
+        ]
+      },
+      "extraction_time": 7.194000005722046,
+      "error": null
+    }
+  },
+  {
+    "workflow_id": "2464",
+    "url": "https://n8n.io/workflows/2464",
+    "result": {
+      "success": true,
+      "workflow_id": "2464",
+      "data": {
+        "title": "Scale Deal Flow with a Pitch Deck AI Vision, Chatbot and QDrant Vector Store",
+        "description": "Are you a popular tech startup accelerator (named after a particular higher order function) overwhelmed with 1000s of pitch decks on a daily basis? Wish you...",
+        "author": "Igor Fediczko@igordisco",
+        "use_case": "Are you a popular tech startup accelerator (named after a particular higher order function) overwhelmed with 1000s of pitch decks on a daily basis? Wish you.",
+        "primary_category": "Strictly necessary",
+        "secondary_categories": [
+          "Performance",
+          "Targeting",
+          "Functionality",
+          "Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.",
+          "Performance cookies are used to see how visitors use the website, eg. analytics cookies. Those cookies cannot be used to directly identify a certain visitor.",
+          "Targeting cookies are used to identify visitors between different websites, eg. content partners, banner networks. Those cookies may be used by companies to build a profile of visitor interests or show relevant ads on other websites.",
+          "Functionality cookies are used to remember visitor information on the website, eg. language, timezone, enhanced content."
+        ],
+        "node_tags": [
+          "github147,010"
+        ],
+        "general_tags": [
+          "Performance",
+          "Functionality",
+          "Targeting",
+          "Strictly necessary"
+        ],
+        "difficulty_level": "intermediate",
+        "views": 0,
+        "upvotes": 0,
+        "created_date": "2025-10-09T22:30:03.370765",
+        "updated_date": "2025-10-09T22:30:03.370765",
+        "setup_instructions": "Are you a popular tech startup accelerator (named after a particular higher order function) overwhelmed with 1000s of pitch decks on a daily basis? Wish you...",
+        "prerequisites": [
+          "{\n\t\tcontent: attr(label);\n\t\tfont-weight: bold;\n\t\twidth: 120px;\n\t\tmin-width: 120px;\n\t}",
+          "__sec__token",
+          ".hockeystack.com",
+          "{\n    background-color: #FFFFFF;\n}\n#cookiescript_injected",
+          "visiting the said website"
+        ],
+        "estimated_setup_time": "4 minutes 59 sec",
+        "industry": [
+          "Strictly necessary"
+        ]
+      },
+      "extraction_time": 7.663463830947876,
+      "error": null
+    }
+  }
+]

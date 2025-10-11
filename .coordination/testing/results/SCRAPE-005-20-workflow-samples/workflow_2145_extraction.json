@@ -1,0 +1,52 @@
+{
+  "success": true,
+  "data": {
+    "introduction": "Who is this template for?This template is for everyone who has to take notes during a call:Talent Acquisition Managers / Talent Acquisition Specialists / RecruitersHR professionalsSales teams, customer success teamsProduct teams / User Experience Designers / anyone conducting user research interviewsUse caseThis workflow allows specific events created on Google Calendar (or any other meeting scheduling tool like Calendly) to trigger the duplication and renaming of a specific template document.Example:For each new screening call that is scheduled in your calendar, you want to create a draft of your screening interview template for the role, titled \"{Name of the candidate} | {Date of the interview}\", and located in your Google Drive in a specific folderThis workflow could then be extended to copy the link to the file on a Notion database that is shared with the team (check \"To go further\" section).This workflow ensures that if you're jumping from calls to calls, you're already set up to take notes, and every document is tidied up and sorted in a structured way!How it worksThe workflow starts when a new event is created in Google CalendarThe Filter node then selects a specific type of events, depending on a chosen pattern (title includes a specific term, organizer is X, attendees include Y, etc.)The workflow then searches for a specific folder in your Google Drive, where the file you want to duplicate is locatedThe workflow then searches for the specific file you want to duplicateThe last step allows to duplicate and rename the file with variables from your Google Calendar eventSet upSet up credentials forGoogle Calendar,Google Drive, andGoogle File. You'll need a Google Workspace account.Set up theFilternode with the pattern you want to look for to retreive specific events in your calendarSet up theGoogle Driveyou want to search inSet up theGoogle Fileyou want to duplicateSet up variable at the last step to rename your duplicated file however you want it, or add a descriptionTo go furtherHere's a few idea to enhance this workflow depending on your specific needs:Instead of a filter, separate your flow depending on your use case (ex: you have want to fetch different templates depending on the type of call it'll be).Switch Google Calendar for another trigger (Calendly, Hubspot..)10 minutes before the event, send the duplicate Google File to the meeting organizer through SlackThe day after the event, if the event hasn't been cancelled, add the link to the Google File to your ATS, Hubspot, etc.",
+    "overview": "",
+    "tutorial_text": "Who is this template for?This template is for everyone who has to take notes during a call:Talent Acquisition Managers / Talent Acquisition Specialists / RecruitersHR professionalsSales teams, customer success teamsProduct teams / User Experience Designers / anyone conducting user research interviewsUse caseThis workflow allows specific events created on Google Calendar (or any other meeting scheduling tool like Calendly) to trigger the duplication and renaming of a specific template document.Example:For each new screening call that is scheduled in your calendar, you want to create a draft of your screening interview template for the role, titled \"{Name of the candidate} | {Date of the interview}\", and located in your Google Drive in a specific folderThis workflow could then be extended to copy the link to the file on a Notion database that is shared with the team (check \"To go further\" section).This workflow ensures that if you're jumping from calls to calls, you're already set up to take notes, and every document is tidied up and sorted in a structured way!How it worksThe workflow starts when a new event is created in Google CalendarThe Filter node then selects a specific type of events, depending on a chosen pattern (title includes a specific term, organizer is X, attendees include Y, etc.)The workflow then searches for a specific folder in your Google Drive, where the file you want to duplicate is locatedThe workflow then searches for the specific file you want to duplicateThe last step allows to duplicate and rename the file with variables from your Google Calendar eventSet upSet up credentials forGoogle Calendar,Google Drive, andGoogle File. You'll need a Google Workspace account.Set up theFilternode with the pattern you want to look for to retreive specific events in your calendarSet up theGoogle Driveyou want to search inSet up theGoogle Fileyou want to duplicateSet up variable at the last step to rename your duplicated file however you want it, or add a descriptionTo go furtherHere's a few idea to enhance this workflow depending on your specific needs:Instead of a filter, separate your flow depending on your use case (ex: you have want to fetch different templates depending on the type of call it'll be).Switch Google Calendar for another trigger (Calendly, Hubspot..)10 minutes before the event, send the duplicate Google File to the meeting organizer through SlackThe day after the event, if the event hasn't been cancelled, add the link to the Google File to your ATS, Hubspot, etc.",
+    "tutorial_sections": [],
+    "step_by_step": [],
+    "best_practices": [],
+    "common_pitfalls": [],
+    "image_urls": [
+      "https://n8n.io/nodes/google-drive.svg",
+      "https://n8n.io/nodes/google-calendar-trigger.svg",
+      "https://gravatar.com/avatar/78bbae9349b470df5eba023c91c2eee1f23b113980b742403206678c4ba418ff?r=pg&d=retro&size=200",
+      "https://n8n.io/nodes/webhook.svg",
+      "https://n8n.io/nodes/item-lists.svg",
+      "https://gravatar.com/avatar/50a86be376ddf464aadcb15d2755c34741e2050270c2269112ad15a955acaa91?r=pg&d=retro&size=200",
+      "https://n8n.io/nodes/http-request.svg",
+      "https://gravatar.com/avatar/b3d1a47322f05a8be3d2e7bad6a80c29161bd58b91e4762cbb3ac25e5d0db5a8?r=pg&d=retro&size=200",
+      "https://n8n.io/nodes/merge.svg",
+      "https://n8n.io/images/stars-footer.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_igordisco_9243b86232_cd9a5c94ce.jpg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/neutral_avatar_purple_fee36bffe3.PNG",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_anderoav_589989fc39_ceb1c71a0c.jpg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_maxim_poulsen_48f450887b_852d0439bc.jpeg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Felix_Leber_f7a5b3c776_130aeca79d.jpeg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_Ironben_0a4b3e7d12_e35805265c.jpg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Francois_lassl_d5cfb504c7_710c87121d.jpeg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twitter_x_62a44e965e.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/github_e1f217d7a3_b9a271324f.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/discord_253947c90b_191e8f60fa.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/linkedin_d710e84d63_6ed0dc28aa.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/youtube_de4bdef50a_4b3a8b8aac.svg"
+    ],
+    "video_urls": [],
+    "code_snippets": [],
+    "conclusion": "",
+    "troubleshooting": {
+      "common_issues": [],
+      "error_messages": []
+    },
+    "related_workflows": []
+  },
+  "errors": [],
+  "extraction_time": 5.692998,
+  "metadata": {
+    "workflow_id": "2145",
+    "url": "https://n8n.io/workflows/2145",
+    "extracted_at": "2025-10-09T21:53:15.405959",
+    "extractor_version": "1.0.0"
+  }
+}

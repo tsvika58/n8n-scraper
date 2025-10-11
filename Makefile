@@ -14,6 +14,9 @@ help:
 	@echo ""
 	@echo "Development:"
 	@echo "  make test           Run tests with coverage"
+	@echo "  make test-dash      Run tests in NEW terminal with dashboard"
+	@echo "  make test-dash-fast Run tests in NEW terminal (fast mode)"
+	@echo "  make test-dash-here Run tests in current terminal"
 	@echo "  make lint           Run linting (ruff + mypy)"
 	@echo "  make format         Format code (black + isort)"
 	@echo "  make clean          Remove cache and temp files"
@@ -43,6 +46,25 @@ test:
 
 test-fast:
 	pytest tests/ -v -x
+
+test-dash:
+	./open-in-cursor-terminal.sh -v --cov=src --cov-report=term-missing
+
+test-dash-fast:
+	./open-in-cursor-terminal.sh -v -x
+
+test-dash-unit:
+	./open-in-cursor-terminal.sh -v tests/unit/
+
+test-dash-integration:
+	./open-in-cursor-terminal.sh -v tests/integration/
+
+# Run tests in current terminal (no new window)
+test-dash-here:
+	./test-with-timer.sh -v --cov=src --cov-report=term-missing
+
+test-dash-fast-here:
+	./test-with-timer.sh -v -x
 
 # Code Quality
 lint:
@@ -115,4 +137,7 @@ dev: format lint test
 # CI simulation
 ci: install lint test
 	@echo "✅ CI checks passed!"
+
+
+
 

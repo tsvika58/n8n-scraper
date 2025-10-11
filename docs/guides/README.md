@@ -45,3 +45,6 @@ When creating a new guide:
 
 Place your guide documents in this directory.
 
+
+
+

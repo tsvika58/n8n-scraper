@@ -1,0 +1,48 @@
+{
+  "total": 5,
+  "successful": 0,
+  "failed": 5,
+  "success_rate": 0.0,
+  "videos": [
+    {
+      "video_id": "laHIzhsz12E",
+      "workflow": "6270",
+      "name": "AI Agent Tutorial",
+      "success": false,
+      "method": "API",
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "video_id": "ROgf5dVqYPQ",
+      "workflow": "8237",
+      "name": "Personal Life Manager",
+      "success": false,
+      "method": "API",
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "video_id": "dQw4w9WgXcQ",
+      "workflow": "sample",
+      "name": "Rick Astley",
+      "success": false,
+      "method": "API",
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "video_id": "jNQXAC9IVRw",
+      "workflow": "sample",
+      "name": "Me at the zoo",
+      "success": false,
+      "method": "API",
+      "error": "no element found: line 1, column 0"
+    },
+    {
+      "video_id": "9bZkp7q19f0",
+      "workflow": "sample",
+      "name": "Gangnam Style",
+      "success": false,
+      "method": "API",
+      "error": "no element found: line 1, column 0"
+    }
+  ]
+}

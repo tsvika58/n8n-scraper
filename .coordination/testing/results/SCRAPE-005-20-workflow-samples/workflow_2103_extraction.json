@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "data": {
+    "introduction": "Product Introduction:You can create a form on n8n through which you can collect leads from interested user's.You can also verify each user's email address to validate whether it's a valid email to make sure it lands on their inbox(suitable for those who have newletter / want's to send bulk email)The leads with valid email will then get saved as a leads with the relevant field data to gmail, google sheets and discord(through webhook). You can add/remove any integration you feel like.Setup Guide:Create Your Form:Begin by logging into your n8n account and navigating to the workflow editor. You can then customize your form fields to gather relevant information from your prospects, such as name, email address, and any additional data you require.Email Verification:After collecting the lead data, add an Email Verification node to validate each user's email address. This crucial step ensures that only genuine and deliverable email addresses are included in your lead database, maximizing the effectiveness of your outreach efforts.We have usedhunter.ioservice in this, you can change it to any other service you need.Save Leads:Next, incorporate nodes to save your verified leads to various platforms for streamlined management. Utilize the Gmail node to store lead information directly in your Gmail account, ensuring easy access and organization. Additionally, leverage the Google Sheets node to archive lead data in a spreadsheet for comprehensive tracking and analysis.Integrate with Discord:For real-time notifications and collaboration, integrate n8n with Discord using the Webhook node. Configure the webhook to send lead information to your designated Discord channel, enabling your team to stay informed and coordinate effectively.Customize Integrations:Tailor your workflow by adding or removing integrations based on your specific requirements. Whether you prefer to connect with additional platforms or streamline your workflow further, n8n offers unparalleled flexibility to adapt to your business needs.Experience the simplicity and efficiency of n8n to revolutionize your lead generation strategy and propel your success to new heights.",
+    "overview": "",
+    "tutorial_text": "Product Introduction:You can create a form on n8n through which you can collect leads from interested user's.You can also verify each user's email address to validate whether it's a valid email to make sure it lands on their inbox(suitable for those who have newletter / want's to send bulk email)The leads with valid email will then get saved as a leads with the relevant field data to gmail, google sheets and discord(through webhook). You can add/remove any integration you feel like.Setup Guide:Create Your Form:Begin by logging into your n8n account and navigating to the workflow editor. You can then customize your form fields to gather relevant information from your prospects, such as name, email address, and any additional data you require.Email Verification:After collecting the lead data, add an Email Verification node to validate each user's email address. This crucial step ensures that only genuine and deliverable email addresses are included in your lead database, maximizing the effectiveness of your outreach efforts.We have usedhunter.ioservice in this, you can change it to any other service you need.Save Leads:Next, incorporate nodes to save your verified leads to various platforms for streamlined management. Utilize the Gmail node to store lead information directly in your Gmail account, ensuring easy access and organization. Additionally, leverage the Google Sheets node to archive lead data in a spreadsheet for comprehensive tracking and analysis.Integrate with Discord:For real-time notifications and collaboration, integrate n8n with Discord using the Webhook node. Configure the webhook to send lead information to your designated Discord channel, enabling your team to stay informed and coordinate effectively.Customize Integrations:Tailor your workflow by adding or removing integrations based on your specific requirements. Whether you prefer to connect with additional platforms or streamline your workflow further, n8n offers unparalleled flexibility to adapt to your business needs.Experience the simplicity and efficiency of n8n to revolutionize your lead generation strategy and propel your success to new heights.",
+    "tutorial_sections": [],
+    "step_by_step": [],
+    "best_practices": [],
+    "common_pitfalls": [],
+    "image_urls": [
+      "https://n8n.io/nodes/google-sheets.svg",
+      "https://gravatar.com/avatar/b99396a974efcf272f9ad7e43dc90a0a0e0ecef18dbf1d37dbfea72074c2ea23?r=pg&d=retro&size=200",
+      "https://n8n.io/nodes/http-request.svg",
+      "https://gravatar.com/avatar/e57785a112fbcca1ac70d537a9ed5c5a68be59f808ed8b36475bde0e2c8f384b?r=pg&d=retro&size=200",
+      "https://gravatar.com/avatar/2b74c7f530e250439f5d752f2623ead4921fbb8aef56343c922b2873ef8a619f?r=pg&d=retro&size=200",
+      "https://n8n.io/nodes/merge.svg",
+      "https://gravatar.com/avatar/b0a32f127a6ad690cd4ee808cb4d1b59d3b5e53410181d54f91d10c0027ebb43?r=pg&d=retro&size=200",
+      "https://n8n.io/images/stars-footer.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_igordisco_9243b86232_cd9a5c94ce.jpg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/neutral_avatar_purple_fee36bffe3.PNG",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_anderoav_589989fc39_ceb1c71a0c.jpg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_maxim_poulsen_48f450887b_852d0439bc.jpeg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Felix_Leber_f7a5b3c776_130aeca79d.jpeg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_Ironben_0a4b3e7d12_e35805265c.jpg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Francois_lassl_d5cfb504c7_710c87121d.jpeg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twitter_x_62a44e965e.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/github_e1f217d7a3_b9a271324f.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/discord_253947c90b_191e8f60fa.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/linkedin_d710e84d63_6ed0dc28aa.svg",
+      "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/youtube_de4bdef50a_4b3a8b8aac.svg"
+    ],
+    "video_urls": [],
+    "code_snippets": [],
+    "conclusion": "",
+    "troubleshooting": {
+      "common_issues": [],
+      "error_messages": []
+    },
+    "related_workflows": []
+  },
+  "errors": [],
+  "extraction_time": 5.4945,
+  "metadata": {
+    "workflow_id": "2103",
+    "url": "https://n8n.io/workflows/2103",
+    "extracted_at": "2025-10-09T21:51:50.244836",
+    "extractor_version": "1.0.0"
+  }
+}

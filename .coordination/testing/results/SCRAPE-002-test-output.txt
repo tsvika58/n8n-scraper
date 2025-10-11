@@ -1,0 +1,159 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.1, pytest-8.4.2, pluggy-1.6.0 -- /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper
+configfile: pytest.ini
+plugins: asyncio-1.2.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 46 items
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extractor_initialization PASSED [  2%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_basic_metadata_success PASSED [  4%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_all_required_fields_present PASSED [  6%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_title_not_empty PASSED [  8%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_description_type PASSED [ 10%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_categories_structure PASSED [ 13%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_structure PASSED [ 15%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_difficulty_valid_value PASSED [ 17%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_types PASSED [ 19%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_dates_format PASSED [ 21%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_structure PASSED [ 23%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_structure PASSED [ 26%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_performance_timing PASSED [ 28%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_invalid_workflow_id_handling PASSED [ 30%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_malformed_url_handling PASSED [ 32%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extraction_count_increments PASSED [ 34%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_multiple_workflows PASSED [ 36%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_result_completeness_high PASSED [ 39%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_error_handling_paths PASSED [ 41%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_title_error_handling PASSED [ 43%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_description_error_handling PASSED [ 45%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_author_error_handling PASSED [ 47%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_categories_error_handling PASSED [ 50%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_error_handling PASSED [ 52%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_difficulty_error_handling PASSED [ 54%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_error_handling PASSED [ 56%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_dates_error_handling PASSED [ 58%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_error_handling PASSED [ 60%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_error_handling PASSED [ 63%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_timeout PASSED [ 65%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_network_error PASSED [ 67%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_page_load_error PASSED [ 69%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_browser_close_error PASSED [ 71%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_use_case_field PASSED [ 73%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_secondary_categories_type PASSED [ 76%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_multiple_calls_increment_count PASSED [ 78%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_returns_workflow_id PASSED [ 80%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_has_extraction_time PASSED [ 82%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_node_tags_is_list PASSED [ 84%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_prerequisites_is_list PASSED [ 86%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_is_list PASSED [ 89%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_result_has_success_field PASSED [ 91%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_result_has_error_field PASSED [ 93%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_empty_page_content PASSED [ 95%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_handles_unicode_content PASSED [ 97%]
+tests/unit/test_layer1_metadata.py::test_integration_extraction_pipeline PASSED [100%]
+
+=============================== warnings summary ===============================
+src/database/schema.py:12
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/schema.py:12: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_description_error_handling
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_error_handling
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_empty_page_content
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:224: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_author_error_handling
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_empty_page_content
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:251: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_categories_error_handling
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:303: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:345: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:378: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_difficulty_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:418: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:463: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:485: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_dates_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:548: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:591: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:684: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_empty_page_content
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_handles_unicode_content
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:190: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.11.1-final-0 _______________
+
+Name                               Stmts   Miss   Cover   Missing
+-----------------------------------------------------------------
+src/__init__.py                        0      0 100.00%
+src/database/__init__.py               0      0 100.00%
+src/database/schema.py                99      9  90.91%   159-175, 188-198, 211
+src/models/__init__.py                 0      0 100.00%
+src/orchestrator/__init__.py           0      0 100.00%
+src/parsers/__init__.py                0      0 100.00%
+src/scrapers/__init__.py               0      0 100.00%
+src/scrapers/layer1_metadata.py      346     79  77.17%   195-197, 220-222, 229-231, 256-258, 273-275, 314-316, 386-388, 408-416, 424-426, 458-461, 478-483, 495-496, 500-502, 529-546, 557-560, 586-589, 641, 643, 678-680, 682, 695-697
+src/scrapers/layer3_explainer.py     264    264   0.00%   12-592
+src/utils/__init__.py                  0      0 100.00%
+src/utils/logging.py                  38      0 100.00%
+-----------------------------------------------------------------
+TOTAL                                747    352  52.88%
+Coverage HTML written to dir htmlcov
+================= 46 passed, 18 warnings in 307.19s (0:05:07) ==================

@@ -1,0 +1,29 @@
+{
+  "success": true,
+  "data": {
+    "introduction": "",
+    "overview": "",
+    "tutorial_text": "",
+    "tutorial_sections": [],
+    "step_by_step": [],
+    "best_practices": [],
+    "common_pitfalls": [],
+    "image_urls": [],
+    "video_urls": [],
+    "code_snippets": [],
+    "conclusion": "",
+    "troubleshooting": {
+      "common_issues": [],
+      "error_messages": []
+    },
+    "related_workflows": []
+  },
+  "errors": [],
+  "extraction_time": 5.546674,
+  "metadata": {
+    "workflow_id": "1812",
+    "url": "https://n8n.io/workflows/1812",
+    "extracted_at": "2025-10-09T21:53:51.263306",
+    "extractor_version": "1.0.0"
+  }
+}

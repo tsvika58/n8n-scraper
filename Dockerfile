@@ -74,8 +74,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Install Playwright browsers (Chromium only)
-RUN playwright install chromium && \
-    playwright install-deps chromium
+# Note: We skip install-deps because ARM64 has font package issues
+# The system dependencies installed earlier (libnss3, etc.) are sufficient
+RUN playwright install chromium
 
 # ============================================================================
 # COPY APPLICATION CODE
@@ -114,7 +115,7 @@ VOLUME ["/data", "/media", "/app/logs"]
 # ENTRY POINT
 # ============================================================================
 ENTRYPOINT ["python"]
-CMD ["scripts/scrape.py", "--help"]
+CMD ["-c", "import time; print('N8N Scraper container ready'); time.sleep(86400)"]
 
 # ============================================================================
 # BUILD INSTRUCTIONS

@@ -1,0 +1,506 @@
+{
+  "test_date": "2025-10-09T21:50:25.750293",
+  "total_workflows": 8,
+  "successful": 8,
+  "failed": 0,
+  "success_rate": 100.0,
+  "average_time": 5.529664375,
+  "average_text_length": 1078.875,
+  "total_images": 143,
+  "total_videos": 0,
+  "total_duration": 60.632844,
+  "results": [
+    {
+      "workflow": {
+        "id": "2462",
+        "url": "https://n8n.io/workflows/2462",
+        "name": "Angie, Personal AI Assistant"
+      },
+      "success": true,
+      "time": 5.499196,
+      "text_length": 1131,
+      "images": 23,
+      "videos": 0,
+      "errors": 0,
+      "result": {
+        "success": true,
+        "data": {
+          "introduction": "How it works:This project creates a personal AI assistant named Angie that operates through Telegram. Angie can summarize daily emails, look up calendar entries, remind users of upcoming tasks, and retrieve contact information. The assistant can interact with users via both voice and text inputs.Step-by-step:Telegram Trigger: The workflow starts with a Telegram trigger that listens for incoming message events. The system determines if the incoming message is voice or text. If voice, the voice file is retrieved and transcribed to text using OpenAI's API Speech to TextAI Assistant: The telegram request is passed to the AI assistant (Angie).Tools Integration: The AI assistant is equipped with several tools:Get Email: Uses Gmail API to fetch recent emails, filtering by date.Get Calendar: Retrieves calendar entries for specified dates.Get Tasks: Connects to a Baserow (open-source Airtable alternative) database to fetch to-do list items.Get Contacts: Also uses Baserow to retrieve contact information.Response Generation: The AI formulates a response based on the gathered information and sends back to the user on Telegram",
+          "overview": "",
+          "tutorial_text": "How it works:This project creates a personal AI assistant named Angie that operates through Telegram. Angie can summarize daily emails, look up calendar entries, remind users of upcoming tasks, and retrieve contact information. The assistant can interact with users via both voice and text inputs.Step-by-step:Telegram Trigger: The workflow starts with a Telegram trigger that listens for incoming message events. The system determines if the incoming message is voice or text. If voice, the voice file is retrieved and transcribed to text using OpenAI's API Speech to TextAI Assistant: The telegram request is passed to the AI assistant (Angie).Tools Integration: The AI assistant is equipped with several tools:Get Email: Uses Gmail API to fetch recent emails, filtering by date.Get Calendar: Retrieves calendar entries for specified dates.Get Tasks: Connects to a Baserow (open-source Airtable alternative) database to fetch to-do list items.Get Contacts: Also uses Baserow to retrieve contact information.Response Generation: The AI formulates a response based on the gathered information and sends back to the user on Telegram",
+          "tutorial_sections": [],
+          "step_by_step": [],
+          "best_practices": [],
+          "common_pitfalls": [],
+          "image_urls": [
+            "https://n8n.io/nodes/telegram.svg",
+            "https://gravatar.com/avatar/1d8dbb30401a76425734d4319abbaa38548b7572064ca080740bbfe60324772a?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/http-request.svg",
+            "https://n8n.io/nodes/telegram-trigger.svg",
+            "https://n8n.io/nodes/merge.svg",
+            "https://n8n.io/nodes/openai-chat-model.svg",
+            "https://gravatar.com/avatar/b3d1a47322f05a8be3d2e7bad6a80c29161bd58b91e4762cbb3ac25e5d0db5a8?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/74234187cf4a650d53f6a86e7b03d1bcb8cfef4cbd0552eabd8d966cd808cc54?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/4ab99e51473df76838beeaac908747f7928c625f869794815cabe34016967d51?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/a551e67c6fe7affd5f882a527dee154bb6c3ac90cf878326accb3fb3ec77c8a6?r=pg&d=retro&size=200",
+            "https://n8n.io/images/stars-footer.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_igordisco_9243b86232_cd9a5c94ce.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/neutral_avatar_purple_fee36bffe3.PNG",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_anderoav_589989fc39_ceb1c71a0c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_maxim_poulsen_48f450887b_852d0439bc.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Felix_Leber_f7a5b3c776_130aeca79d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_Ironben_0a4b3e7d12_e35805265c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Francois_lassl_d5cfb504c7_710c87121d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twitter_x_62a44e965e.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/github_e1f217d7a3_b9a271324f.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/discord_253947c90b_191e8f60fa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/linkedin_d710e84d63_6ed0dc28aa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/youtube_de4bdef50a_4b3a8b8aac.svg"
+          ],
+          "video_urls": [],
+          "code_snippets": [],
+          "conclusion": "",
+          "troubleshooting": {
+            "common_issues": [],
+            "error_messages": []
+          },
+          "related_workflows": []
+        },
+        "errors": [],
+        "extraction_time": 5.499196,
+        "metadata": {
+          "workflow_id": "2462",
+          "url": "https://n8n.io/workflows/2462",
+          "extracted_at": "2025-10-09T21:50:26.106183",
+          "extractor_version": "1.0.0"
+        }
+      }
+    },
+    {
+      "workflow": {
+        "id": "1954",
+        "url": "https://n8n.io/workflows/1954",
+        "name": "AI Agent Chat"
+      },
+      "success": true,
+      "time": 5.567837,
+      "text_length": 292,
+      "images": 25,
+      "videos": 0,
+      "errors": 0,
+      "result": {
+        "success": true,
+        "data": {
+          "introduction": "This workflow employs OpenAI's language models and SerpAPI to create a responsive, intelligent conversational agent. It comes equipped with manual chat triggers and memory buffer capabilities to ensure seamless interactions.To use this template, you need to be on n8n version 1.50.0 or later.",
+          "overview": "",
+          "tutorial_text": "This workflow employs OpenAI's language models and SerpAPI to create a responsive, intelligent conversational agent. It comes equipped with manual chat triggers and memory buffer capabilities to ensure seamless interactions.To use this template, you need to be on n8n version 1.50.0 or later.",
+          "tutorial_sections": [],
+          "step_by_step": [],
+          "best_practices": [],
+          "common_pitfalls": [],
+          "image_urls": [
+            "https://n8n.io/nodes/openai-chat-model.svg",
+            "https://gravatar.com/avatar/b3d1a47322f05a8be3d2e7bad6a80c29161bd58b91e4762cbb3ac25e5d0db5a8?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/github-trigger.svg",
+            "https://n8n.io/nodes/http-request.svg",
+            "https://n8n.io/nodes/mautic.svg",
+            "https://n8n.io/nodes/calendly-trigger.svg",
+            "https://gravatar.com/avatar/74234187cf4a650d53f6a86e7b03d1bcb8cfef4cbd0552eabd8d966cd808cc54?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/telegram.svg",
+            "https://gravatar.com/avatar/1d8dbb30401a76425734d4319abbaa38548b7572064ca080740bbfe60324772a?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/4ab99e51473df76838beeaac908747f7928c625f869794815cabe34016967d51?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/a551e67c6fe7affd5f882a527dee154bb6c3ac90cf878326accb3fb3ec77c8a6?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/merge.svg",
+            "https://n8n.io/images/stars-footer.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_igordisco_9243b86232_cd9a5c94ce.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/neutral_avatar_purple_fee36bffe3.PNG",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_anderoav_589989fc39_ceb1c71a0c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_maxim_poulsen_48f450887b_852d0439bc.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Felix_Leber_f7a5b3c776_130aeca79d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_Ironben_0a4b3e7d12_e35805265c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Francois_lassl_d5cfb504c7_710c87121d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twitter_x_62a44e965e.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/github_e1f217d7a3_b9a271324f.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/discord_253947c90b_191e8f60fa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/linkedin_d710e84d63_6ed0dc28aa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/youtube_de4bdef50a_4b3a8b8aac.svg"
+          ],
+          "video_urls": [],
+          "code_snippets": [],
+          "conclusion": "",
+          "troubleshooting": {
+            "common_issues": [],
+            "error_messages": []
+          },
+          "related_workflows": []
+        },
+        "errors": [],
+        "extraction_time": 5.567837,
+        "metadata": {
+          "workflow_id": "1954",
+          "url": "https://n8n.io/workflows/1954",
+          "extracted_at": "2025-10-09T21:50:33.607537",
+          "extractor_version": "1.0.0"
+        }
+      }
+    },
+    {
+      "workflow": {
+        "id": "2103",
+        "url": "https://n8n.io/workflows/2103",
+        "name": "Slack Bot"
+      },
+      "success": true,
+      "time": 5.454908,
+      "text_length": 2158,
+      "images": 20,
+      "videos": 0,
+      "errors": 0,
+      "result": {
+        "success": true,
+        "data": {
+          "introduction": "Product Introduction:You can create a form on n8n through which you can collect leads from interested user's.You can also verify each user's email address to validate whether it's a valid email to make sure it lands on their inbox(suitable for those who have newletter / want's to send bulk email)The leads with valid email will then get saved as a leads with the relevant field data to gmail, google sheets and discord(through webhook). You can add/remove any integration you feel like.Setup Guide:Create Your Form:Begin by logging into your n8n account and navigating to the workflow editor. You can then customize your form fields to gather relevant information from your prospects, such as name, email address, and any additional data you require.Email Verification:After collecting the lead data, add an Email Verification node to validate each user's email address. This crucial step ensures that only genuine and deliverable email addresses are included in your lead database, maximizing the effectiveness of your outreach efforts.We have usedhunter.ioservice in this, you can change it to any other service you need.Save Leads:Next, incorporate nodes to save your verified leads to various platforms for streamlined management. Utilize the Gmail node to store lead information directly in your Gmail account, ensuring easy access and organization. Additionally, leverage the Google Sheets node to archive lead data in a spreadsheet for comprehensive tracking and analysis.Integrate with Discord:For real-time notifications and collaboration, integrate n8n with Discord using the Webhook node. Configure the webhook to send lead information to your designated Discord channel, enabling your team to stay informed and coordinate effectively.Customize Integrations:Tailor your workflow by adding or removing integrations based on your specific requirements. Whether you prefer to connect with additional platforms or streamline your workflow further, n8n offers unparalleled flexibility to adapt to your business needs.Experience the simplicity and efficiency of n8n to revolutionize your lead generation strategy and propel your success to new heights.",
+          "overview": "",
+          "tutorial_text": "Product Introduction:You can create a form on n8n through which you can collect leads from interested user's.You can also verify each user's email address to validate whether it's a valid email to make sure it lands on their inbox(suitable for those who have newletter / want's to send bulk email)The leads with valid email will then get saved as a leads with the relevant field data to gmail, google sheets and discord(through webhook). You can add/remove any integration you feel like.Setup Guide:Create Your Form:Begin by logging into your n8n account and navigating to the workflow editor. You can then customize your form fields to gather relevant information from your prospects, such as name, email address, and any additional data you require.Email Verification:After collecting the lead data, add an Email Verification node to validate each user's email address. This crucial step ensures that only genuine and deliverable email addresses are included in your lead database, maximizing the effectiveness of your outreach efforts.We have usedhunter.ioservice in this, you can change it to any other service you need.Save Leads:Next, incorporate nodes to save your verified leads to various platforms for streamlined management. Utilize the Gmail node to store lead information directly in your Gmail account, ensuring easy access and organization. Additionally, leverage the Google Sheets node to archive lead data in a spreadsheet for comprehensive tracking and analysis.Integrate with Discord:For real-time notifications and collaboration, integrate n8n with Discord using the Webhook node. Configure the webhook to send lead information to your designated Discord channel, enabling your team to stay informed and coordinate effectively.Customize Integrations:Tailor your workflow by adding or removing integrations based on your specific requirements. Whether you prefer to connect with additional platforms or streamline your workflow further, n8n offers unparalleled flexibility to adapt to your business needs.Experience the simplicity and efficiency of n8n to revolutionize your lead generation strategy and propel your success to new heights.",
+          "tutorial_sections": [],
+          "step_by_step": [],
+          "best_practices": [],
+          "common_pitfalls": [],
+          "image_urls": [
+            "https://n8n.io/nodes/google-sheets.svg",
+            "https://gravatar.com/avatar/b99396a974efcf272f9ad7e43dc90a0a0e0ecef18dbf1d37dbfea72074c2ea23?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/http-request.svg",
+            "https://gravatar.com/avatar/e57785a112fbcca1ac70d537a9ed5c5a68be59f808ed8b36475bde0e2c8f384b?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/2b74c7f530e250439f5d752f2623ead4921fbb8aef56343c922b2873ef8a619f?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/merge.svg",
+            "https://gravatar.com/avatar/b0a32f127a6ad690cd4ee808cb4d1b59d3b5e53410181d54f91d10c0027ebb43?r=pg&d=retro&size=200",
+            "https://n8n.io/images/stars-footer.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_igordisco_9243b86232_cd9a5c94ce.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/neutral_avatar_purple_fee36bffe3.PNG",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_anderoav_589989fc39_ceb1c71a0c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_maxim_poulsen_48f450887b_852d0439bc.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Felix_Leber_f7a5b3c776_130aeca79d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_Ironben_0a4b3e7d12_e35805265c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Francois_lassl_d5cfb504c7_710c87121d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twitter_x_62a44e965e.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/github_e1f217d7a3_b9a271324f.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/discord_253947c90b_191e8f60fa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/linkedin_d710e84d63_6ed0dc28aa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/youtube_de4bdef50a_4b3a8b8aac.svg"
+          ],
+          "video_urls": [],
+          "code_snippets": [],
+          "conclusion": "",
+          "troubleshooting": {
+            "common_issues": [],
+            "error_messages": []
+          },
+          "related_workflows": []
+        },
+        "errors": [],
+        "extraction_time": 5.454908,
+        "metadata": {
+          "workflow_id": "2103",
+          "url": "https://n8n.io/workflows/2103",
+          "extracted_at": "2025-10-09T21:50:41.177859",
+          "extractor_version": "1.0.0"
+        }
+      }
+    },
+    {
+      "workflow": {
+        "id": "1870",
+        "url": "https://n8n.io/workflows/1870",
+        "name": "GitHub Issues Tracker"
+      },
+      "success": true,
+      "time": 5.466504,
+      "text_length": 0,
+      "images": 0,
+      "videos": 0,
+      "errors": 0,
+      "result": {
+        "success": true,
+        "data": {
+          "introduction": "",
+          "overview": "",
+          "tutorial_text": "",
+          "tutorial_sections": [],
+          "step_by_step": [],
+          "best_practices": [],
+          "common_pitfalls": [],
+          "image_urls": [],
+          "video_urls": [],
+          "code_snippets": [],
+          "conclusion": "",
+          "troubleshooting": {
+            "common_issues": [],
+            "error_messages": []
+          },
+          "related_workflows": []
+        },
+        "errors": [],
+        "extraction_time": 5.466504,
+        "metadata": {
+          "workflow_id": "1870",
+          "url": "https://n8n.io/workflows/1870",
+          "extracted_at": "2025-10-09T21:50:48.634854",
+          "extractor_version": "1.0.0"
+        }
+      }
+    },
+    {
+      "workflow": {
+        "id": "2234",
+        "url": "https://n8n.io/workflows/2234",
+        "name": "Email Campaign"
+      },
+      "success": true,
+      "time": 5.487903,
+      "text_length": 2599,
+      "images": 24,
+      "videos": 0,
+      "errors": 0,
+      "result": {
+        "success": true,
+        "data": {
+          "introduction": "Template for Kids' Story in ArabicThe n8n template for creating kids' stories in Arabic offers a versatile platform for storytellers to captivate young audiences with educational and interactive tales. It allows for customization to suit various use cases and can be set up effortlessly.Check this example:https://t.me/st0ries95Use CasesEducational Platforms:Educational platforms can automate the creation and distribution of educational stories in Arabic for children using this template. By incorporating visual and auditory elements into the storytelling process, educational platforms can enhance learning experiences and engage young learners effectively.Children's Libraries:Children's libraries can utilize this template to curate and share a diverse collection of Arabic stories with young readers. The automated generation of visual content and audio files enhances the storytelling experience, encouraging children to immerse themselves in new worlds and characters through captivating narratives.Language Learning Apps:Language learning apps focused on Arabic can integrate this template to offer culturally rich storytelling experiences for children learning the language. By translating stories into Arabic and supplementing them with visual and auditory components, these apps can facilitate language acquisition in an enjoyable and interactive manner.Configuration Guide for NodesOpenAI Chat Model Nodes:Functionality: Allows interaction with the OpenAI GPT-4 Turbo model.Purpose: Enables communication with advanced chat capabilities.Create a Prompt for DALL-E Node:Customization: Tailor prompts for generating relevant visual content.Summarization: Define prompts for visual content generation without text.Generate an Image for the Story Node:Resource Type: Specifies image as the resource.Prompt Setup: Configures prompt for textless image creation within the visual content.Generate Audio for the Story Node:Resource Type: Chooses audio as the resource.Input Definition: Sets input text for audio file generation.Translate the Story to Arabic Node:Chunking Mode Selection: Allows advanced chunking mode choice.Summarization Configuration: Sets method and prompts for story translation into Arabic.Send the Story To Channel Node:Channel ID: Specifies the channel ID for sending the story text.Text Configuration: Sets up the text to be sent to the channel.By following these node descriptions, users can effectively configure the n8n template for kids' stories in Arabic, tailoring it to specific use cases for a seamless and engaging storytelling experience for young audiences.",
+          "overview": "",
+          "tutorial_text": "Template for Kids' Story in ArabicThe n8n template for creating kids' stories in Arabic offers a versatile platform for storytellers to captivate young audiences with educational and interactive tales. It allows for customization to suit various use cases and can be set up effortlessly.Check this example:https://t.me/st0ries95Use CasesEducational Platforms:Educational platforms can automate the creation and distribution of educational stories in Arabic for children using this template. By incorporating visual and auditory elements into the storytelling process, educational platforms can enhance learning experiences and engage young learners effectively.Children's Libraries:Children's libraries can utilize this template to curate and share a diverse collection of Arabic stories with young readers. The automated generation of visual content and audio files enhances the storytelling experience, encouraging children to immerse themselves in new worlds and characters through captivating narratives.Language Learning Apps:Language learning apps focused on Arabic can integrate this template to offer culturally rich storytelling experiences for children learning the language. By translating stories into Arabic and supplementing them with visual and auditory components, these apps can facilitate language acquisition in an enjoyable and interactive manner.Configuration Guide for NodesOpenAI Chat Model Nodes:Functionality: Allows interaction with the OpenAI GPT-4 Turbo model.Purpose: Enables communication with advanced chat capabilities.Create a Prompt for DALL-E Node:Customization: Tailor prompts for generating relevant visual content.Summarization: Define prompts for visual content generation without text.Generate an Image for the Story Node:Resource Type: Specifies image as the resource.Prompt Setup: Configures prompt for textless image creation within the visual content.Generate Audio for the Story Node:Resource Type: Chooses audio as the resource.Input Definition: Sets input text for audio file generation.Translate the Story to Arabic Node:Chunking Mode Selection: Allows advanced chunking mode choice.Summarization Configuration: Sets method and prompts for story translation into Arabic.Send the Story To Channel Node:Channel ID: Specifies the channel ID for sending the story text.Text Configuration: Sets up the text to be sent to the channel.By following these node descriptions, users can effectively configure the n8n template for kids' stories in Arabic, tailoring it to specific use cases for a seamless and engaging storytelling experience for young audiences.",
+          "tutorial_sections": [],
+          "step_by_step": [],
+          "best_practices": [],
+          "common_pitfalls": [],
+          "image_urls": [
+            "https://n8n.io/nodes/telegram.svg",
+            "https://gravatar.com/avatar/d8ed2f53474f44e189350538560e2dbcc2299c9f38c80d30b6a2f56e8bbc7b1f?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/http-request.svg",
+            "https://n8n.io/nodes/merge.svg",
+            "https://n8n.io/nodes/airtable.svg",
+            "https://n8n.io/nodes/google-sheets.svg",
+            "https://gravatar.com/avatar/988a46579257f9e8c522aeb7b906f1ee96e47c4298faa548e41b04957f455ae3?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/d41b8a0aa81139243509c58870f5b4be292824a507ab57d10ed066d8628ed8da?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/e1fc0901703aede75c35d38ff26caf8e44b424893e1330efb483d68f5f67e059?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/e7ca218dfc87b68344bbd66f40da01546d2f6fc1cf884267821e8a77e3e8410a?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/7ee0febc0cbec2f1f6b24ddec3c4322e27c82c91dc729cfecf6ce12bfddd058d?r=pg&d=retro&size=200",
+            "https://n8n.io/images/stars-footer.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_igordisco_9243b86232_cd9a5c94ce.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/neutral_avatar_purple_fee36bffe3.PNG",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_anderoav_589989fc39_ceb1c71a0c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_maxim_poulsen_48f450887b_852d0439bc.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Felix_Leber_f7a5b3c776_130aeca79d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_Ironben_0a4b3e7d12_e35805265c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Francois_lassl_d5cfb504c7_710c87121d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twitter_x_62a44e965e.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/github_e1f217d7a3_b9a271324f.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/discord_253947c90b_191e8f60fa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/linkedin_d710e84d63_6ed0dc28aa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/youtube_de4bdef50a_4b3a8b8aac.svg"
+          ],
+          "video_urls": [],
+          "code_snippets": [],
+          "conclusion": "",
+          "troubleshooting": {
+            "common_issues": [],
+            "error_messages": []
+          },
+          "related_workflows": []
+        },
+        "errors": [],
+        "extraction_time": 5.487903,
+        "metadata": {
+          "workflow_id": "2234",
+          "url": "https://n8n.io/workflows/2234",
+          "extracted_at": "2025-10-09T21:50:56.102955",
+          "extractor_version": "1.0.0"
+        }
+      }
+    },
+    {
+      "workflow": {
+        "id": "1756",
+        "url": "https://n8n.io/workflows/1756",
+        "name": "Data Pipeline"
+      },
+      "success": true,
+      "time": 5.770883,
+      "text_length": 426,
+      "images": 27,
+      "videos": 0,
+      "errors": 0,
+      "result": {
+        "success": true,
+        "data": {
+          "introduction": "This workflow shows a no code approach to creating a HTML table based on Google Sheets data.To run the workflow:Make sure you have a Google Sheet with a header row and some data  in it.Grab your sheet ID:Add it to the Google Sheets node:Activate the workflow or execute it manuallyVisit the URL provided by the webhook node in your browser (production URLif the workflow is active,test URLif the workflow is executed manually)",
+          "overview": "",
+          "tutorial_text": "This workflow shows a no code approach to creating a HTML table based on Google Sheets data.To run the workflow:Make sure you have a Google Sheet with a header row and some data  in it.Grab your sheet ID:Add it to the Google Sheets node:Activate the workflow or execute it manuallyVisit the URL provided by the webhook node in your browser (production URLif the workflow is active,test URLif the workflow is executed manually)",
+          "tutorial_sections": [],
+          "step_by_step": [],
+          "best_practices": [],
+          "common_pitfalls": [],
+          "image_urls": [
+            "https://n8n.io/nodes/google-sheets.svg",
+            "https://n8n.io/nodes/webhook.svg",
+            "https://gravatar.com/avatar/7a3710173e907baffaf7ed7ebffc37955c9cdeadb8612200225a34a2e056aa17?r=pg&d=retro&size=200",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/image_352c24d418.png",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/image_bd07bc6557.png",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/image_491e174251.png",
+            "https://n8n.io/nodes/http-request.svg",
+            "https://n8n.io/nodes/airtable.svg",
+            "https://gravatar.com/avatar/7ee0febc0cbec2f1f6b24ddec3c4322e27c82c91dc729cfecf6ce12bfddd058d?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/google-drive.svg",
+            "https://gravatar.com/avatar/4cda9c7c1c24fdb61896cac588296d1dad03655a439ab71ef34f4c62c0ba8524?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/notion.svg",
+            "https://n8n.io/nodes/google-drive-trigger.svg",
+            "https://gravatar.com/avatar/a3f78329cbd3f3239726910fb8b0f8e5e7bb340868f57b959989e7f8d8ea1608?r=pg&d=retro&size=200",
+            "https://n8n.io/images/stars-footer.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_igordisco_9243b86232_cd9a5c94ce.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/neutral_avatar_purple_fee36bffe3.PNG",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_anderoav_589989fc39_ceb1c71a0c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_maxim_poulsen_48f450887b_852d0439bc.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Felix_Leber_f7a5b3c776_130aeca79d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_Ironben_0a4b3e7d12_e35805265c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Francois_lassl_d5cfb504c7_710c87121d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twitter_x_62a44e965e.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/github_e1f217d7a3_b9a271324f.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/discord_253947c90b_191e8f60fa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/linkedin_d710e84d63_6ed0dc28aa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/youtube_de4bdef50a_4b3a8b8aac.svg"
+          ],
+          "video_urls": [],
+          "code_snippets": [],
+          "conclusion": "",
+          "troubleshooting": {
+            "common_issues": [],
+            "error_messages": []
+          },
+          "related_workflows": []
+        },
+        "errors": [],
+        "extraction_time": 5.770883,
+        "metadata": {
+          "workflow_id": "1756",
+          "url": "https://n8n.io/workflows/1756",
+          "extracted_at": "2025-10-09T21:51:03.592720",
+          "extractor_version": "1.0.0"
+        }
+      }
+    },
+    {
+      "workflow": {
+        "id": "2019",
+        "url": "https://n8n.io/workflows/2019",
+        "name": "CRM Integration"
+      },
+      "success": true,
+      "time": 5.496515,
+      "text_length": 0,
+      "images": 0,
+      "videos": 0,
+      "errors": 0,
+      "result": {
+        "success": true,
+        "data": {
+          "introduction": "",
+          "overview": "",
+          "tutorial_text": "",
+          "tutorial_sections": [],
+          "step_by_step": [],
+          "best_practices": [],
+          "common_pitfalls": [],
+          "image_urls": [],
+          "video_urls": [],
+          "code_snippets": [],
+          "conclusion": "",
+          "troubleshooting": {
+            "common_issues": [],
+            "error_messages": []
+          },
+          "related_workflows": []
+        },
+        "errors": [],
+        "extraction_time": 5.496515,
+        "metadata": {
+          "workflow_id": "2019",
+          "url": "https://n8n.io/workflows/2019",
+          "extracted_at": "2025-10-09T21:51:11.365316",
+          "extractor_version": "1.0.0"
+        }
+      }
+    },
+    {
+      "workflow": {
+        "id": "1832",
+        "url": "https://n8n.io/workflows/1832",
+        "name": "Customer Feedback"
+      },
+      "success": true,
+      "time": 5.493569,
+      "text_length": 2025,
+      "images": 24,
+      "videos": 0,
+      "errors": 0,
+      "result": {
+        "success": true,
+        "data": {
+          "introduction": "This workflow creates a GitHub issue when a new ticket is created in Zendesk. Subsequent comments on the ticket in Zendesk are added as comments to the issue in GitHub.PrerequisitesZendesk account andZendesk credentials.GitHub account andGitHub credentials.GitHub repositoryto create issues in.How it worksThe workflow listens for new tickets in Zendesk.When a new ticket is created, the workflow creates a new issue in GitHub.The GitHub issue number is then saved in one of the ticket's fields (insetupwe call this \"GitHub Issue Number\").The next time a comment is added to the ticket, the workflow retrieves the GitHub issue number from the ticket's field and adds the comment to the issue in GitHub.SetupThis workflow requires that you set up a webhook in Zendesk. To do so, follow the steps below:In the workflow, open theOn new Zendesk ticketnode and copy the webhook URL.In Zendesk, navigate to Admin Center > Apps and integrations > Webhooks > Actions > Create Webhook.Add all the required details which can be retrieved from theOn new Zendesk ticketnode. The webhook URL gets added to the \u201cEndpoint URL\u201d field, and the \u201cRequest method\u201d should match what is shown in n8n.Save the webhook.In Zendesk, navigate to Admin Center > Objects and rules > Business rules > Triggers > Add trigger.Give trigger a name such as \u201cNew tickets\u201d.Under \u201cConditions\u201d in \u201cMeet ALL of the following conditions\u201d, add \u201cStatus is New\u201d.Under \u201cActions\u201d, select \u201cNotify active webhook\u201d and select the webhook you created previously.In the JSON body, add the following:{\n\t\"id\": \"{{ticket.id}}\",\n\t\"comment\": \"{{ticket.latest_comment_html}}\"\n}Save the Zendesk trigger.You will also need to set up a field in Zendesk to store the GitHub issue number. To do so, follow the steps below:In Zendesk, navigate to Admin Center > Objects and rules > Tickets > Fields > Add field.Use the number field option and give the field a name such as \u201cGitHub Issue Number\u201d.Save the field.In n8n, open theUpdate ticketnode and select the field you created in Zendesk.",
+          "overview": "",
+          "tutorial_text": "This workflow creates a GitHub issue when a new ticket is created in Zendesk. Subsequent comments on the ticket in Zendesk are added as comments to the issue in GitHub.PrerequisitesZendesk account andZendesk credentials.GitHub account andGitHub credentials.GitHub repositoryto create issues in.How it worksThe workflow listens for new tickets in Zendesk.When a new ticket is created, the workflow creates a new issue in GitHub.The GitHub issue number is then saved in one of the ticket's fields (insetupwe call this \"GitHub Issue Number\").The next time a comment is added to the ticket, the workflow retrieves the GitHub issue number from the ticket's field and adds the comment to the issue in GitHub.SetupThis workflow requires that you set up a webhook in Zendesk. To do so, follow the steps below:In the workflow, open theOn new Zendesk ticketnode and copy the webhook URL.In Zendesk, navigate to Admin Center > Apps and integrations > Webhooks > Actions > Create Webhook.Add all the required details which can be retrieved from theOn new Zendesk ticketnode. The webhook URL gets added to the \u201cEndpoint URL\u201d field, and the \u201cRequest method\u201d should match what is shown in n8n.Save the webhook.In Zendesk, navigate to Admin Center > Objects and rules > Business rules > Triggers > Add trigger.Give trigger a name such as \u201cNew tickets\u201d.Under \u201cConditions\u201d in \u201cMeet ALL of the following conditions\u201d, add \u201cStatus is New\u201d.Under \u201cActions\u201d, select \u201cNotify active webhook\u201d and select the webhook you created previously.In the JSON body, add the following:{\n\t\"id\": \"{{ticket.id}}\",\n\t\"comment\": \"{{ticket.latest_comment_html}}\"\n}Save the Zendesk trigger.You will also need to set up a field in Zendesk to store the GitHub issue number. To do so, follow the steps below:In Zendesk, navigate to Admin Center > Objects and rules > Tickets > Fields > Add field.Use the number field option and give the field a name such as \u201cGitHub Issue Number\u201d.Save the field.In n8n, open theUpdate ticketnode and select the field you created in Zendesk.",
+          "tutorial_sections": [],
+          "step_by_step": [],
+          "best_practices": [],
+          "common_pitfalls": [],
+          "image_urls": [
+            "https://n8n.io/nodes/github.svg",
+            "https://gravatar.com/avatar/b3d1a47322f05a8be3d2e7bad6a80c29161bd58b91e4762cbb3ac25e5d0db5a8?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/github-trigger.svg",
+            "https://n8n.io/nodes/http-request.svg",
+            "https://n8n.io/nodes/mautic.svg",
+            "https://n8n.io/nodes/calendly-trigger.svg",
+            "https://n8n.io/nodes/gmail.svg",
+            "https://gravatar.com/avatar/2fba0be00731d911f64fdf32d28cf0ae59830ee1d42ad0e415d3ea53c0d5a802?r=pg&d=retro&size=200",
+            "https://gravatar.com/avatar/19e625b50be6c5e0f734a6e837828341ade4fa64ca3d52321ed95ead0bf4c270?r=pg&d=retro&size=200",
+            "https://n8n.io/nodes/gmail-trigger.svg",
+            "https://gravatar.com/avatar/4379157f99b51bf25676c43d031eaf1d4edcbcb3c3f1bd69be098b8948336bd2?r=pg&d=retro&size=200",
+            "https://n8n.io/images/stars-footer.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_igordisco_9243b86232_cd9a5c94ce.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/neutral_avatar_purple_fee36bffe3.PNG",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_anderoav_589989fc39_ceb1c71a0c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_maxim_poulsen_48f450887b_852d0439bc.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Felix_Leber_f7a5b3c776_130aeca79d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/avatar_Ironben_0a4b3e7d12_e35805265c.jpg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/Francois_lassl_d5cfb504c7_710c87121d.jpeg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twitter_x_62a44e965e.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/github_e1f217d7a3_b9a271324f.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/discord_253947c90b_191e8f60fa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/linkedin_d710e84d63_6ed0dc28aa.svg",
+            "https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/youtube_de4bdef50a_4b3a8b8aac.svg"
+          ],
+          "video_urls": [],
+          "code_snippets": [
+            {
+              "id": "snippet-1",
+              "language": "unknown",
+              "code": "{\n\t\"id\": \"{{ticket.id}}\",\n\t\"comment\": \"{{ticket.latest_comment_html}}\"\n}\n",
+              "description": ""
+            }
+          ],
+          "conclusion": "",
+          "troubleshooting": {
+            "common_issues": [],
+            "error_messages": []
+          },
+          "related_workflows": []
+        },
+        "errors": [],
+        "extraction_time": 5.493569,
+        "metadata": {
+          "workflow_id": "1832",
+          "url": "https://n8n.io/workflows/1832",
+          "extracted_at": "2025-10-09T21:51:18.863782",
+          "extractor_version": "1.0.0"
+        }
+      }
+    }
+  ]
+}

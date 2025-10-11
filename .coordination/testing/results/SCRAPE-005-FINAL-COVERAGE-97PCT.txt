@@ -1,0 +1,246 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.1, pytest-8.4.2, pluggy-1.6.0 -- /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper
+configfile: pytest.ini
+plugins: asyncio-1.2.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 118 items
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extractor_initialization PASSED [  0%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_basic_metadata_success PASSED [  1%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_all_required_fields_present PASSED [  2%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_title_not_empty PASSED [  3%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_description_type PASSED [  4%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_categories_structure PASSED [  5%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_structure PASSED [  5%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_difficulty_valid_value PASSED [  6%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_types PASSED [  7%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_dates_format PASSED [  8%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_structure PASSED [  9%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_structure PASSED [ 10%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_performance_timing PASSED [ 11%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_invalid_workflow_id_handling PASSED [ 11%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_malformed_url_handling PASSED [ 12%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extraction_count_increments PASSED [ 13%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_multiple_workflows PASSED [ 14%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_result_completeness_high PASSED [ 15%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_error_handling_paths PASSED [ 16%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_title_error_handling PASSED [ 16%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_description_error_handling PASSED [ 17%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_author_error_handling PASSED [ 18%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_categories_error_handling PASSED [ 19%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_error_handling PASSED [ 20%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_difficulty_error_handling PASSED [ 21%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_error_handling PASSED [ 22%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_dates_error_handling PASSED [ 22%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_error_handling PASSED [ 23%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_error_handling PASSED [ 24%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_timeout PASSED [ 25%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_network_error PASSED [ 26%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_page_load_error PASSED [ 27%]
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_with_browser_close_error PASSED [ 27%]
+tests/unit/test_layer1_metadata.py::test_integration_extraction_pipeline PASSED [ 28%]
+tests/unit/test_layer3_explainer.py::TestExplainerContentExtractorInit::test_init_default_params PASSED [ 29%]
+tests/unit/test_layer3_explainer.py::TestExplainerContentExtractorInit::test_init_custom_params PASSED [ 30%]
+tests/unit/test_layer3_explainer.py::TestEmptyStructure::test_get_empty_layer3_structure PASSED [ 31%]
+tests/unit/test_layer3_explainer.py::TestImageExtraction::test_extract_image_urls_basic PASSED [ 32%]
+tests/unit/test_layer3_explainer.py::TestImageExtraction::test_extract_image_urls_no_images PASSED [ 33%]
+tests/unit/test_layer3_explainer.py::TestImageExtraction::test_extract_image_urls_duplicates PASSED [ 33%]
+tests/unit/test_layer3_explainer.py::TestVideoExtraction::test_extract_video_urls_youtube PASSED [ 34%]
+tests/unit/test_layer3_explainer.py::TestVideoExtraction::test_extract_video_urls_no_videos PASSED [ 35%]
+tests/unit/test_layer3_explainer.py::TestCodeSnippetExtraction::test_extract_code_snippets_basic PASSED [ 36%]
+tests/unit/test_layer3_explainer.py::TestCodeSnippetExtraction::test_extract_code_snippets_no_language PASSED [ 37%]
+tests/unit/test_layer3_explainer.py::TestTutorialSectionExtraction::test_extract_tutorial_sections_basic PASSED [ 38%]
+tests/unit/test_layer3_explainer.py::TestTutorialSectionExtraction::test_extract_tutorial_sections_no_sections PASSED [ 38%]
+tests/unit/test_layer3_explainer.py::TestStepByStepExtraction::test_extract_step_by_step_ordered_list PASSED [ 39%]
+tests/unit/test_layer3_explainer.py::TestStepByStepExtraction::test_extract_step_by_step_no_steps PASSED [ 40%]
+tests/unit/test_layer3_explainer.py::TestBestPracticesExtraction::test_extract_best_practices_basic PASSED [ 41%]
+tests/unit/test_layer3_explainer.py::TestBestPracticesExtraction::test_extract_best_practices_limit PASSED [ 42%]
+tests/unit/test_layer3_explainer.py::TestCommonPitfallsExtraction::test_extract_common_pitfalls_basic PASSED [ 43%]
+tests/unit/test_layer3_explainer.py::TestTextAggregation::test_aggregate_tutorial_text_complete PASSED [ 44%]
+tests/unit/test_layer3_explainer.py::TestTextAggregation::test_aggregate_tutorial_text_minimal PASSED [ 44%]
+tests/unit/test_layer3_explainer.py::TestExtractionValidation::test_validate_extraction_success PASSED [ 45%]
+tests/unit/test_layer3_explainer.py::TestExtractionValidation::test_validate_extraction_minimal_content PASSED [ 46%]
+tests/unit/test_layer3_explainer.py::TestExtractionValidation::test_validate_extraction_empty_legitimate PASSED [ 47%]
+tests/unit/test_layer3_explainer.py::TestHeadingLevel::test_determine_heading_level PASSED [ 48%]
+tests/unit/test_layer3_explainer.py::TestHeadingLevel::test_determine_heading_level_none PASSED [ 49%]
+tests/unit/test_layer3_explainer.py::test_extract_with_minimal_content PASSED [ 50%]
+tests/unit/test_layer3_explainer.py::test_context_manager_usage PASSED   [ 50%]
+tests/unit/test_layer3_explainer.py::test_result_structure_fields PASSED [ 51%]
+tests/unit/test_layer3_explainer.py::test_extract_image_urls_performance PASSED [ 52%]
+tests/unit/test_layer3_explainer.py::test_extract_code_snippets_long_code PASSED [ 53%]
+tests/integration/test_layer3_88pct_target.py::TestOverviewExtraction::test_overview_extraction_with_valid_text_length PASSED [ 54%]
+tests/integration/test_layer3_88pct_target.py::TestOverviewExtraction::test_overview_extraction_filters_short_text PASSED [ 55%]
+tests/integration/test_layer3_88pct_target.py::TestExceptionHandling::test_main_page_content_exception_handling PASSED [ 55%]
+tests/integration/test_layer3_88pct_target.py::TestExceptionHandling::test_iframe_selector_exception_handling PASSED [ 56%]
+tests/integration/test_layer3_88pct_target.py::TestExceptionHandling::test_determine_heading_level_exception_handling PASSED [ 57%]
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_iframe_extraction_via_frames_fallback PASSED [ 58%]
+tests/integration/test_layer3_88pct_target.py::TestIframeFramesFallback::test_no_iframe_found_path PASSED [ 59%]
+tests/integration/test_layer3_88pct_target.py::TestMainFunction::test_main_function_success_path PASSED [ 60%]
+tests/integration/test_layer3_88pct_target.py::TestMainFunction::test_main_function_with_errors PASSED [ 61%]
+tests/integration/test_layer3_90pct_coverage.py::TestOverviewExtractionPaths::test_overview_with_multiple_selectors PASSED [ 61%]
+tests/integration/test_layer3_90pct_coverage.py::TestOverviewExtractionPaths::test_overview_short_text_filtered PASSED [ 62%]
+tests/integration/test_layer3_90pct_coverage.py::TestIntroductionExtractionPaths::test_introduction_selector_iteration PASSED [ 63%]
+tests/integration/test_layer3_90pct_coverage.py::TestVideoLinkExtraction::test_video_from_anchor_tags PASSED [ 64%]
+tests/integration/test_layer3_90pct_coverage.py::TestVideoLinkExtraction::test_video_pattern_matching PASSED [ 65%]
+tests/integration/test_layer3_90pct_coverage.py::TestCodeSnippetShortFiltering::test_code_snippet_length_threshold PASSED [ 66%]
+tests/integration/test_layer3_90pct_coverage.py::TestCodeSnippetShortFiltering::test_code_snippet_exactly_threshold PASSED [ 66%]
+tests/integration/test_layer3_90pct_coverage.py::TestValidationWithImages::test_validation_succeeds_with_only_images PASSED [ 67%]
+tests/integration/test_layer3_90pct_coverage.py::TestValidationWithImages::test_validation_succeeds_with_only_videos PASSED [ 68%]
+tests/integration/test_layer3_90pct_coverage.py::TestValidationWithImages::test_validation_succeeds_with_only_code PASSED [ 69%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_playwright_timeout_error_handling PASSED [ 70%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_exception_error_handling PASSED [ 71%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_introduction_extraction_paths PASSED [ 72%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_video_url_extraction_paths PASSED [ 72%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_iframe_not_found_path PASSED [ 73%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_code_snippet_edge_cases PASSED [ 74%]
+tests/integration/test_layer3_coverage_boost.py::TestCoverageBoost::test_main_function_paths PASSED [ 75%]
+tests/integration/test_layer3_coverage_boost.py::TestRealN8nWorkflows::test_workflow_2462_full_extraction PASSED [ 76%]
+tests/integration/test_layer3_coverage_boost.py::TestRealN8nWorkflows::test_workflow_1954_extraction PASSED [ 77%]
+tests/integration/test_layer3_coverage_boost.py::TestRealN8nWorkflows::test_workflow_2103_extraction PASSED [ 77%]
+tests/integration/test_layer3_final_coverage.py::TestErrorPaths::test_extract_with_playwright_timeout PASSED [ 78%]
+tests/integration/test_layer3_final_coverage.py::TestErrorPaths::test_extract_with_general_exception PASSED [ 79%]
+tests/integration/test_layer3_final_coverage.py::TestMainPageExtractionPaths::test_extract_main_page_no_introduction PASSED [ 80%]
+tests/integration/test_layer3_final_coverage.py::TestMainPageExtractionPaths::test_extract_overview_multiple_sections PASSED [ 81%]
+tests/integration/test_layer3_final_coverage.py::TestMainPageExtractionPaths::test_video_url_extraction_with_links PASSED [ 82%]
+tests/integration/test_layer3_final_coverage.py::TestIframeExtractionPaths::test_iframe_not_found_fallback PASSED [ 83%]
+tests/integration/test_layer3_final_coverage.py::TestIframeExtractionPaths::test_iframe_frame_enumeration PASSED [ 83%]
+tests/integration/test_layer3_final_coverage.py::TestCodeSnippetEdgeCases::test_code_snippet_without_nested_code_tag PASSED [ 84%]
+tests/integration/test_layer3_final_coverage.py::TestCodeSnippetEdgeCases::test_code_snippet_with_short_code PASSED [ 85%]
+tests/integration/test_layer3_final_coverage.py::TestComprehensiveN8nWorkflows::test_workflow_with_code_snippets PASSED [ 86%]
+tests/integration/test_layer3_final_coverage.py::TestComprehensiveN8nWorkflows::test_workflow_minimal_content PASSED [ 87%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extractor_initialization_and_cleanup PASSED [ 88%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_context_manager_full_lifecycle PASSED [ 88%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_with_timeout PASSED [ 89%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_handles_network_error PASSED [ 90%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_handles_404_page PASSED [ 91%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_main_page_content_coverage PASSED [ 92%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extract_with_valid_html_structure PASSED [ 93%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_iframe_handling_coverage PASSED [ 94%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_extraction_validation_logic PASSED [ 94%]
+tests/integration/test_layer3_integration.py::TestLayer3Integration::test_error_handling_in_extract PASSED [ 95%]
+tests/integration/test_layer3_integration.py::TestLayer3MultiplePages::test_multiple_page_extractions PASSED [ 96%]
+tests/integration/test_layer3_integration.py::TestLayer3ContentExtractionMethods::test_image_extraction_from_real_page PASSED [ 97%]
+tests/integration/test_layer3_integration.py::TestLayer3ContentExtractionMethods::test_text_aggregation_from_real_page PASSED [ 98%]
+tests/integration/test_layer3_integration.py::TestLayer3EdgeCases::test_page_with_minimal_content PASSED [ 99%]
+tests/integration/test_layer3_integration.py::TestLayer3EdgeCases::test_page_with_special_characters PASSED [100%]/Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/lib/python3.11/site-packages/coverage/inorout.py:521: CoverageWarning: Module src/scrapers/layer3_explainer was never imported. (module-not-imported); see https://coverage.readthedocs.io/en/7.10.7/messages.html#warning-module-not-imported
+  self.warn(f"Module {pkg} was never imported.", slug="module-not-imported")
+
+
+=============================== warnings summary ===============================
+src/database/schema.py:12
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/schema.py:12: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_title_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:190: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_description_error_handling
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:224: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_author_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:251: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_categories_error_handling
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:303: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:345: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_tags_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:378: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_difficulty_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:418: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:463: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_engagement_metrics_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:485: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_dates_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:548: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_setup_info_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:591: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer1_metadata.py::TestPageMetadataExtractor::test_extract_industry_error_handling
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer1_metadata.py:684: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    continue
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+tests/unit/test_layer3_explainer.py: 10 warnings
+tests/integration/test_layer3_88pct_target.py: 5 warnings
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:350: DeprecationWarning: The 'text' argument to find()-type methods is deprecated. Use 'string' instead.
+    elements = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
+
+tests/unit/test_layer3_explainer.py: 6 warnings
+tests/integration/test_layer3_88pct_target.py: 6 warnings
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:368: DeprecationWarning: The 'text' argument to find()-type methods is deprecated. Use 'string' instead.
+    elements = soup.find_all(text=re.compile(keyword, re.IGNORECASE))
+
+tests/integration/test_layer3_final_coverage.py::TestErrorPaths::test_extract_with_playwright_timeout
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/scrapers/layer3_explainer.py:118: RuntimeWarning: coroutine 'AsyncMockMixin._execute_mock_call' was never awaited
+    page.set_default_timeout(self.timeout)
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.11.1-final-0 _______________
+
+Name                               Stmts   Miss   Cover   Missing
+-----------------------------------------------------------------
+src/__init__.py                        0      0 100.00%
+src/database/__init__.py               0      0 100.00%
+src/database/schema.py                99      9  90.91%   159-175, 188-198, 211
+src/models/__init__.py                 0      0 100.00%
+src/orchestrator/__init__.py           0      0 100.00%
+src/parsers/__init__.py                0      0 100.00%
+src/scrapers/__init__.py               0      0 100.00%
+src/scrapers/layer1_metadata.py      346     79  77.17%   195-197, 220-222, 229-231, 256-258, 273-275, 314-316, 386-388, 408-416, 424-426, 458-461, 478-483, 495-496, 500-502, 529-546, 557-560, 586-589, 641, 643, 678-680, 682, 695-697
+src/scrapers/layer3_explainer.py     264      7  97.35%   203-205, 208-209, 277-278
+src/utils/__init__.py                  0      0 100.00%
+src/utils/logging.py                  38      8  78.95%   91, 96, 101, 106, 111-112, 120-121
+-----------------------------------------------------------------
+TOTAL                                747    103  86.21%
+Coverage HTML written to dir htmlcov
+================= 118 passed, 43 warnings in 310.96s (0:05:10) =================

@@ -120,3 +120,6 @@ def log_progress(current: int, total: int, message: str = "Progress"):
     percentage = (current / total * 100) if total > 0 else 0
     logger.info(f"📊 {message}: {current}/{total} ({percentage:.1f}%)")
 
+
+
+

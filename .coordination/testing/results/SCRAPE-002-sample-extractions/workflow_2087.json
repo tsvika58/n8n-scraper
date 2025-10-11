@@ -1,0 +1,47 @@
+{
+  "workflow_id": "2087",
+  "url": "https://n8n.io/workflows/2087",
+  "extraction_status": "complete",
+  "extraction_time": "6.76s",
+  "error": null,
+  "title": "Streamline data from an n8n form into Google Sheet, Airtable and Email Sending",
+  "description": "Streamline data from an n8n form into Google Sheet Airtable and and Email SendingVideo for workflow process This workflow facilitates efficient data...",
+  "author": "Igor Fediczko@igordisco",
+  "use_case": "Streamline data from an n8n form into Google Sheet Airtable and and Email SendingVideo for workflow process This workflow facilitates efficient data.",
+  "primary_category": "Strictly necessary",
+  "secondary_categories": [
+    "Performance",
+    "Targeting",
+    "Functionality",
+    "Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.",
+    "Performance cookies are used to see how visitors use the website, eg. analytics cookies. Those cookies cannot be used to directly identify a certain visitor.",
+    "Targeting cookies are used to identify visitors between different websites, eg. content partners, banner networks. Those cookies may be used by companies to build a profile of visitor interests or show relevant ads on other websites.",
+    "Functionality cookies are used to remember visitor information on the website, eg. language, timezone, enhanced content."
+  ],
+  "node_tags": [
+    "github147,080"
+  ],
+  "general_tags": [
+    "Functionality",
+    "Performance",
+    "Targeting",
+    "Strictly necessary"
+  ],
+  "difficulty_level": "intermediate",
+  "views": 0,
+  "upvotes": 0,
+  "created_date": "2025-10-10T10:06:58.543443",
+  "updated_date": "2025-10-10T10:06:58.543443",
+  "setup_instructions": "Streamline data from an n8n form into Google Sheet Airtable and and Email SendingVideo for workflow process This workflow facilitates efficient data...",
+  "prerequisites": [
+    "for the website to operate properly are allowed to be set without your permission",
+    ".io\",productApiUrl:\"https://api.n8n.io\",siteUrl:\"https://n8n.io\",nodeLogoDir:\"/no",
+    "reTop guidesTelegram botsOpen-source chatbotOpen-source LLMOpen-source",
+    "{\n\t\tcontent: attr(label);\n\t\tfont-weight: bold;\n\t\twidth: 120px;\n\t\tmin-width: 120px;\n\t}",
+    "csrf_token"
+  ],
+  "estimated_setup_time": "4 minutes 59 sec",
+  "industry": [
+    "Strictly necessary"
+  ]
+}

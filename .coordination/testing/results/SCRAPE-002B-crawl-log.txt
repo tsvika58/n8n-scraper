@@ -1,0 +1,38 @@
+SCRAPE-002B Workflow Inventory Crawl Log
+========================================
+Start Time: 2025-10-10 17:05:00
+Crawler Version: 1.0 (Sitemap-based)
+Target: Complete n8n.io workflow inventory
+Method: XML Sitemap parsing
+
+SITEMAP FETCH: https://n8n.io/sitemap-workflows.xml
+- Status: SUCCESS
+- Size: 702,604 bytes
+- Time: 0.14s
+- Format: XML (valid)
+
+SITEMAP PARSING
+- URL Entries Found: 6,022
+- Valid Workflow URLs: 6,022
+- Invalid URLs: 0
+- Parse Time: 0.02s
+
+WORKFLOW EXTRACTION
+- Workflows Extracted: 6,022
+- Format: workflow_id, title, url
+- Duplicates Detected: 0
+- Extraction Time: 0.03s
+
+DATABASE STORAGE
+- Records Inserted: 6,022
+- Duplicates Skipped: 0
+- Errors: 0
+- Storage Time: 1.38s
+
+CRAWL COMPLETE
+==============
+End Time: 2025-10-10 17:05:02
+Total Duration: 2 seconds
+Total Workflows: 6,022
+Success Rate: 100%
+Method Efficiency: Sitemap-based (1 request vs 300+ page crawls)

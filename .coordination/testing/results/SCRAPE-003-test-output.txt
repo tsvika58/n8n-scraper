@@ -1,0 +1,80 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.11.1, pytest-8.4.2, pluggy-1.6.0 -- /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/venv/bin/python3.11
+cachedir: .pytest_cache
+rootdir: /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper
+configfile: pytest.ini
+plugins: asyncio-1.2.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 36 items
+
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extractor_initialization PASSED [  2%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_successful PASSED [  5%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_404_not_found PASSED [  8%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_http_error PASSED [ 11%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_json_decode_error PASSED [ 13%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_timeout PASSED [ 16%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_general_exception PASSED [ 19%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_json_structure_valid PASSED [ 22%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_json_structure_missing_workflow PASSED [ 25%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_json_structure_missing_nodes PASSED [ 27%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_json_structure_nodes_not_list PASSED [ 30%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_json_structure_missing_connections PASSED [ 33%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_invalid_structure PASSED [ 36%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_increments_count PASSED [ 38%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_returns_correct_fields PASSED [ 41%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_calculates_metrics PASSED [ 44%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_batch_single_workflow PASSED [ 47%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_batch_multiple_workflows PASSED [ 50%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_batch_calculates_timing PASSED [ 52%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_extract_batch_empty_list PASSED [ 55%]
+tests/unit/test_layer2_json.py::TestWorkflowJSONExtractor::test_validate_exception_handling PASSED [ 58%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_database_initialization PASSED [ 61%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_create_tables PASSED [ 63%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_store_workflow_json_new PASSED [ 66%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_store_workflow_json_update PASSED [ 69%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_get_workflow_json PASSED [ 72%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_get_workflow_json_not_found PASSED [ 75%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_get_stats_empty_database PASSED [ 77%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_get_stats_with_data PASSED [ 80%]
+tests/unit/test_layer2_json.py::TestJSONDatabase::test_extract_and_store_integration PASSED [ 83%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_real_single_workflow_extraction PASSED [ 86%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_real_multiple_workflow_extraction PASSED [ 88%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_real_invalid_workflow_id PASSED [ 91%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_database_storage_integration PASSED [ 94%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_json_structure_completeness PASSED [ 97%]
+tests/integration/test_layer2_integration.py::TestLayer2Integration::test_performance_under_10_seconds PASSED [100%]
+
+=============================== warnings summary ===============================
+src/database/schema.py:12
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/schema.py:12: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+src/database/json_schema.py:17
+  /Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-scraper/src/database/json_schema.py:17: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.11.1-final-0 _______________
+
+Name                                         Stmts   Miss   Cover   Missing
+---------------------------------------------------------------------------
+src/__init__.py                                  0      0 100.00%
+src/database/__init__.py                         0      0 100.00%
+src/database/inventory_schema.py               101    101   0.00%   6-242
+src/database/json_schema.py                     91     20  78.02%   58-60, 109-112, 137-139, 176-178, 185-195
+src/database/schema.py                          99      9  90.91%   159-175, 188-198, 211
+src/models/__init__.py                           0      0 100.00%
+src/orchestrator/__init__.py                     0      0 100.00%
+src/parsers/__init__.py                          0      0 100.00%
+src/scrapers/__init__.py                         0      0 100.00%
+src/scrapers/layer1_metadata.py                346    346   0.00%   12-701
+src/scrapers/layer2_json.py                    100     14  86.00%   233, 237, 263-278
+src/scrapers/layer3_explainer.py               264    264   0.00%   12-592
+src/scrapers/workflow_inventory_crawler.py      89     89   0.00%   6-174
+src/utils/__init__.py                            0      0 100.00%
+src/utils/logging.py                            38     38   0.00%   6-121
+---------------------------------------------------------------------------
+TOTAL                                         1128    881  21.90%
+Coverage HTML written to dir htmlcov
+======================== 36 passed, 2 warnings in 6.87s ========================
