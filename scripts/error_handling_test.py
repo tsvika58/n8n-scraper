@@ -19,34 +19,41 @@ async def test_error_handling():
     print("🧪 Error Handling Validation Test")
     print("=" * 50)
     
-    with get_session() as session:
-        repository = WorkflowRepository(session)
+    # Store test workflow IDs for cleanup
+    test_workflow_ids = []
+    
+    try:
+        with get_session() as session:
+            repository = WorkflowRepository(session)
+            
+            # Create orchestrator with conservative settings
+            orchestrator = WorkflowOrchestrator(
+                repository=repository,
+                rate_limit=1.0,  # Slower rate for testing
+                max_retries=2,
+                batch_size=3
+            )
         
-        # Create orchestrator with conservative settings
-        orchestrator = WorkflowOrchestrator(
-            repository=repository,
-            rate_limit=1.0,  # Slower rate for testing
-            max_retries=2,
-            batch_size=3
-        )
-        
-        # Test workflows with various error conditions
-        error_test_workflows = [
-            # Non-existent workflow (should get 404)
-            {'id': '999999', 'url': 'https://n8n.io/workflows/999999'},
+            # Test workflows with various error conditions
+            error_test_workflows = [
+                # Non-existent workflow (should get 404)
+                {'id': '999999', 'url': 'https://n8n.io/workflows/999999'},
+                
+                # Invalid URL format
+                {'id': 'invalid_url', 'url': 'https://invalid-domain-that-does-not-exist.com/workflow'},
+                
+                # Malformed workflow ID
+                {'id': 'abc123', 'url': 'https://n8n.io/workflows/abc123'},
+                
+                # Very high ID (likely doesn't exist)
+                {'id': '9999999', 'url': 'https://n8n.io/workflows/9999999'},
+                
+                # Valid format but likely deleted/private
+                {'id': '500000', 'url': 'https://n8n.io/workflows/500000'},
+            ]
             
-            # Invalid URL format
-            {'id': 'invalid_url', 'url': 'https://invalid-domain-that-does-not-exist.com/workflow'},
-            
-            # Malformed workflow ID
-            {'id': 'abc123', 'url': 'https://n8n.io/workflows/abc123'},
-            
-            # Very high ID (likely doesn't exist)
-            {'id': '9999999', 'url': 'https://n8n.io/workflows/9999999'},
-            
-            # Valid format but likely deleted/private
-            {'id': '500000', 'url': 'https://n8n.io/workflows/500000'},
-        ]
+            # Store test workflow IDs for cleanup
+            test_workflow_ids = [wf['id'] for wf in error_test_workflows]
         
         print(f"Testing {len(error_test_workflows)} error scenarios...")
         print()
@@ -122,7 +129,52 @@ async def test_error_handling():
             print("   • Issues detected with error handling")
             print("   • Review error handling logic before production")
         
-        return graceful_handling
+            return graceful_handling
+    
+    except Exception as e:
+        print(f"\n❌ Error during testing: {e}")
+        return False
+    
+    finally:
+        # Cleanup test workflows
+        print(f"\n🧹 Cleaning up {len(test_workflow_ids)} test workflows...")
+        await cleanup_test_workflows(test_workflow_ids)
+
+async def cleanup_test_workflows(workflow_ids):
+    """Safely cleanup test workflows from database"""
+    try:
+        with get_session() as session:
+            repository = WorkflowRepository(session)
+            
+            for workflow_id in workflow_ids:
+                try:
+                    # Check if workflow exists
+                    workflow = repository.get_workflow_by_id(workflow_id)
+                    if workflow:
+                        # Delete related data first (foreign key constraints)
+                        from sqlalchemy import text
+                        
+                        # Delete from related tables
+                        session.execute(text("DELETE FROM workflow_content WHERE workflow_id = :id"), {'id': workflow_id})
+                        session.execute(text("DELETE FROM workflow_metadata WHERE workflow_id = :id"), {'id': workflow_id})
+                        session.execute(text("DELETE FROM workflow_structure WHERE workflow_id = :id"), {'id': workflow_id})
+                        session.execute(text("DELETE FROM video_transcripts WHERE workflow_id = :id"), {'id': workflow_id})
+                        
+                        # Delete main workflow record
+                        session.execute(text("DELETE FROM workflows WHERE workflow_id = :id"), {'id': workflow_id})
+                        
+                        session.commit()
+                        print(f"   ✅ Cleaned up test workflow: {workflow_id}")
+                    else:
+                        print(f"   ℹ️  Test workflow {workflow_id} not found (already clean)")
+                        
+                except Exception as e:
+                    print(f"   ⚠️  Warning: Could not clean up {workflow_id}: {e}")
+                    session.rollback()
+                    continue
+                    
+    except Exception as e:
+        print(f"   ❌ Error during cleanup: {e}")
 
 if __name__ == "__main__":
     asyncio.run(test_error_handling())
