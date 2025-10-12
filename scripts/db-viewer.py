@@ -67,7 +67,7 @@ def get_workflows(limit=50, offset=0, search=None, sort_by='workflow_id', sort_o
         
         # Validate sort column to prevent SQL injection
         valid_sort_columns = {
-            'workflow_id': 'workflow_id',
+            'workflow_id': 'workflow_id_num',  # Use numeric version for proper sorting
             'title': 'title',
             'category': 'category',
             'author_name': 'author_name',
@@ -79,12 +79,13 @@ def get_workflows(limit=50, offset=0, search=None, sort_by='workflow_id', sort_o
             'extracted_at': 'extracted_at'
         }
         
-        sort_column = valid_sort_columns.get(sort_by, 'workflow_id')
+        sort_column = valid_sort_columns.get(sort_by, 'workflow_id_num')
         sort_order = 'ASC' if sort_order.upper() == 'ASC' else 'DESC'
         
         query = f"""
             SELECT 
                 w.workflow_id,
+                CAST(w.workflow_id AS INTEGER) as workflow_id_num,
                 COALESCE(
                     wm.title,
                     CASE 
