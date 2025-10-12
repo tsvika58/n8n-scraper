@@ -85,7 +85,7 @@ services:
     
     # Port mappings
     ports:
-      - "5002:5002"  # Real-time scraping dashboard
+      - "5001:5001"  # Real-time scraping dashboard
       - "5004:5004"  # Database viewer
     
     # Environment file (commented out due to gitignore)

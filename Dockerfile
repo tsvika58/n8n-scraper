@@ -43,8 +43,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # Tesseract OCR
     tesseract-ocr \
     tesseract-ocr-eng \
-    # Utilities
+    # Utilities & Debugging Tools
     wget \
+    curl \
+    netcat-openbsd \
+    procps \
+    net-tools \
     ca-certificates \
     fonts-liberation \
     # Cleanup
