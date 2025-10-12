@@ -83,6 +83,11 @@ services:
       - HEADLESS=true
       - DATABASE_URL=postgresql://scraper_user:scraper_pass@n8n-scraper-database:5432/n8n_scraper
     
+    # Port mappings
+    ports:
+      - "5002:5002"  # Real-time scraping dashboard
+      - "5004:5004"  # Database viewer
+    
     # Environment file (commented out due to gitignore)
     # env_file:
     #   - .env
@@ -129,7 +134,7 @@ services:
     
     # Environment variables
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@n8n-scraper.local
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
       PGADMIN_DEFAULT_PASSWORD: admin123
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     
@@ -274,7 +279,7 @@ volumes:
 # DEVELOPMENT TOOLS:
 #   pgAdmin (port 8080):
 #     http://localhost:8080
-#     Email: admin@n8n-scraper.local
+#     Email: admin@example.com
 #     Password: admin123
 #   
 #   Jupyter (port 8888):
