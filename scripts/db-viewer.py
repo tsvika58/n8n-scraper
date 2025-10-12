@@ -35,14 +35,14 @@ def get_workflows(limit=50, offset=0, search=None, sort_by='workflow_id', sort_o
         
         # Validate sort column to prevent SQL injection
         valid_sort_columns = {
-            'workflow_id': 'CAST(workflow_id AS INTEGER)',
+            'workflow_id': 'workflow_id',
             'url': 'url',
             'quality_score': 'quality_score',
             'processing_time': 'processing_time',
             'extracted_at': 'extracted_at'
         }
         
-        sort_column = valid_sort_columns.get(sort_by, 'CAST(workflow_id AS INTEGER)')
+        sort_column = valid_sort_columns.get(sort_by, 'workflow_id')
         sort_order = 'ASC' if sort_order.upper() == 'ASC' else 'DESC'
         
         query = f"""
@@ -606,7 +606,7 @@ class DBViewerHandler(BaseHTTPRequestHandler):
         
         async function loadWorkflows(page = 1, search = '', sort = currentSort, order = currentOrder) {{
             try {{
-                const url = `/api/workflows?page=${{page}}${{search ? '&search=' + encodeURIComponent(search) : ''}}&sort=${{sort}}&order=${{order}}`;
+                const url = `/api/workflows?page=${{page}}${{search ? '&search=' + encodeURIComponent(search) : ''}}&sort=${{sort}}&order=${{order}}&t=${{Date.now()}}`;
                 const response = await fetch(url);
                 const data = await response.json();
                 

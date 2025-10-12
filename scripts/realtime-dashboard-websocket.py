@@ -108,6 +108,15 @@ class RealtimeDashboard:
                         WHERE extracted_at IS NOT NULL
                     ) as total_attempted,
                     
+                    -- Layer success counts
+                    COUNT(*) FILTER (WHERE layer1_success) as layer1_count,
+                    COUNT(*) FILTER (WHERE layer2_success) as layer2_count,
+                    COUNT(*) FILTER (WHERE layer3_success) as layer3_count,
+                    COUNT(*) FILTER (WHERE layer4_success) as layer4_count,
+                    COUNT(*) FILTER (WHERE layer5_success) as layer5_count,
+                    COUNT(*) FILTER (WHERE layer6_success) as layer6_count,
+                    COUNT(*) FILTER (WHERE layer7_success) as layer7_count,
+                    
                     -- Cumulative stats
                     COALESCE(AVG(quality_score) FILTER (WHERE quality_score > 0), 0) as avg_quality_score,
                     COALESCE(AVG(processing_time) FILTER (WHERE processing_time > 0), 0) as avg_processing_time
@@ -126,7 +135,11 @@ class RealtimeDashboard:
                     quality_score,
                     layer1_success,
                     layer2_success,
-                    layer3_success
+                    layer3_success,
+                    layer4_success,
+                    layer5_success,
+                    layer6_success,
+                    layer7_success
                 FROM workflows 
                 WHERE extracted_at > NOW() - INTERVAL '30 seconds'
                 ORDER BY extracted_at DESC 
@@ -160,19 +173,15 @@ class RealtimeDashboard:
                     layer1_success,
                     layer2_success,
                     layer3_success,
+                    layer4_success,
+                    layer5_success,
+                    layer6_success,
+                    layer7_success,
                     error_message,
                     CASE 
-                        WHEN layer1_success AND layer2_success AND layer3_success AND quality_score > 0 
-                        THEN 'success'
-                        WHEN (layer1_success = false OR layer2_success = false OR layer3_success = false)
-                             AND error_message IS NOT NULL AND error_message != ''
-                        THEN 'failed'
-                        WHEN extracted_at IS NOT NULL AND (
-                             (layer1_success = false AND layer2_success = false AND layer3_success = false)
-                             OR quality_score = 0
-                             OR (error_message IS NULL OR error_message = '')
-                        )
-                        THEN 'empty'
+                        WHEN quality_score > 0 THEN 'success'
+                        WHEN error_message IS NOT NULL AND error_message != '' THEN 'failed'
+                        WHEN extracted_at IS NOT NULL AND quality_score = 0 THEN 'empty'
                         ELSE 'partial'
                     END as status
                 FROM workflows 
@@ -291,7 +300,14 @@ class RealtimeDashboard:
                     'total_attempted': total_attempted,
                     'success_rate': round(success_rate, 1),
                     'avg_quality_score': round(float(overall['avg_quality_score'] or 0), 1),
-                    'avg_processing_time': round(float(overall['avg_processing_time'] or 0), 1)
+                    'avg_processing_time': round(float(overall['avg_processing_time'] or 0), 1),
+                    'layer1_success': overall['layer1_count'] or 0,
+                    'layer2_success': overall['layer2_count'] or 0,
+                    'layer3_success': overall['layer3_count'] or 0,
+                    'layer4_success': overall['layer4_count'] or 0,
+                    'layer5_success': overall['layer5_count'] or 0,
+                    'layer6_success': overall['layer6_count'] or 0,
+                    'layer7_success': overall['layer7_count'] or 0
                 },
                 
                 'recent_activity': [dict(w) for w in recent_activity],

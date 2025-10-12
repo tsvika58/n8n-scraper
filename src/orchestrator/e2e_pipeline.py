@@ -25,6 +25,10 @@ from src.utils.logging import logger
 from src.scrapers.layer1_metadata import PageMetadataExtractor
 from src.scrapers.layer2_json import WorkflowJSONExtractor
 from src.scrapers.layer3_explainer import ExplainerContentExtractor
+from src.scrapers.layer4_business_intelligence import BusinessIntelligenceExtractor
+from src.scrapers.layer5_community_data import CommunityDataExtractor
+from src.scrapers.layer6_technical_details import TechnicalDetailsExtractor
+from src.scrapers.layer7_performance_analytics import PerformanceAnalyticsExtractor
 from src.scrapers.multimodal_processor import MultimodalProcessor
 from src.scrapers.transcript_extractor import TranscriptExtractor
 from src.validation.layer1_validator import Layer1Validator
@@ -37,13 +41,17 @@ class E2EPipeline:
     """
     End-to-end pipeline orchestrator for complete workflow extraction.
     
-    This orchestrator integrates all 6 extraction components:
+    This orchestrator integrates all 10 extraction components:
     1. Layer 1: Metadata extraction
     2. Layer 2: Workflow JSON extraction
     3. Layer 3: Content extraction
-    4. Multimodal: Image OCR
-    5. Transcripts: YouTube videos
-    6. Validation: Quality scoring
+    4. Layer 4: Business Intelligence extraction
+    5. Layer 5: Community Data extraction
+    6. Layer 6: Technical Details extraction
+    7. Layer 7: Performance Analytics extraction
+    8. Multimodal: Image OCR
+    9. Transcripts: YouTube videos
+    10. Validation: Quality scoring
     
     Performance target: <35s per workflow
     Success rate target: 90%+
@@ -74,6 +82,10 @@ class E2EPipeline:
         
         # Context-managed extractors (initialized per workflow)
         self.layer3_extractor: Optional[ExplainerContentExtractor] = None
+        self.layer4_extractor: Optional[BusinessIntelligenceExtractor] = None
+        self.layer5_extractor: Optional[CommunityDataExtractor] = None
+        self.layer6_extractor: Optional[TechnicalDetailsExtractor] = None
+        self.layer7_extractor: Optional[PerformanceAnalyticsExtractor] = None
         self.multimodal_processor: Optional[MultimodalProcessor] = None
         self.transcript_extractor: Optional[TranscriptExtractor] = None
         
@@ -133,14 +145,22 @@ class E2EPipeline:
             'layers': {
                 'layer1': None,
                 'layer2': None,
-                'layer3': None
+                'layer3': None,
+                'layer4': None,
+                'layer5': None,
+                'layer6': None,
+                'layer7': None
             },
             'multimodal': None,
             'transcripts': None,
             'validation': {
                 'layer1': None,
                 'layer2': None,
-                'layer3': None
+                'layer3': None,
+                'layer4': None,
+                'layer5': None,
+                'layer6': None,
+                'layer7': None
             },
             'quality': None,
             'extraction_time': 0.0,
@@ -150,7 +170,7 @@ class E2EPipeline:
         
         try:
             # PHASE 1: LAYER 1 - METADATA EXTRACTION
-            logger.info(f"Phase 1/6: Extracting Layer 1 metadata for {workflow_id}")
+            logger.info(f"Phase 1/10: Extracting Layer 1 metadata for {workflow_id}")
             layer1_result = await self._extract_layer1(workflow_id, url)
             result['layers']['layer1'] = layer1_result
             
@@ -161,7 +181,7 @@ class E2EPipeline:
                 logger.info(f"✅ Layer 1 complete: {layer1_result.get('extraction_time', 0):.2f}s")
             
             # PHASE 2: LAYER 2 - WORKFLOW JSON EXTRACTION
-            logger.info(f"Phase 2/6: Extracting Layer 2 JSON for {workflow_id}")
+            logger.info(f"Phase 2/10: Extracting Layer 2 JSON for {workflow_id}")
             layer2_result = await self._extract_layer2(workflow_id)
             result['layers']['layer2'] = layer2_result
             
@@ -172,7 +192,7 @@ class E2EPipeline:
                 logger.info(f"✅ Layer 2 complete: {layer2_result.get('extraction_time', 0):.2f}s")
             
             # PHASE 3: LAYER 3 - CONTENT EXTRACTION
-            logger.info(f"Phase 3/6: Extracting Layer 3 content for {workflow_id}")
+            logger.info(f"Phase 3/10: Extracting Layer 3 content for {workflow_id}")
             layer3_result = await self._extract_layer3(workflow_id, url)
             result['layers']['layer3'] = layer3_result
             
@@ -182,9 +202,53 @@ class E2EPipeline:
             else:
                 logger.info(f"✅ Layer 3 complete: {layer3_result.get('extraction_time', 0):.2f}s")
             
-            # PHASE 4: MULTIMODAL PROCESSING (Optional)
+            # PHASE 4: LAYER 4 - BUSINESS INTELLIGENCE EXTRACTION
+            logger.info(f"Phase 4/10: Extracting Layer 4 business intelligence for {workflow_id}")
+            layer4_result = await self._extract_layer4(workflow_id, result)
+            result['layers']['layer4'] = layer4_result
+            
+            if not layer4_result.get('success'):
+                result['errors'].append(f"Layer 4 extraction failed: {layer4_result.get('error')}")
+                logger.warning(f"Layer 4 failed for {workflow_id}, continuing with other layers")
+            else:
+                logger.info(f"✅ Layer 4 complete: {layer4_result.get('extraction_time', 0):.2f}s")
+            
+            # PHASE 5: LAYER 5 - COMMUNITY DATA EXTRACTION
+            logger.info(f"Phase 5/10: Extracting Layer 5 community data for {workflow_id}")
+            layer5_result = await self._extract_layer5(workflow_id, result)
+            result['layers']['layer5'] = layer5_result
+            
+            if not layer5_result.get('success'):
+                result['errors'].append(f"Layer 5 extraction failed: {layer5_result.get('error')}")
+                logger.warning(f"Layer 5 failed for {workflow_id}, continuing with other layers")
+            else:
+                logger.info(f"✅ Layer 5 complete: {layer5_result.get('extraction_time', 0):.2f}s")
+            
+            # PHASE 6: LAYER 6 - TECHNICAL DETAILS EXTRACTION
+            logger.info(f"Phase 6/10: Extracting Layer 6 technical details for {workflow_id}")
+            layer6_result = await self._extract_layer6(workflow_id, result)
+            result['layers']['layer6'] = layer6_result
+            
+            if not layer6_result.get('success'):
+                result['errors'].append(f"Layer 6 extraction failed: {layer6_result.get('error')}")
+                logger.warning(f"Layer 6 failed for {workflow_id}, continuing with other layers")
+            else:
+                logger.info(f"✅ Layer 6 complete: {layer6_result.get('extraction_time', 0):.2f}s")
+            
+            # PHASE 7: LAYER 7 - PERFORMANCE ANALYTICS EXTRACTION
+            logger.info(f"Phase 7/10: Extracting Layer 7 performance analytics for {workflow_id}")
+            layer7_result = await self._extract_layer7(workflow_id, result)
+            result['layers']['layer7'] = layer7_result
+            
+            if not layer7_result.get('success'):
+                result['errors'].append(f"Layer 7 extraction failed: {layer7_result.get('error')}")
+                logger.warning(f"Layer 7 failed for {workflow_id}, continuing with other layers")
+            else:
+                logger.info(f"✅ Layer 7 complete: {layer7_result.get('extraction_time', 0):.2f}s")
+            
+            # PHASE 8: MULTIMODAL PROCESSING (Optional)
             if include_multimodal:
-                logger.info(f"Phase 4/6: Multimodal processing for {workflow_id}")
+                logger.info(f"Phase 8/10: Multimodal processing for {workflow_id}")
                 multimodal_result = await self._process_multimodal(workflow_id, url)
                 result['multimodal'] = multimodal_result
                 
@@ -193,11 +257,11 @@ class E2EPipeline:
                 else:
                     logger.info(f"✅ Multimodal complete: {multimodal_result.get('extraction_time', 0):.2f}s")
             else:
-                logger.info("Phase 4/6: Multimodal processing skipped")
+                logger.info("Phase 8/10: Multimodal processing skipped")
             
-            # PHASE 5: VIDEO TRANSCRIPTS (Optional)
+            # PHASE 9: VIDEO TRANSCRIPTS (Optional)
             if include_transcripts and result.get('multimodal') and result['multimodal'].get('video_urls'):
-                logger.info(f"Phase 5/6: Extracting video transcripts for {workflow_id}")
+                logger.info(f"Phase 9/10: Extracting video transcripts for {workflow_id}")
                 transcript_result = await self._extract_transcripts(
                     workflow_id,
                     result['multimodal']['video_urls']
@@ -209,14 +273,18 @@ class E2EPipeline:
                 else:
                     logger.info(f"✅ Transcripts complete: {transcript_result.get('extraction_time', 0):.2f}s")
             else:
-                logger.info("Phase 5/6: Transcript extraction skipped (no videos or disabled)")
+                logger.info("Phase 9/10: Transcript extraction skipped (no videos or disabled)")
             
-            # PHASE 6: VALIDATION & QUALITY SCORING
-            logger.info(f"Phase 6/6: Validating and scoring quality for {workflow_id}")
+            # PHASE 10: VALIDATION & QUALITY SCORING
+            logger.info(f"Phase 10/10: Validating and scoring quality for {workflow_id}")
             validation_result = await self._validate_and_score(
                 result['layers']['layer1'],
                 result['layers']['layer2'],
-                result['layers']['layer3']
+                result['layers']['layer3'],
+                result['layers']['layer4'],
+                result['layers']['layer5'],
+                result['layers']['layer6'],
+                result['layers']['layer7']
             )
             result['validation'] = validation_result['validation']
             result['quality'] = validation_result['quality']
@@ -227,14 +295,18 @@ class E2EPipeline:
             result['extraction_time'] = extraction_time
             
             # Determine overall success
-            # Success if at least 2 out of 3 layers succeeded
+            # Success if at least 4 out of 7 layers succeeded
             layers_successful = sum([
                 result['layers']['layer1'].get('success', False),
                 result['layers']['layer2'].get('success', False),
-                result['layers']['layer3'].get('success', False)
+                result['layers']['layer3'].get('success', False),
+                result['layers']['layer4'].get('success', False),
+                result['layers']['layer5'].get('success', False),
+                result['layers']['layer6'].get('success', False),
+                result['layers']['layer7'].get('success', False)
             ])
             
-            result['success'] = layers_successful >= 2
+            result['success'] = layers_successful >= 4
             
             # Update statistics
             self.total_processed += 1
@@ -248,7 +320,7 @@ class E2EPipeline:
             status = "✅ SUCCESS" if result['success'] else "⚠️ PARTIAL"
             logger.info(f"{status}: Workflow {workflow_id} processed in {extraction_time:.2f}s "
                        f"(Quality: {result['quality'].get('overall_score', 0):.1f}/100, "
-                       f"Layers: {layers_successful}/3)")
+                       f"Layers: {layers_successful}/7)")
             
             return result
         
@@ -312,6 +384,82 @@ class E2EPipeline:
                 'errors': [str(e)],
                 'extraction_time': 0,
                 'metadata': {}
+            }
+    
+    async def _extract_layer4(self, workflow_id: str, workflow_data: Dict[str, Any]) -> Dict:
+        """Extract Layer 4 business intelligence."""
+        try:
+            if not self.layer4_extractor:
+                self.layer4_extractor = BusinessIntelligenceExtractor()
+            
+            result = await self.layer4_extractor.extract(workflow_data)
+            return result
+        except Exception as e:
+            logger.error(f"Layer 4 extraction exception for {workflow_id}: {str(e)}")
+            return {
+                'success': False,
+                'workflow_id': workflow_id,
+                'data': None,
+                'extraction_time': 0,
+                'error': str(e),
+                'layer': 'layer4_business_intelligence'
+            }
+    
+    async def _extract_layer5(self, workflow_id: str, workflow_data: Dict[str, Any]) -> Dict:
+        """Extract Layer 5 community data."""
+        try:
+            if not self.layer5_extractor:
+                self.layer5_extractor = CommunityDataExtractor()
+            
+            result = await self.layer5_extractor.extract(workflow_data)
+            return result
+        except Exception as e:
+            logger.error(f"Layer 5 extraction exception for {workflow_id}: {str(e)}")
+            return {
+                'success': False,
+                'workflow_id': workflow_id,
+                'data': None,
+                'extraction_time': 0,
+                'error': str(e),
+                'layer': 'layer5_community_data'
+            }
+    
+    async def _extract_layer6(self, workflow_id: str, workflow_data: Dict[str, Any]) -> Dict:
+        """Extract Layer 6 technical details."""
+        try:
+            if not self.layer6_extractor:
+                self.layer6_extractor = TechnicalDetailsExtractor()
+            
+            result = await self.layer6_extractor.extract(workflow_data)
+            return result
+        except Exception as e:
+            logger.error(f"Layer 6 extraction exception for {workflow_id}: {str(e)}")
+            return {
+                'success': False,
+                'workflow_id': workflow_id,
+                'data': None,
+                'extraction_time': 0,
+                'error': str(e),
+                'layer': 'layer6_technical_details'
+            }
+    
+    async def _extract_layer7(self, workflow_id: str, workflow_data: Dict[str, Any]) -> Dict:
+        """Extract Layer 7 performance analytics."""
+        try:
+            if not self.layer7_extractor:
+                self.layer7_extractor = PerformanceAnalyticsExtractor()
+            
+            result = await self.layer7_extractor.extract(workflow_data)
+            return result
+        except Exception as e:
+            logger.error(f"Layer 7 extraction exception for {workflow_id}: {str(e)}")
+            return {
+                'success': False,
+                'workflow_id': workflow_id,
+                'data': None,
+                'extraction_time': 0,
+                'error': str(e),
+                'layer': 'layer7_performance_analytics'
             }
     
     async def _process_multimodal(self, workflow_id: str, url: str) -> Dict:
@@ -408,7 +556,11 @@ class E2EPipeline:
         self,
         layer1_result: Optional[Dict],
         layer2_result: Optional[Dict],
-        layer3_result: Optional[Dict]
+        layer3_result: Optional[Dict],
+        layer4_result: Optional[Dict] = None,
+        layer5_result: Optional[Dict] = None,
+        layer6_result: Optional[Dict] = None,
+        layer7_result: Optional[Dict] = None
     ) -> Dict:
         """
         Validate all layers and calculate quality score.
@@ -419,7 +571,11 @@ class E2EPipeline:
         validation = {
             'layer1': None,
             'layer2': None,
-            'layer3': None
+            'layer3': None,
+            'layer4': None,
+            'layer5': None,
+            'layer6': None,
+            'layer7': None
         }
         
         # Validate Layer 1
@@ -446,11 +602,113 @@ class E2EPipeline:
                 logger.warning(f"Layer 3 validation failed: {str(e)}")
                 validation['layer3'] = {'score': 0, 'issues': [str(e)]}
         
+        # Validate Layer 4 (Business Intelligence) - Basic validation
+        if layer4_result and layer4_result.get('success') and layer4_result.get('data'):
+            try:
+                # Basic validation for business intelligence data
+                data = layer4_result['data']
+                score = 0
+                issues = []
+                
+                # Check if key fields are present
+                if data.get('business_function'):
+                    score += 20
+                if data.get('business_value_score'):
+                    score += 20
+                if data.get('roi_estimate'):
+                    score += 15
+                if data.get('business_goal'):
+                    score += 15
+                if data.get('business_requirement'):
+                    score += 15
+                if data.get('business_advantage'):
+                    score += 15
+                
+                validation['layer4'] = {'score': score, 'issues': issues}
+            except Exception as e:
+                logger.warning(f"Layer 4 validation failed: {str(e)}")
+                validation['layer4'] = {'score': 0, 'issues': [str(e)]}
+        
+        # Validate Layer 5 (Community Data) - Basic validation
+        if layer5_result and layer5_result.get('success') and layer5_result.get('data'):
+            try:
+                # Basic validation for community data
+                data = layer5_result['data']
+                score = 0
+                issues = []
+                
+                # Check if key fields are present
+                if data.get('community_engagement_score') is not None:
+                    score += 25
+                if data.get('community_activity_score') is not None:
+                    score += 25
+                if data.get('community_rating') is not None:
+                    score += 25
+                if data.get('usage_statistics'):
+                    score += 25
+                
+                validation['layer5'] = {'score': score, 'issues': issues}
+            except Exception as e:
+                logger.warning(f"Layer 5 validation failed: {str(e)}")
+                validation['layer5'] = {'score': 0, 'issues': [str(e)]}
+        
+        # Validate Layer 6 (Technical Details) - Basic validation
+        if layer6_result and layer6_result.get('success') and layer6_result.get('data'):
+            try:
+                # Basic validation for technical details
+                data = layer6_result['data']
+                score = 0
+                issues = []
+                
+                # Check if key fields are present
+                if data.get('workflow_automation_level'):
+                    score += 20
+                if data.get('workflow_integration_level'):
+                    score += 20
+                if data.get('security_requirements'):
+                    score += 20
+                if data.get('api_endpoints'):
+                    score += 20
+                if data.get('performance_metrics'):
+                    score += 20
+                
+                validation['layer6'] = {'score': score, 'issues': issues}
+            except Exception as e:
+                logger.warning(f"Layer 6 validation failed: {str(e)}")
+                validation['layer6'] = {'score': 0, 'issues': [str(e)]}
+        
+        # Validate Layer 7 (Performance Analytics) - Basic validation
+        if layer7_result and layer7_result.get('success') and layer7_result.get('data'):
+            try:
+                # Basic validation for performance analytics
+                data = layer7_result['data']
+                score = 0
+                issues = []
+                
+                # Check if key fields are present
+                if data.get('execution_success_rate') is not None:
+                    score += 25
+                if data.get('performance_metrics'):
+                    score += 25
+                if data.get('optimization_opportunities'):
+                    score += 25
+                if data.get('monitoring_requirements'):
+                    score += 25
+                
+                validation['layer7'] = {'score': score, 'issues': issues}
+            except Exception as e:
+                logger.warning(f"Layer 7 validation failed: {str(e)}")
+                validation['layer7'] = {'score': 0, 'issues': [str(e)]}
+        
         # Calculate quality score
         quality = self.quality_scorer.calculate_score(
             validation['layer1'],
             validation['layer2'],
-            validation['layer3']
+            validation['layer3'],
+            validation['layer4'],
+            validation['layer5'],
+            validation['layer6'],
+            validation['layer7']
         )
         
         return {

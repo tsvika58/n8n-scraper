@@ -12,11 +12,15 @@ logger = logging.getLogger(__name__)
 class QualityScorer:
     """Calculates quality scores for workflows based on validation results."""
     
-    # Weight distribution for scoring algorithm
+    # Weight distribution for scoring algorithm (7 layers + consistency)
     WEIGHTS = {
-        'layer1': 0.20,  # Metadata: 20%
-        'layer2': 0.30,  # JSON Structure: 30%
-        'layer3': 0.40,  # Content Quality: 40%
+        'layer1': 0.15,  # Metadata: 15%
+        'layer2': 0.25,  # JSON Structure: 25%
+        'layer3': 0.25,  # Content Quality: 25%
+        'layer4': 0.10,  # Business Intelligence: 10%
+        'layer5': 0.05,  # Community Data: 5%
+        'layer6': 0.05,  # Technical Details: 5%
+        'layer7': 0.05,  # Performance Analytics: 5%
         'consistency': 0.10  # Cross-layer Consistency: 10%
     }
     
@@ -34,7 +38,11 @@ class QualityScorer:
     
     def calculate_score(self, layer1_result: Optional[Dict] = None,
                        layer2_result: Optional[Dict] = None,
-                       layer3_result: Optional[Dict] = None) -> Dict:
+                       layer3_result: Optional[Dict] = None,
+                       layer4_result: Optional[Dict] = None,
+                       layer5_result: Optional[Dict] = None,
+                       layer6_result: Optional[Dict] = None,
+                       layer7_result: Optional[Dict] = None) -> Dict:
         """
         Calculate overall quality score from validation results.
         
@@ -42,6 +50,10 @@ class QualityScorer:
             layer1_result: Layer 1 validation result with 'score' and 'issues'
             layer2_result: Layer 2 validation result with 'score' and 'issues'
             layer3_result: Layer 3 validation result with 'score' and 'issues'
+            layer4_result: Layer 4 validation result with 'score' and 'issues'
+            layer5_result: Layer 5 validation result with 'score' and 'issues'
+            layer6_result: Layer 6 validation result with 'score' and 'issues'
+            layer7_result: Layer 7 validation result with 'score' and 'issues'
             
         Returns:
             dict with:
@@ -50,6 +62,10 @@ class QualityScorer:
                 - layer1_score: float or None
                 - layer2_score: float or None
                 - layer3_score: float or None
+                - layer4_score: float or None
+                - layer5_score: float or None
+                - layer6_score: float or None
+                - layer7_score: float or None
                 - consistency_score: float
                 - total_issues: int
         """
@@ -57,10 +73,15 @@ class QualityScorer:
         layer1_score = layer1_result.get('score', 0) if layer1_result else 0
         layer2_score = layer2_result.get('score', 0) if layer2_result else 0
         layer3_score = layer3_result.get('score', 0) if layer3_result else 0
+        layer4_score = layer4_result.get('score', 0) if layer4_result else 0
+        layer5_score = layer5_result.get('score', 0) if layer5_result else 0
+        layer6_score = layer6_result.get('score', 0) if layer6_result else 0
+        layer7_score = layer7_result.get('score', 0) if layer7_result else 0
         
         # Calculate consistency score
         consistency_score = self._calculate_consistency(
-            layer1_result, layer2_result, layer3_result
+            layer1_result, layer2_result, layer3_result, layer4_result,
+            layer5_result, layer6_result, layer7_result
         )
         
         # Calculate weighted overall score
@@ -68,6 +89,10 @@ class QualityScorer:
             layer1_score * self.WEIGHTS['layer1'] +
             layer2_score * self.WEIGHTS['layer2'] +
             layer3_score * self.WEIGHTS['layer3'] +
+            layer4_score * self.WEIGHTS['layer4'] +
+            layer5_score * self.WEIGHTS['layer5'] +
+            layer6_score * self.WEIGHTS['layer6'] +
+            layer7_score * self.WEIGHTS['layer7'] +
             consistency_score * self.WEIGHTS['consistency']
         )
         
@@ -76,12 +101,10 @@ class QualityScorer:
         
         # Count total issues
         total_issues = 0
-        if layer1_result:
-            total_issues += len(layer1_result.get('issues', []))
-        if layer2_result:
-            total_issues += len(layer2_result.get('issues', []))
-        if layer3_result:
-            total_issues += len(layer3_result.get('issues', []))
+        for layer_result in [layer1_result, layer2_result, layer3_result, layer4_result, 
+                             layer5_result, layer6_result, layer7_result]:
+            if layer_result:
+                total_issues += len(layer_result.get('issues', []))
         
         return {
             'overall_score': round(overall_score, 1),
@@ -89,38 +112,50 @@ class QualityScorer:
             'layer1_score': round(layer1_score, 1) if layer1_score > 0 else None,
             'layer2_score': round(layer2_score, 1) if layer2_score > 0 else None,
             'layer3_score': round(layer3_score, 1) if layer3_score > 0 else None,
+            'layer4_score': round(layer4_score, 1) if layer4_score > 0 else None,
+            'layer5_score': round(layer5_score, 1) if layer5_score > 0 else None,
+            'layer6_score': round(layer6_score, 1) if layer6_score > 0 else None,
+            'layer7_score': round(layer7_score, 1) if layer7_score > 0 else None,
             'consistency_score': round(consistency_score, 1),
             'total_issues': total_issues
         }
     
     def _calculate_consistency(self, layer1_result: Optional[Dict],
                                layer2_result: Optional[Dict],
-                               layer3_result: Optional[Dict]) -> float:
+                               layer3_result: Optional[Dict],
+                               layer4_result: Optional[Dict] = None,
+                               layer5_result: Optional[Dict] = None,
+                               layer6_result: Optional[Dict] = None,
+                               layer7_result: Optional[Dict] = None) -> float:
         """
         Calculate cross-layer consistency score.
         
         Args:
-            layer1_result, layer2_result, layer3_result: Validation results
+            layer1-7_result: Validation results for all layers
             
         Returns:
             float: Consistency score (0-100)
         """
         # Check which layers have data
-        has_layer1 = layer1_result is not None and layer1_result.get('score', 0) > 0
-        has_layer2 = layer2_result is not None and layer2_result.get('score', 0) > 0
-        has_layer3 = layer3_result is not None and layer3_result.get('score', 0) > 0
+        layers_with_data = sum([
+            1 for result in [layer1_result, layer2_result, layer3_result, 
+                           layer4_result, layer5_result, layer6_result, layer7_result]
+            if result is not None and result.get('score', 0) > 0
+        ])
         
-        layers_present = sum([has_layer1, has_layer2, has_layer3])
-        
-        # Score based on data completeness across layers
-        if layers_present == 3:
-            return 100.0  # All three layers present - excellent consistency
-        elif layers_present == 2:
-            return 70.0   # Two layers present - good consistency
-        elif layers_present == 1:
-            return 40.0   # One layer present - fair consistency
+        # Score based on data completeness across all 7 layers
+        if layers_with_data >= 6:
+            return 100.0  # 6-7 layers present - excellent consistency
+        elif layers_with_data >= 4:
+            return 80.0   # 4-5 layers present - good consistency
+        elif layers_with_data >= 3:
+            return 60.0   # 3 layers present - fair consistency
+        elif layers_with_data >= 2:
+            return 40.0   # 2 layers present - poor consistency
+        elif layers_with_data == 1:
+            return 20.0   # 1 layer present - very poor consistency
         else:
-            return 0.0    # No layers present - poor consistency
+            return 0.0    # No layers present - no consistency
     
     def _classify_quality(self, score: float) -> str:
         """
