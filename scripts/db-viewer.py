@@ -29,16 +29,26 @@ def get_workflows(limit=50, offset=0, search=None, sort_by='workflow_id', sort_o
         params = []
         
         if search:
-            where_clause = "WHERE workflow_id ILIKE %s OR url ILIKE %s"
+            where_clause = """WHERE w.workflow_id ILIKE %s 
+                OR w.url ILIKE %s 
+                OR wm.title ILIKE %s 
+                OR wm.author_name ILIKE %s"""
             search_pattern = f"%{search}%"
-            params = [search_pattern, search_pattern]
+            params = [search_pattern, search_pattern, search_pattern, search_pattern]
+        
+        # Always add limit and offset parameters
+        params.extend([limit, offset])
         
         # Validate sort column to prevent SQL injection
         valid_sort_columns = {
             'workflow_id': 'workflow_id',
-            'url': 'url',
+            'title': 'title',
+            'category': 'category',
+            'author_name': 'author_name',
+            'views': 'views',
             'quality_score': 'quality_score',
-            'processing_time': 'processing_time',
+            'workflow_difficulty_score': 'workflow_difficulty_score',
+            'workflow_industry': 'workflow_industry',
             'extracted_at': 'extracted_at'
         }
         
@@ -47,41 +57,90 @@ def get_workflows(limit=50, offset=0, search=None, sort_by='workflow_id', sort_o
         
         query = f"""
             SELECT 
-                workflow_id,
-                url,
-                quality_score,
-                layer1_success,
-                layer2_success,
-                layer3_success,
-                processing_time,
-                extracted_at
-            FROM workflows
+                w.workflow_id,
+                COALESCE(
+                    wm.title,
+                    CASE 
+                        WHEN w.url LIKE '%%/%%' THEN 
+                            TRIM(
+                                REPLACE(
+                                    REGEXP_REPLACE(
+                                        SUBSTRING(w.url FROM '[^/]+$'), 
+                                        '^[0-9]+[[:space:]]*', 
+                                        ''
+                                    ), 
+                                    '-', ' '
+                                )
+                            )
+                        ELSE w.url
+                    END
+                ) as title,
+                CASE 
+                    WHEN wm.categories IS NOT NULL AND jsonb_array_length(wm.categories) > 0 
+                    THEN wm.categories->>0
+                    ELSE 'Uncategorized'
+                END as category,
+                wm.author_name,
+                wm.views,
+                w.quality_score,
+                wm.workflow_difficulty_score,
+                wm.workflow_industry,
+                w.layer1_success,
+                w.layer2_success,
+                w.layer3_success,
+                w.layer4_success,
+                w.layer5_success,
+                w.layer6_success,
+                w.layer7_success,
+                CASE 
+                    WHEN w.quality_score > 0 THEN 'Success'
+                    WHEN w.layer1_success OR w.layer2_success OR w.layer3_success THEN 'Partial'
+                    WHEN w.extracted_at IS NOT NULL THEN 'Failed'
+                    ELSE 'Pending'
+                END as status,
+                w.extracted_at
+            FROM workflows w
+            LEFT JOIN workflow_metadata wm ON w.workflow_id = wm.workflow_id
             {where_clause}
             ORDER BY {sort_column} {sort_order}
             LIMIT %s OFFSET %s
         """
-        params.extend([limit, offset])
         
         cursor.execute(query, params)
         workflows = cursor.fetchall()
         
         # Get total count
-        count_query = f"SELECT COUNT(*) FROM workflows {where_clause}"
-        cursor.execute(count_query, params[:len(params)-2] if where_clause else [])
+        count_query = f"SELECT COUNT(*) FROM workflows w LEFT JOIN workflow_metadata wm ON w.workflow_id = wm.workflow_id {where_clause}"
+        # For count query, we only need search parameters (not limit/offset)
+        if where_clause:
+            # Has search: params = [search1, search2, search3, search4, limit, offset]
+            count_params = params[:-2]  # Remove last 2 (limit, offset)
+        else:
+            # No search: params = [limit, offset]
+            count_params = []  # No parameters needed for count
+        cursor.execute(count_query, count_params)
         total = cursor.fetchone()['count']
         
         cursor.close()
         conn.close()
-        
         return [
             {
                 'workflow_id': w['workflow_id'],
-                'url': w['url'],
+                'title': w['title'],
+                'category': w['category'],
+                'author_name': w['author_name'],
+                'views': w['views'],
                 'quality_score': float(w['quality_score']) if w['quality_score'] else 0,
+                'workflow_difficulty_score': float(w['workflow_difficulty_score']) if w['workflow_difficulty_score'] else None,
+                'workflow_industry': w['workflow_industry'],
                 'layer1_success': w['layer1_success'],
                 'layer2_success': w['layer2_success'],
                 'layer3_success': w['layer3_success'],
-                'processing_time': float(w['processing_time']) if w['processing_time'] else 0,
+                'layer4_success': w['layer4_success'],
+                'layer5_success': w['layer5_success'],
+                'layer6_success': w['layer6_success'],
+                'layer7_success': w['layer7_success'],
+                'status': w['status'],
                 'extracted_at': w['extracted_at'].isoformat() if w['extracted_at'] else None
             }
             for w in workflows
@@ -238,7 +297,7 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             search = params.get('search', [None])[0]
             sort_by = params.get('sort', ['workflow_id'])[0]
             sort_order = params.get('order', ['desc'])[0]
-            limit = 50
+            limit = int(params.get('limit', [50])[0])
             
             workflows, total = get_workflows(
                 limit=limit,
@@ -488,6 +547,17 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             background: linear-gradient(90deg, #667eea, #764ba2);
         }}
         
+        .category-badge {{
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            font-weight: 500;
+            background: #f0f9ff;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+        }}
+        
         .pagination {{
             display: flex;
             justify-content: center;
@@ -561,17 +631,18 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             <table>
                 <thead>
                     <tr>
-                        <th class="sortable" data-sort="workflow_id">Workflow ID <span class="sort-arrow">↕</span></th>
-                        <th class="sortable" data-sort="url">URL <span class="sort-arrow">↕</span></th>
-                        <th class="sortable" data-sort="quality_score">Quality Score <span class="sort-arrow">↕</span></th>
+                        <th class="sortable" data-sort="workflow_id">ID <span class="sort-arrow">↕</span></th>
+                        <th class="sortable" data-sort="title">Title <span class="sort-arrow">↕</span></th>
+                        <th class="sortable" data-sort="category">Category <span class="sort-arrow">↕</span></th>
+                        <th class="sortable" data-sort="quality_score">Quality <span class="sort-arrow">↕</span></th>
                         <th>Status</th>
-                        <th class="sortable" data-sort="processing_time">Processing Time <span class="sort-arrow">↕</span></th>
-                        <th class="sortable" data-sort="extracted_at">Extracted At <span class="sort-arrow">↕</span></th>
+                        <th>Layers</th>
+                        <th class="sortable" data-sort="views">Views <span class="sort-arrow">↕</span></th>
                     </tr>
                 </thead>
                 <tbody id="workflows-table">
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 40px; color: #666;">
+                        <td colspan="7" style="text-align: center; padding: 40px; color: #666;">
                             Loading workflows...
                         </td>
                     </tr>
@@ -614,14 +685,27 @@ class DBViewerHandler(BaseHTTPRequestHandler):
                 const pagination = document.getElementById('pagination');
                 
                 if (data.workflows.length === 0) {{
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #666;">No workflows found</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: #666;">No workflows found</td></tr>';
                     pagination.innerHTML = '';
                     return;
                 }}
                 
                 tbody.innerHTML = data.workflows.map(workflow => {{
-                    const status = workflow.layer1_success && workflow.layer2_success && workflow.layer3_success ? 'Complete' : 'Partial';
-                    const statusClass = status === 'Complete' ? 'status-success' : 'status-partial';
+                    // Create layer success indicators
+                    const layers = [
+                        workflow.layer1_success ? 'L1' : '',
+                        workflow.layer2_success ? 'L2' : '',
+                        workflow.layer3_success ? 'L3' : '',
+                        workflow.layer4_success ? 'L4' : '',
+                        workflow.layer5_success ? 'L5' : '',
+                        workflow.layer6_success ? 'L6' : '',
+                        workflow.layer7_success ? 'L7' : ''
+                    ].filter(l => l).join(' ');
+                    
+                    // Status class based on workflow.status
+                    const statusClass = workflow.status === 'Success' ? 'status-success' : 
+                                      workflow.status === 'Partial' ? 'status-partial' : 
+                                      workflow.status === 'Failed' ? 'status-failed' : 'status-pending';
                     
                     return `
                         <tr>
@@ -631,9 +715,13 @@ class DBViewerHandler(BaseHTTPRequestHandler):
                                 </a>
                             </td>
                             <td>
-                                <a href="${{workflow.url}}" target="_blank" class="url-link">
-                                    ${{workflow.url.length > 50 ? workflow.url.substring(0, 50) + '...' : workflow.url}}
-                                </a>
+                                <div style="font-weight: 500; color: #333;">
+                                    ${{workflow.title || 'Untitled'}}
+                                </div>
+                                ${{workflow.workflow_industry ? `<div style="font-size: 0.8em; color: #666;">${{workflow.workflow_industry}}</div>` : ''}}
+                            </td>
+                            <td>
+                                <span class="category-badge">${{workflow.category || 'Uncategorized'}}</span>
                             </td>
                             <td>
                                 <div style="margin-bottom: 5px;">${{workflow.quality_score.toFixed(1)}}%</div>
@@ -642,10 +730,14 @@ class DBViewerHandler(BaseHTTPRequestHandler):
                                 </div>
                             </td>
                             <td>
-                                <span class="status-badge ${{statusClass}}">${{status}}</span>
+                                <span class="status-badge ${{statusClass}}">${{workflow.status}}</span>
                             </td>
-                            <td>${{workflow.processing_time.toFixed(2)}}s</td>
-                            <td>${{new Date(workflow.extracted_at).toLocaleString()}}</td>
+                            <td>
+                                <div style="font-size: 0.8em; color: #666;">${{layers || 'None'}}</div>
+                            </td>
+                            <td>
+                                <div style="text-align: right;">${{workflow.views || 0}}</div>
+                            </td>
                         </tr>
                     `;
                 }}).join('');

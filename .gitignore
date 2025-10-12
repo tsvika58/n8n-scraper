@@ -89,3 +89,5 @@ backups/*.tar
 backups/*.tar.gz
 backups/*/n8n-scraper-*.tar
 backups/*/project_code.tar.gz
+*.tar.gz
+smart_filtering_*.json
