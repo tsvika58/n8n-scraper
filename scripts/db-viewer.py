@@ -19,22 +19,48 @@ DB_CONFIG = {
     'password': 'scraper_pass'
 }
 
-def get_workflows(limit=50, offset=0, search=None, sort_by='workflow_id', sort_order='DESC'):
+def get_workflows(limit=50, offset=0, search=None, sort_by='workflow_id', sort_order='DESC', category=None, status=None, layers=None):
     """Get workflows from database"""
     try:
         conn = psycopg2.connect(**DB_CONFIG)
         cursor = conn.cursor(cursor_factory=RealDictCursor)
         
-        where_clause = ""
+        where_conditions = []
         params = []
         
         if search:
-            where_clause = """WHERE w.workflow_id ILIKE %s 
+            where_conditions.append("""(w.workflow_id ILIKE %s 
                 OR w.url ILIKE %s 
                 OR wm.title ILIKE %s 
-                OR wm.author_name ILIKE %s"""
+                OR wm.author_name ILIKE %s)""")
             search_pattern = f"%{search}%"
-            params = [search_pattern, search_pattern, search_pattern, search_pattern]
+            params.extend([search_pattern, search_pattern, search_pattern, search_pattern])
+        
+        if category:
+            where_conditions.append("wm.categories::text ILIKE %s")
+            params.append(f"%{category}%")
+        
+        if status:
+            if status == 'Success':
+                where_conditions.append("w.quality_score > 80")
+            elif status == 'Partial':
+                where_conditions.append("w.quality_score > 0 AND w.quality_score <= 80")
+            elif status == 'Failed':
+                where_conditions.append("w.quality_score = 0 OR w.error_message IS NOT NULL")
+            elif status == 'Pending':
+                where_conditions.append("w.extracted_at IS NULL")
+        
+        if layers:
+            if layers == 'layer1':
+                where_conditions.append("w.layer1_success = true")
+            elif layers == 'layer2':
+                where_conditions.append("w.layer2_success = true")
+            elif layers == 'layer3':
+                where_conditions.append("w.layer3_success = true")
+            elif layers == 'all-layers':
+                where_conditions.append("w.layer1_success = true AND w.layer2_success = true AND w.layer3_success = true")
+        
+        where_clause = "WHERE " + " AND ".join(where_conditions) if where_conditions else ""
         
         # Always add limit and offset parameters
         params.extend([limit, offset])
@@ -47,6 +73,7 @@ def get_workflows(limit=50, offset=0, search=None, sort_by='workflow_id', sort_o
             'author_name': 'author_name',
             'views': 'views',
             'quality_score': 'quality_score',
+            'status': 'quality_score',  # Sort by quality_score for status
             'workflow_difficulty_score': 'workflow_difficulty_score',
             'workflow_industry': 'workflow_industry',
             'extracted_at': 'extracted_at'
@@ -298,13 +325,19 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             sort_by = params.get('sort', ['workflow_id'])[0]
             sort_order = params.get('order', ['desc'])[0]
             limit = int(params.get('limit', [50])[0])
+            category = params.get('category', [None])[0]
+            status = params.get('status', [None])[0]
+            layers = params.get('layers', [None])[0]
             
             workflows, total = get_workflows(
                 limit=limit,
                 offset=(page-1)*limit,
                 search=search,
                 sort_by=sort_by,
-                sort_order=sort_order
+                sort_order=sort_order,
+                category=category,
+                status=status,
+                layers=layers
             )
             
             response = {
@@ -450,6 +483,20 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             border-color: #667eea;
         }}
         
+        .filter-select {{
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            background: white;
+            min-width: 150px;
+        }}
+        
+        .filter-select:focus {{
+            outline: none;
+            border-color: #667eea;
+        }}
+        
         .btn {{
             padding: 12px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -473,6 +520,7 @@ class DBViewerHandler(BaseHTTPRequestHandler):
         table {{
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }}
         
         th {{
@@ -508,9 +556,30 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             opacity: 1;
         }}
         
+        /* Column width optimizations */
+        th:nth-child(1), td:nth-child(1) {{ width: 80px; }}  /* ID */
+        th:nth-child(2), td:nth-child(2) {{ width: 35%; }}   /* Title - largest */
+        th:nth-child(3), td:nth-child(3) {{ width: 120px; }} /* Category */
+        th:nth-child(4), td:nth-child(4) {{ width: 100px; }} /* Quality */
+        th:nth-child(5), td:nth-child(5) {{ width: 90px; }}  /* Status */
+        th:nth-child(6), td:nth-child(6) {{ width: 80px; }}  /* Layers */
+        th:nth-child(7), td:nth-child(7) {{ width: 80px; }}  /* Views */
+        
+        /* Title column should wrap and show full text */
+        td:nth-child(2) {{
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.4;
+            max-height: 60px;
+            overflow-y: auto;
+        }}
+        
         td {{
             padding: 15px;
             border-bottom: 1px solid #dee2e6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }}
         
         tbody tr:hover {{
@@ -622,7 +691,30 @@ class DBViewerHandler(BaseHTTPRequestHandler):
         </div>
         
         <div class="controls">
-            <input type="text" class="search-box" id="search-input" placeholder="Search by workflow ID or URL...">
+            <input type="text" class="search-box" id="search-input" placeholder="Search by ID or Title...">
+            <select class="filter-select" id="category-filter">
+                <option value="">All Categories</option>
+                <option value="Sales">Sales</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Development">Development</option>
+                <option value="Automation">Automation</option>
+                <option value="Data">Data</option>
+                <option value="Uncategorized">Uncategorized</option>
+            </select>
+            <select class="filter-select" id="status-filter">
+                <option value="">All Status</option>
+                <option value="Success">Success</option>
+                <option value="Partial">Partial</option>
+                <option value="Failed">Failed</option>
+                <option value="Pending">Pending</option>
+            </select>
+            <select class="filter-select" id="layers-filter">
+                <option value="">All Layers</option>
+                <option value="layer1">Layer 1 Only</option>
+                <option value="layer2">Layer 2 Only</option>
+                <option value="layer3">Layer 3 Only</option>
+                <option value="all-layers">All Layers</option>
+            </select>
             <button class="btn" onclick="searchWorkflows()">Search</button>
             <button class="btn" onclick="clearSearch()">Clear</button>
         </div>
@@ -635,7 +727,7 @@ class DBViewerHandler(BaseHTTPRequestHandler):
                         <th class="sortable" data-sort="title">Title <span class="sort-arrow">↕</span></th>
                         <th class="sortable" data-sort="category">Category <span class="sort-arrow">↕</span></th>
                         <th class="sortable" data-sort="quality_score">Quality <span class="sort-arrow">↕</span></th>
-                        <th>Status</th>
+                        <th class="sortable" data-sort="status">Status <span class="sort-arrow">↕</span></th>
                         <th>Layers</th>
                         <th class="sortable" data-sort="views">Views <span class="sort-arrow">↕</span></th>
                     </tr>
@@ -660,6 +752,7 @@ class DBViewerHandler(BaseHTTPRequestHandler):
         let currentSearch = '';
         let currentSort = 'workflow_id';
         let currentOrder = 'desc';
+        let currentFilters = {{}};
         
         async function loadStats() {{
             try {{
@@ -675,9 +768,21 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             }}
         }}
         
-        async function loadWorkflows(page = 1, search = '', sort = currentSort, order = currentOrder) {{
+        async function loadWorkflows(page = 1, search = '', filters = {{}}, sort = currentSort, order = currentOrder) {{
             try {{
-                const url = `/api/workflows?page=${{page}}${{search ? '&search=' + encodeURIComponent(search) : ''}}&sort=${{sort}}&order=${{order}}&t=${{Date.now()}}`;
+                let url = `/api/workflows?page=${{page}}${{search ? '&search=' + encodeURIComponent(search) : ''}}&sort=${{sort}}&order=${{order}}`;
+                
+                if (filters.category) {{
+                    url += `&category=${{encodeURIComponent(filters.category)}}`;
+                }}
+                if (filters.status) {{
+                    url += `&status=${{encodeURIComponent(filters.status)}}`;
+                }}
+                if (filters.layers) {{
+                    url += `&layers=${{encodeURIComponent(filters.layers)}}`;
+                }}
+                
+                url += `&t=${{Date.now()}}`;
                 const response = await fetch(url);
                 const data = await response.json();
                 
@@ -772,14 +877,23 @@ class DBViewerHandler(BaseHTTPRequestHandler):
         
         function searchWorkflows() {{
             const search = document.getElementById('search-input').value;
+            const category = document.getElementById('category-filter').value;
+            const status = document.getElementById('status-filter').value;
+            const layers = document.getElementById('layers-filter').value;
+            
             currentSearch = search;
+            currentFilters = {{ category, status, layers }};
             currentPage = 1;
-            loadWorkflows(1, search);
+            loadWorkflows(1, search, currentFilters);
         }}
         
         function clearSearch() {{
             document.getElementById('search-input').value = '';
+            document.getElementById('category-filter').value = '';
+            document.getElementById('status-filter').value = '';
+            document.getElementById('layers-filter').value = '';
             currentSearch = '';
+            currentFilters = {{}};
             currentPage = 1;
             loadWorkflows(1);
         }}
@@ -810,7 +924,7 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             
             // Reload with new sort
             currentPage = 1;
-            loadWorkflows(1, currentSearch, currentSort, currentOrder);
+            loadWorkflows(1, currentSearch, currentFilters, currentSort, currentOrder);
         }}
         
         // Initial load
