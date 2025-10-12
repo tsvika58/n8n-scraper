@@ -78,84 +78,161 @@ class WorkflowRepository:
         session = self._get_session()
         
         try:
-            # Create main workflow record
-            workflow = Workflow(
-                workflow_id=workflow_id,
-                url=url,
-                processing_time=extraction_result.get('processing_time'),
-                quality_score=extraction_result.get('quality_score'),
-                layer1_success=extraction_result.get('layers', {}).get('layer1', {}).get('success', False),
-                layer2_success=extraction_result.get('layers', {}).get('layer2', {}).get('success', False),
-                layer3_success=extraction_result.get('layers', {}).get('layer3', {}).get('success', False),
-            )
+            # Check if workflow already exists
+            existing_workflow = session.query(Workflow).filter(Workflow.workflow_id == workflow_id).first()
             
-            session.add(workflow)
+            if existing_workflow:
+                # Update existing workflow
+                existing_workflow.url = url
+                existing_workflow.processing_time = extraction_result.get('extraction_time')  # Fixed: was 'processing_time'
+                existing_workflow.quality_score = extraction_result.get('quality', {}).get('overall_score')  # Fixed: was 'quality_score'
+                existing_workflow.layer1_success = extraction_result.get('layers', {}).get('layer1', {}).get('success', False)
+                existing_workflow.layer2_success = extraction_result.get('layers', {}).get('layer2', {}).get('success', False)
+                existing_workflow.layer3_success = extraction_result.get('layers', {}).get('layer3', {}).get('success', False)
+                existing_workflow.last_scraped_at = extraction_result.get('extracted_at')
+                workflow = existing_workflow
+                logger.info(f"Updated existing workflow: {workflow_id}")
+            else:
+                # Create new workflow record
+                workflow = Workflow(
+                    workflow_id=workflow_id,
+                    url=url,
+                    processing_time=extraction_result.get('extraction_time'),  # Fixed: was 'processing_time'
+                    quality_score=extraction_result.get('quality', {}).get('overall_score'),  # Fixed: was 'quality_score'
+                    layer1_success=extraction_result.get('layers', {}).get('layer1', {}).get('success', False),
+                    layer2_success=extraction_result.get('layers', {}).get('layer2', {}).get('success', False),
+                    layer3_success=extraction_result.get('layers', {}).get('layer3', {}).get('success', False),
+                )
+                session.add(workflow)
+                logger.info(f"Created new workflow: {workflow_id}")
             
             # Add Layer 1 (Metadata)
             layer1_data = extraction_result.get('layers', {}).get('layer1', {})
             if layer1_data.get('success'):
-                metadata = WorkflowMetadata(
-                    workflow_id=workflow_id,
-                    title=layer1_data.get('title'),
-                    description=layer1_data.get('description'),
-                    use_case=layer1_data.get('use_case'),
-                    author_name=layer1_data.get('author', {}).get('name'),
-                    author_url=layer1_data.get('author', {}).get('url'),
-                    views=layer1_data.get('views'),
-                    shares=layer1_data.get('shares'),
-                    categories=layer1_data.get('categories', []),
-                    tags=layer1_data.get('tags', []),
-                    workflow_created_at=layer1_data.get('created_at'),
-                    workflow_updated_at=layer1_data.get('updated_at'),
-                    raw_metadata=layer1_data
-                )
-                session.add(metadata)
+                # Check if metadata already exists
+                existing_metadata = session.query(WorkflowMetadata).filter(WorkflowMetadata.workflow_id == workflow_id).first()
+                if existing_metadata:
+                    # Update existing metadata
+                    existing_metadata.title = layer1_data.get('title')
+                    existing_metadata.description = layer1_data.get('description')
+                    existing_metadata.use_case = layer1_data.get('use_case')
+                    existing_metadata.author_name = layer1_data.get('author', {}).get('name')
+                    existing_metadata.author_url = layer1_data.get('author', {}).get('url')
+                    existing_metadata.views = layer1_data.get('views')
+                    existing_metadata.shares = layer1_data.get('shares')
+                    existing_metadata.categories = layer1_data.get('categories', [])
+                    existing_metadata.tags = layer1_data.get('tags', [])
+                    existing_metadata.workflow_created_at = layer1_data.get('created_at')
+                    existing_metadata.workflow_updated_at = layer1_data.get('updated_at')
+                    existing_metadata.raw_metadata = layer1_data
+                else:
+                    # Create new metadata
+                    metadata = WorkflowMetadata(
+                        workflow_id=workflow_id,
+                        title=layer1_data.get('title'),
+                        description=layer1_data.get('description'),
+                        use_case=layer1_data.get('use_case'),
+                        author_name=layer1_data.get('author', {}).get('name'),
+                        author_url=layer1_data.get('author', {}).get('url'),
+                        views=layer1_data.get('views'),
+                        shares=layer1_data.get('shares'),
+                        categories=layer1_data.get('categories', []),
+                        tags=layer1_data.get('tags', []),
+                        workflow_created_at=layer1_data.get('created_at'),
+                        workflow_updated_at=layer1_data.get('updated_at'),
+                        raw_metadata=layer1_data
+                    )
+                    session.add(metadata)
             
             # Add Layer 2 (Structure)
             layer2_data = extraction_result.get('layers', {}).get('layer2', {})
             if layer2_data.get('success'):
-                structure = WorkflowStructure(
-                    workflow_id=workflow_id,
-                    node_count=layer2_data.get('node_count'),
-                    connection_count=layer2_data.get('connection_count'),
-                    node_types=layer2_data.get('node_types', []),
-                    extraction_type=layer2_data.get('extraction_type', 'full'),
-                    fallback_used=layer2_data.get('fallback_used', False),
-                    workflow_json=layer2_data.get('data')
-                )
-                session.add(structure)
+                # Check if structure already exists
+                existing_structure = session.query(WorkflowStructure).filter(WorkflowStructure.workflow_id == workflow_id).first()
+                if existing_structure:
+                    # Update existing structure
+                    existing_structure.node_count = layer2_data.get('node_count')
+                    existing_structure.connection_count = layer2_data.get('connection_count')
+                    existing_structure.node_types = layer2_data.get('node_types', [])
+                    existing_structure.extraction_type = layer2_data.get('extraction_type', 'full')
+                    existing_structure.fallback_used = layer2_data.get('fallback_used', False)
+                    existing_structure.workflow_json = layer2_data.get('data')
+                else:
+                    # Create new structure
+                    structure = WorkflowStructure(
+                        workflow_id=workflow_id,
+                        node_count=layer2_data.get('node_count'),
+                        connection_count=layer2_data.get('connection_count'),
+                        node_types=layer2_data.get('node_types', []),
+                        extraction_type=layer2_data.get('extraction_type', 'full'),
+                        fallback_used=layer2_data.get('fallback_used', False),
+                        workflow_json=layer2_data.get('data')
+                    )
+                    session.add(structure)
             
             # Add Layer 3 (Content)
             layer3_data = extraction_result.get('layers', {}).get('layer3', {})
             if layer3_data.get('success'):
-                content = WorkflowContent(
-                    workflow_id=workflow_id,
-                    explainer_text=layer3_data.get('explainer_text'),
-                    explainer_html=layer3_data.get('explainer_html'),
-                    setup_instructions=layer3_data.get('setup_instructions'),
-                    use_instructions=layer3_data.get('use_instructions'),
-                    has_videos=layer3_data.get('has_videos', False),
-                    video_count=len(layer3_data.get('videos', [])),
-                    has_iframes=layer3_data.get('has_iframes', False),
-                    iframe_count=layer3_data.get('iframe_count', 0),
-                    raw_content=layer3_data
-                )
-                session.add(content)
+                # Check if content already exists
+                existing_content = session.query(WorkflowContent).filter(WorkflowContent.workflow_id == workflow_id).first()
+                if existing_content:
+                    # Update existing content
+                    existing_content.explainer_text = layer3_data.get('explainer_text')
+                    existing_content.explainer_html = layer3_data.get('explainer_html')
+                    existing_content.setup_instructions = layer3_data.get('setup_instructions')
+                    existing_content.use_instructions = layer3_data.get('use_instructions')
+                    existing_content.has_videos = layer3_data.get('has_videos', False)
+                    existing_content.video_count = len(layer3_data.get('videos', []))
+                    existing_content.has_iframes = layer3_data.get('has_iframes', False)
+                    existing_content.iframe_count = layer3_data.get('iframe_count', 0)
+                    existing_content.raw_content = layer3_data
+                else:
+                    # Create new content
+                    content = WorkflowContent(
+                        workflow_id=workflow_id,
+                        explainer_text=layer3_data.get('explainer_text'),
+                        explainer_html=layer3_data.get('explainer_html'),
+                        setup_instructions=layer3_data.get('setup_instructions'),
+                        use_instructions=layer3_data.get('use_instructions'),
+                        has_videos=layer3_data.get('has_videos', False),
+                        video_count=len(layer3_data.get('videos', [])),
+                        has_iframes=layer3_data.get('has_iframes', False),
+                        iframe_count=layer3_data.get('iframe_count', 0),
+                        raw_content=layer3_data
+                    )
+                    session.add(content)
                 
                 # Add video transcripts
                 for video in layer3_data.get('videos', []):
                     if video.get('transcript'):
-                        transcript = VideoTranscript(
-                            workflow_id=workflow_id,
-                            video_url=video.get('url'),
-                            video_id=video.get('video_id'),
-                            platform=video.get('platform', 'youtube'),
-                            transcript_text=video.get('transcript', {}).get('text'),
-                            transcript_json=video.get('transcript'),
-                            duration=video.get('transcript', {}).get('duration'),
-                            language=video.get('transcript', {}).get('language', 'en')
-                        )
-                        session.add(transcript)
+                        video_url = video.get('url')
+                        # Check if transcript already exists
+                        existing_transcript = session.query(VideoTranscript).filter(
+                            VideoTranscript.workflow_id == workflow_id,
+                            VideoTranscript.video_url == video_url
+                        ).first()
+                        
+                        if existing_transcript:
+                            # Update existing transcript
+                            existing_transcript.video_id = video.get('video_id')
+                            existing_transcript.platform = video.get('platform', 'youtube')
+                            existing_transcript.transcript_text = video.get('transcript', {}).get('text')
+                            existing_transcript.transcript_json = video.get('transcript')
+                            existing_transcript.duration = video.get('transcript', {}).get('duration')
+                            existing_transcript.language = video.get('transcript', {}).get('language', 'en')
+                        else:
+                            # Create new transcript
+                            transcript = VideoTranscript(
+                                workflow_id=workflow_id,
+                                video_url=video.get('url'),
+                                video_id=video.get('video_id'),
+                                platform=video.get('platform', 'youtube'),
+                                transcript_text=video.get('transcript', {}).get('text'),
+                                transcript_json=video.get('transcript'),
+                                duration=video.get('transcript', {}).get('duration'),
+                                language=video.get('transcript', {}).get('language', 'en')
+                            )
+                            session.add(transcript)
             
             # Commit if we own the session
             if self._owns_session:

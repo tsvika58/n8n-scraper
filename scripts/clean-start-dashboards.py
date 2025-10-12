@@ -38,7 +38,7 @@ def main():
     print("=" * 60)
     
     # Ports to check
-    ports = {5002: "Real-time Dashboard", 5004: "Database Viewer"}
+    ports = {5001: "Real-time Dashboard", 5004: "Database Viewer"}
     
     # Kill processes on these ports
     print("\n🛑 Cleaning up ports...")
@@ -70,7 +70,7 @@ def main():
     print("\n🚀 Starting dashboards...")
     
     # Start Real-time Dashboard
-    print("   📊 Starting Real-time Dashboard (5002)...")
+    print("   📊 Starting Real-time Dashboard (5001)...")
     proc1 = subprocess.Popen(
         ["python", "/app/scripts/realtime-dashboard.py"],
         stdout=subprocess.DEVNULL,
@@ -97,11 +97,11 @@ def main():
     both_running = True
     
     # Check Real-time Dashboard
-    if is_port_free(5002):
-        print("   ❌ Real-time Dashboard (5002) - NOT listening")
+    if is_port_free(5001):
+        print("   ❌ Real-time Dashboard (5001) - NOT listening")
         both_running = False
     else:
-        print("   ✅ Real-time Dashboard (5002) - Listening")
+        print("   ✅ Real-time Dashboard (5001) - Listening")
     
     # Check Database Viewer
     if is_port_free(5004):
@@ -113,7 +113,7 @@ def main():
     if both_running:
         print("\n🎉 All dashboards operational!")
         print("\n📍 Access Points:")
-        print("   • Real-time: http://localhost:5002")
+        print("   • Real-time: http://localhost:5001")
         print("   • Database:  http://localhost:5004")
         return 0
     else:
