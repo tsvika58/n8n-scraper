@@ -12,14 +12,14 @@ import urllib.parse
 
 # Database connection
 DB_CONFIG = {
-    'host': 'localhost',
+    'host': 'n8n-scraper-database',
     'port': 5432,
     'database': 'n8n_scraper',
     'user': 'scraper_user',
     'password': 'scraper_pass'
 }
 
-def get_workflows(limit=50, offset=0, search=None):
+def get_workflows(limit=50, offset=0, search=None, sort_by='workflow_id', sort_order='DESC'):
     """Get workflows from database"""
     try:
         conn = psycopg2.connect(**DB_CONFIG)
@@ -33,6 +33,18 @@ def get_workflows(limit=50, offset=0, search=None):
             search_pattern = f"%{search}%"
             params = [search_pattern, search_pattern]
         
+        # Validate sort column to prevent SQL injection
+        valid_sort_columns = {
+            'workflow_id': 'CAST(workflow_id AS INTEGER)',
+            'url': 'url',
+            'quality_score': 'quality_score',
+            'processing_time': 'processing_time',
+            'extracted_at': 'extracted_at'
+        }
+        
+        sort_column = valid_sort_columns.get(sort_by, 'CAST(workflow_id AS INTEGER)')
+        sort_order = 'ASC' if sort_order.upper() == 'ASC' else 'DESC'
+        
         query = f"""
             SELECT 
                 workflow_id,
@@ -45,7 +57,7 @@ def get_workflows(limit=50, offset=0, search=None):
                 extracted_at
             FROM workflows
             {where_clause}
-            ORDER BY extracted_at DESC
+            ORDER BY {sort_column} {sort_order}
             LIMIT %s OFFSET %s
         """
         params.extend([limit, offset])
@@ -224,12 +236,16 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             # Get parameters
             page = int(params.get('page', [1])[0])
             search = params.get('search', [None])[0]
+            sort_by = params.get('sort', ['workflow_id'])[0]
+            sort_order = params.get('order', ['desc'])[0]
             limit = 50
             
             workflows, total = get_workflows(
                 limit=limit,
                 offset=(page-1)*limit,
-                search=search
+                search=search,
+                sort_by=sort_by,
+                sort_order=sort_order
             )
             
             response = {
@@ -409,6 +425,30 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             background: #f8f9fa;
         }}
         
+        th.sortable {{
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }}
+        
+        th.sortable:hover {{
+            background: #e9ecef;
+        }}
+        
+        th.sortable.sort-active {{
+            background: #007bff;
+            color: white;
+        }}
+        
+        .sort-arrow {{
+            font-size: 0.8em;
+            opacity: 0.5;
+        }}
+        
+        th.sortable.sort-active .sort-arrow {{
+            opacity: 1;
+        }}
+        
         td {{
             padding: 15px;
             border-bottom: 1px solid #dee2e6;
@@ -521,12 +561,12 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             <table>
                 <thead>
                     <tr>
-                        <th>Workflow ID</th>
-                        <th>URL</th>
-                        <th>Quality Score</th>
+                        <th class="sortable" data-sort="workflow_id">Workflow ID <span class="sort-arrow">↕</span></th>
+                        <th class="sortable" data-sort="url">URL <span class="sort-arrow">↕</span></th>
+                        <th class="sortable" data-sort="quality_score">Quality Score <span class="sort-arrow">↕</span></th>
                         <th>Status</th>
-                        <th>Processing Time</th>
-                        <th>Extracted At</th>
+                        <th class="sortable" data-sort="processing_time">Processing Time <span class="sort-arrow">↕</span></th>
+                        <th class="sortable" data-sort="extracted_at">Extracted At <span class="sort-arrow">↕</span></th>
                     </tr>
                 </thead>
                 <tbody id="workflows-table">
@@ -547,6 +587,8 @@ class DBViewerHandler(BaseHTTPRequestHandler):
     <script>
         let currentPage = 1;
         let currentSearch = '';
+        let currentSort = 'workflow_id';
+        let currentOrder = 'desc';
         
         async function loadStats() {{
             try {{
@@ -562,9 +604,9 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             }}
         }}
         
-        async function loadWorkflows(page = 1, search = '') {{
+        async function loadWorkflows(page = 1, search = '', sort = currentSort, order = currentOrder) {{
             try {{
-                const url = `/api/workflows?page=${{page}}${{search ? '&search=' + encodeURIComponent(search) : ''}}`;
+                const url = `/api/workflows?page=${{page}}${{search ? '&search=' + encodeURIComponent(search) : ''}}&sort=${{sort}}&order=${{order}}`;
                 const response = await fetch(url);
                 const data = await response.json();
                 
@@ -650,9 +692,46 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             loadWorkflows(1);
         }}
         
+        function sortBy(column) {{
+            if (currentSort === column) {{
+                // Toggle order if same column
+                currentOrder = currentOrder === 'desc' ? 'asc' : 'desc';
+            }} else {{
+                // New column, default to descending
+                currentSort = column;
+                currentOrder = 'desc';
+            }}
+            
+            // Update visual indicators
+            document.querySelectorAll('th.sortable').forEach(th => {{
+                th.classList.remove('sort-active');
+                const arrow = th.querySelector('.sort-arrow');
+                if (arrow) arrow.textContent = '↕';
+            }});
+            
+            const activeTh = document.querySelector(`th[data-sort="${{column}}"]`);
+            if (activeTh) {{
+                activeTh.classList.add('sort-active');
+                const arrow = activeTh.querySelector('.sort-arrow');
+                if (arrow) arrow.textContent = currentOrder === 'desc' ? '↓' : '↑';
+            }}
+            
+            // Reload with new sort
+            currentPage = 1;
+            loadWorkflows(1, currentSearch, currentSort, currentOrder);
+        }}
+        
         // Initial load
         loadStats();
         loadWorkflows();
+        
+        // Add sorting event listeners
+        document.querySelectorAll('th.sortable').forEach(th => {{
+            th.addEventListener('click', function() {{
+                const column = this.getAttribute('data-sort');
+                sortBy(column);
+            }});
+        }});
         
         // Handle Enter key in search
         document.getElementById('search-input').addEventListener('keypress', function(e) {{
