@@ -107,3 +107,4 @@ class TestTranscriptsIntegration:
         assert extractor.headless == True
         assert extractor.timeout == 30000
 
+

@@ -210,3 +210,4 @@ class RateLimiter:
         """String representation."""
         return f"RateLimiter(rate={self.rate}, capacity={self.capacity}, requests={self.total_requests})"
 
+

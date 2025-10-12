@@ -200,3 +200,4 @@ class TestTranscriptExtractor:
         # Verify cleanup was called
         assert mock_playwright.return_value.__aexit__.called
 
+

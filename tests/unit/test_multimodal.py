@@ -150,3 +150,4 @@ class TestMultimodalProcessor:
         malformed_url = "not-a-valid-url"
         assert not malformed_url.startswith('http')
 
+

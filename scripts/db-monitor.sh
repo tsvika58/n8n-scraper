@@ -156,3 +156,4 @@ log "Monitoring complete!"
 info "For continuous monitoring, run: watch -n 5 ./scripts/db-monitor.sh"
 echo "============================================================"
 
+

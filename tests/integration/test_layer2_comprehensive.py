@@ -286,3 +286,4 @@ class TestLayer2Comprehensive:
         assert 'fallback_success' in extractor.statistics
         assert 'both_failed' in extractor.statistics
 
+

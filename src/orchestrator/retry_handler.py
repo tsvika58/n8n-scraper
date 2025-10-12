@@ -346,3 +346,4 @@ class RetryHandler:
             f"circuit_open={self.circuit_open})"
         )
 
+

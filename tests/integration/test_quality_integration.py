@@ -155,3 +155,4 @@ class TestQualityIntegration:
         # Should be high quality
         assert score >= 80
 
+

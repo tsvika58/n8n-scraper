@@ -419,3 +419,4 @@ You now have a **production-grade, enterprise-level** database and Docker setup 
 - Run `./scripts/health-check.sh` for diagnostics
 - Review logs: `docker-compose logs -f`
 
+

@@ -128,10 +128,10 @@ async def test_database_viewer():
 
 async def test_realtime_dashboard():
     """Test real-time scraping dashboard"""
-    print_header("4️⃣  REAL-TIME DASHBOARD (Port 5002)")
+    print_header("4️⃣  REAL-TIME DASHBOARD (Port 5001)")
     
     try:
-        response = requests.get("http://localhost:5002", timeout=5)
+        response = requests.get("http://localhost:5001", timeout=5)
         success = response.status_code == 200
         if success:
             has_title = "N8N Scraper" in response.text or "Real" in response.text

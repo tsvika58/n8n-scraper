@@ -1,0 +1,23 @@
+NAMES                            IMAGE                                          STATUS                 PORTS
+n8n-scraper-app                  n8n-scraper:2.0                                Up 3 hours (healthy)   0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp, 0.0.0.0:5004->5004/tcp, [::]:5004->5004/tcp
+n8n-scraper-database             postgres:17-alpine                             Up 4 hours (healthy)   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+n8n-scraper-db-admin             dpage/pgadmin4:latest                          Up 10 hours            0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+n8n-standalone-server            n8nio/n8n:latest                               Up 3 days (healthy)    5678/tcp
+n8n-standalone-postgres          postgres:15-alpine                             Up 3 days (healthy)    5432/tcp
+n8n-caddy-proxy                  caddy:2-alpine                                 Up 3 days (healthy)    0.0.0.0:80->80/tcp, [::]:80->80/tcp, 0.0.0.0:443->443/tcp, [::]:443->443/tcp, 0.0.0.0:443->443/udp, [::]:443->443/udp
+n8n-standalone-redis             redis:7-alpine                                 Up 3 days (healthy)    6379/tcp
+grafana                          grafana/grafana:latest                         Up 4 days              0.0.0.0:3002->3000/tcp, [::]:3002->3000/tcp
+prometheus                       prom/prometheus:latest                         Up 4 days              0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+alertmanager                     prom/alertmanager:latest                       Up 4 days              0.0.0.0:9093->9093/tcp, [::]:9093->9093/tcp
+redis-exporter                   oliver006/redis_exporter:latest                Up 4 days              0.0.0.0:9121->9121/tcp, [::]:9121->9121/tcp
+postgres-exporter                prometheuscommunity/postgres-exporter:latest   Up 4 days              0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
+node-exporter                    prom/node-exporter:latest                      Up 4 days              0.0.0.0:9100->9100/tcp, [::]:9100->9100/tcp
+dev-worker-service               n8n-claude-engine/mcp-orchestrator:dev         Up 4 days (healthy)    0.0.0.0:4101->3000/tcp, [::]:4101->3000/tcp
+dev-crisis-recovery-service      n8n-claude-engine/crisis-recovery:dev          Up 4 days (healthy)    0.0.0.0:4105->3000/tcp, [::]:4105->3000/tcp
+dev-mcp-bridge-service           n8n-claude-engine/mcp-bridge:dev               Up 4 days (healthy)    0.0.0.0:4104->3000/tcp, [::]:4104->3000/tcp
+dev-ai-core-service              n8n-claude-engine/ai-core:dev                  Up 4 days (healthy)    0.0.0.0:4102->3000/tcp, [::]:4102->3000/tcp
+dev-api-service                  n8n-claude-engine/api:dev                      Up 4 days (healthy)    0.0.0.0:4100->3000/tcp, [::]:4100->3000/tcp
+dev-core-service                 n8n-claude-engine/core:dev                     Up 4 days (healthy)    0.0.0.0:4103->3000/tcp, [::]:4103->3000/tcp
+dev-postgres-database            postgres:15.7-alpine                           Up 4 days (healthy)    0.0.0.0:54320->5432/tcp, [::]:54320->5432/tcp
+dev-redis-cache                  redis:7.2-alpine                               Up 4 days (healthy)    6379/tcp
+dev-evidence-collector-service   n8n-claude-engine/evidence-collector:dev       Up 4 days (healthy)    0.0.0.0:4106->3000/tcp, [::]:4106->3000/tcp

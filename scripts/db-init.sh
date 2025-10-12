@@ -143,3 +143,4 @@ info "  2. Start scraping: docker-compose run --rm n8n-scraper-app python script
 info "  3. Monitor database: ./scripts/db-monitor.sh"
 echo "============================================================"
 
+

@@ -83,3 +83,9 @@ dmypy.json
 *.tmp
 temp/
 tmp/
+
+# Backup files (too large for GitHub)
+backups/*.tar
+backups/*.tar.gz
+backups/*/n8n-scraper-*.tar
+backups/*/project_code.tar.gz

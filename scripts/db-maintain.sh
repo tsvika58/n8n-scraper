@@ -87,3 +87,4 @@ info "Database is optimized for maximum performance"
 info "Recommended: Run this weekly or after large imports"
 echo "============================================================"
 
+

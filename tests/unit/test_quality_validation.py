@@ -171,3 +171,4 @@ class TestQualityValidation:
         assert get_quality_level(50) == 'Fair'
         assert get_quality_level(25) == 'Poor'
 
+

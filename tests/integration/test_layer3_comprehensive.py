@@ -188,3 +188,4 @@ class TestLayer3Comprehensive:
             result = await extractor.extract(wf_id, f'https://n8n.io/workflows/{wf_id}')
             assert isinstance(result, dict)
 
+

@@ -38,7 +38,7 @@ def main():
     print("=" * 60)
     
     # Ports to check
-    ports = {5001: "Real-time Dashboard", 5004: "Database Viewer"}
+    ports = {5001: "WebSocket Dashboard (HTTP)", 5002: "WebSocket Dashboard (WebSocket)", 5004: "Database Viewer"}
     
     # Kill processes on these ports
     print("\n🛑 Cleaning up ports...")
@@ -69,10 +69,10 @@ def main():
     # Start dashboards
     print("\n🚀 Starting dashboards...")
     
-    # Start Real-time Dashboard
-    print("   📊 Starting Real-time Dashboard (5001)...")
+    # Start WebSocket Dashboard (5001 HTTP + 5002 WebSocket)
+    print("   📊 Starting WebSocket Dashboard (5001 HTTP + 5002 WebSocket)...")
     proc1 = subprocess.Popen(
-        ["python", "/app/scripts/realtime-dashboard.py"],
+        ["python", "/app/scripts/realtime-dashboard-websocket.py"],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL
     )
@@ -113,8 +113,10 @@ def main():
     if both_running:
         print("\n🎉 All dashboards operational!")
         print("\n📍 Access Points:")
-        print("   • Real-time: http://localhost:5001")
-        print("   • Database:  http://localhost:5004")
+        print("   • WebSocket Dashboard: http://localhost:5001")
+        print("   • WebSocket Server: ws://localhost:5002")
+        print("   • Database Viewer: http://localhost:5004")
+        print("   • Webhook Endpoint: http://localhost:5001/api/trigger-update")
         return 0
     else:
         print("\n⚠️  Some dashboards failed. Check errors above.")

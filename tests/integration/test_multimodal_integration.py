@@ -103,3 +103,4 @@ class TestMultimodalIntegration:
         assert processor is not None
         assert hasattr(processor, 'process_workflow')
 
+

@@ -404,6 +404,20 @@ class DashboardHandler(BaseHTTPRequestHandler):
             self.send_response(404)
             self.end_headers()
     
+    def do_HEAD(self):
+        """Handle HEAD requests"""
+        if self.path == '/':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+        elif self.path == '/api/stats':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+        else:
+            self.send_response(404)
+            self.end_headers()
+    
     def serve_stats(self):
         """Serve API stats"""
         self.send_response(200)
@@ -826,7 +840,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
         const maxReconnectAttempts = 5;
         
         function connectWebSocket() {
-            const wsUrl = `ws://${window.location.hostname}:5002`;
+            const wsUrl = `ws://${window.location.hostname}:5001`;
             websocket = new WebSocket(wsUrl);
             
             websocket.onopen = function(event) {
@@ -1100,6 +1114,28 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 default: return 'activity-partial';
             }
         }
+        
+        // Fallback polling function
+        function startPolling() {
+            console.log('Starting polling fallback...');
+            setInterval(async () => {
+                try {
+                    const response = await fetch('/api/stats');
+                    const data = await response.json();
+                    updateDashboard(data);
+                } catch (error) {
+                    console.error('Polling error:', error);
+                }
+            }, 2000); // Poll every 2 seconds
+        }
+        
+        // Try WebSocket first, fallback to polling
+        setTimeout(() => {
+            if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+                console.log('WebSocket failed, starting polling fallback');
+                startPolling();
+            }
+        }, 3000);
         
         // Connect WebSocket on page load
         connectWebSocket();
