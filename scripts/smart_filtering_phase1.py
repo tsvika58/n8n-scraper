@@ -101,12 +101,17 @@ class SmartFilteringPhase1:
         """Get workflows that need metadata extraction."""
         try:
             with get_session() as session:
-                repository = WorkflowRepository(session)
+                from src.storage.models import WorkflowMetadata
                 
-                # Get workflows that haven't been processed or need re-scoring
-                workflows = session.query(Workflow).filter(
+                # Get workflows that DON'T have metadata yet
+                # Use LEFT JOIN to find workflows without metadata
+                workflows = session.query(Workflow).outerjoin(
+                    WorkflowMetadata,
+                    Workflow.workflow_id == WorkflowMetadata.workflow_id
+                ).filter(
                     Workflow.url.isnot(None),
-                    Workflow.url != ''
+                    Workflow.url != '',
+                    WorkflowMetadata.workflow_id.is_(None)  # Only workflows WITHOUT metadata
                 ).all()
                 
                 # Convert to list of dictionaries
