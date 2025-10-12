@@ -27,12 +27,12 @@ load_dotenv('/app/.env')
 # Database URL - Use environment variable or fallback to localhost
 DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://scraper_user:scraper_pass@localhost:5432/n8n_scraper')
 
-# Create engine with connection pooling
+# Create engine with connection pooling (OPTIMIZED for SCRAPE-014)
 engine = create_engine(
     DATABASE_URL,
     poolclass=QueuePool,
-    pool_size=10,              # Maximum connections in pool
-    max_overflow=20,           # Extra connections beyond pool_size
+    pool_size=30,              # Increased from 10 (3x capacity)
+    max_overflow=40,           # Increased from 20 (2x overflow)
     pool_timeout=30,           # Seconds to wait for connection
     pool_recycle=3600,         # Recycle connections after 1 hour
     pool_pre_ping=True,        # Verify connections before using
