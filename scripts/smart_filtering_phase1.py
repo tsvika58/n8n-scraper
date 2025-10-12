@@ -51,7 +51,7 @@ class SmartFilteringPhase1:
     
     def __init__(self):
         self.metadata_extractor = MetadataExtractor()
-        self.batch_size = 10  # Concurrent workflows per batch
+        self.batch_size = 3  # Concurrent workflows per batch (reduced for stability)
         self.max_workflows = None  # Set to limit for testing
         
     async def run_phase1(self) -> Dict[str, Any]:

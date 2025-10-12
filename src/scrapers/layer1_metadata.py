@@ -79,7 +79,7 @@ class PageMetadataExtractor:
                 
                 # Navigate to workflow page
                 logger.debug(f"Navigating to {url}")
-                await page.goto(url, wait_until='networkidle', timeout=30000)
+                await page.goto(url, wait_until='domcontentloaded', timeout=60000)
                 
                 # Wait for content to load
                 await page.wait_for_timeout(2000)
