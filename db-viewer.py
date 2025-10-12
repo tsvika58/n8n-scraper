@@ -205,6 +205,10 @@ def get_statistics():
         }
 
 class DBViewerHandler(BaseHTTPRequestHandler):
+    def do_HEAD(self):
+        """Handle HEAD requests"""
+        self.do_GET()
+    
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
@@ -259,6 +263,10 @@ class DBViewerHandler(BaseHTTPRequestHandler):
             else:
                 self.send_response(404)
                 self.end_headers()
+        elif path == '/favicon.ico':
+            self.serve_favicon('🗄️', '#667eea')
+        elif path == '/favicon-detail.ico':
+            self.serve_favicon('🔍', '#764ba2')
         else:
             self.send_error(404)
     
@@ -271,8 +279,8 @@ class DBViewerHandler(BaseHTTPRequestHandler):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🗄️ N8N Scraper Database Viewer</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23667eea'/><text y='.85em' font-size='60' text-anchor='middle' x='50' fill='white'>🗄️</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23667eea'/><text y='.85em' font-size='100' text-anchor='middle' x='90' fill='white'>🗄️</text></svg>">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico">
     <style>
         * {{
             margin: 0;
@@ -679,8 +687,8 @@ class DBViewerHandler(BaseHTTPRequestHandler):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔍 {workflow['workflow_id']} - Workflow Details</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23764ba2'/><text y='.85em' font-size='60' text-anchor='middle' x='50' fill='white'>🔍</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23764ba2'/><text y='.85em' font-size='100' text-anchor='middle' x='90' fill='white'>🔍</text></svg>">
+    <link rel="icon" href="/favicon-detail.ico">
+    <link rel="shortcut icon" href="/favicon-detail.ico">
     <style>
         * {{
             margin: 0;
@@ -1011,6 +1019,20 @@ class DBViewerHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/html; charset=utf-8')
         self.end_headers()
         self.wfile.write(html.encode('utf-8'))
+    
+    def serve_favicon(self, emoji, bg_color):
+        """Serve a favicon with the specified emoji and background color"""
+        # Create a simple SVG favicon
+        svg_content = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <rect width="32" height="32" fill="{bg_color}" rx="4"/>
+            <text y="24" font-size="20" text-anchor="middle" x="16" fill="white">{emoji}</text>
+        </svg>"""
+        
+        self.send_response(200)
+        self.send_header('Content-type', 'image/svg+xml')
+        self.send_header('Cache-Control', 'public, max-age=3600')  # Cache for 1 hour
+        self.end_headers()
+        self.wfile.write(svg_content.encode('utf-8'))
     
     def log_message(self, format, *args):
         print(f"[{datetime.now().strftime('%H:%M:%S')}] {format % args}")
