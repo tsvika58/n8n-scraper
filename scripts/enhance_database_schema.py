@@ -112,3 +112,4 @@ if __name__ == "__main__":
     enhance_schema()
     print("\n🧪 Testing Enhanced Schema...")
     test_enhanced_schema()
+

@@ -299,3 +299,4 @@ From n8n.io workflow pages, we should extract:
 - **Data Quality:** Good for successfully scraped workflows
 
 **Next Priority:** Fix category extraction to enable proper workflow categorization and filtering.
+

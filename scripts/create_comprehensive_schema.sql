@@ -563,3 +563,4 @@ WHERE table_name IN (
     'workflow_enhanced_content'
 )
 ORDER BY table_name, ordinal_position;
+

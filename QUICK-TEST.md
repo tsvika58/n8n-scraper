@@ -72,3 +72,4 @@ Progress: [░░░░░░░░] 0 / 0 workflows
 - Check system time is correct
 - Verify PostgreSQL is running: `docker ps | grep postgres`
 
+

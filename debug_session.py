@@ -67,3 +67,4 @@ if result.returncode == 0:
         print("Failed to parse API response")
 else:
     print("Failed to get API response")
+

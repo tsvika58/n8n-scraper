@@ -328,3 +328,4 @@ Would you like me to help you set up Supabase now?
 ---
 
 **Summary**: Your database is tiny (~7 MB for 6,041 workflows), so cloud storage is cheap/free. The real issue is your local disk being full (431 GB used). Clean Docker images first, then migrate DB to Supabase (free).
+

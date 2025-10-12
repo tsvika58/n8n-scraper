@@ -39,3 +39,4 @@ else
     echo "   ❌ Database viewer failed to start"
     echo "   Check logs: docker logs n8n-scraper-app"
 fi
+

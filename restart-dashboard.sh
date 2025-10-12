@@ -13,3 +13,4 @@ docker exec n8n-scraper-app python /app/scripts/realtime-dashboard-enhanced.py &
 echo ""
 echo "Dashboard starting on http://localhost:5001"
 
+

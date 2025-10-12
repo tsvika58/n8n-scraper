@@ -104,3 +104,4 @@ class TestMultimodalIntegration:
         assert hasattr(processor, 'process_workflow')
 
 
+

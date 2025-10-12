@@ -194,3 +194,4 @@ class JSONExporter(BaseExporter):
         finally:
             self.indent = original_indent
 
+

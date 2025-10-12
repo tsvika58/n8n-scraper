@@ -34,3 +34,4 @@ for w in workflows:
 
 cursor.close()
 conn.close()
+

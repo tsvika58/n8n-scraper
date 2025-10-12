@@ -13,7 +13,7 @@ import urllib.parse
 
 # Database connection
 DB_CONFIG = {
-    'host': 'localhost',
+    'host': 'n8n-scraper-database',
     'port': 5432,
     'database': 'n8n_scraper',
     'user': 'scraper_user',

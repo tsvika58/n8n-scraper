@@ -371,3 +371,4 @@ class TestMultimodalDeepCoverage:
                 assert isinstance(result, dict)
 
 
+

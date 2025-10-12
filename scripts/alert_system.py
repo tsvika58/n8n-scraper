@@ -97,3 +97,4 @@ if __name__ == "__main__":
     alert_system.log_alert("CRITICAL", "Test critical alert")
     
     print(f"✅ Alert system test complete. Check {alert_system.alert_file}")
+

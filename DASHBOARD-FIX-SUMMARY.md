@@ -86,3 +86,4 @@ You should now see:
 3. Watch the dashboard update in real-time
 4. Verify the live progress bar shows session activity for 5 minutes after completion
 
+

@@ -1,0 +1,14 @@
+{
+  "checkpoint_id": "20251013_013608",
+  "timestamp": "2025-10-13T01:36:08.691996",
+  "total_workflows": 500,
+  "processed": 100,
+  "successful": 100,
+  "failed": 0,
+  "remaining": 400,
+  "last_workflow_id": "2488",
+  "avg_processing_time": 18.677896930000003,
+  "eta_seconds": 7471.158772000001,
+  "success_rate": 100.0,
+  "workflows_per_minute": 30.460737994694178
+}

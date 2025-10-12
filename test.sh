@@ -5,3 +5,4 @@ docker exec n8n-scraper-app python /app/scripts/realtime-dashboard-enhanced.py &
 sleep 5
 docker exec n8n-scraper-app python /app/scripts/simple_live_test.py
 
+

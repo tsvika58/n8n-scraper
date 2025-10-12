@@ -51,3 +51,4 @@ if __name__ == "__main__":
         print("\n🎉 Database viewer is ready!")
     else:
         print("\n❌ Database viewer failed to start")
+
