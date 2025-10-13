@@ -4,49 +4,7 @@
 
 services:
   # ============================================================================
-  # DATABASE SERVICE - Supabase Connection Manager
-  # ============================================================================
-  n8n-scraper-database:
-    image: postgres:17-alpine
-    container_name: n8n-scraper-database
-    restart: unless-stopped
-    
-    # Environment variables for Supabase connection
-    environment:
-      # Supabase connection details
-      SUPABASE_HOST: aws-1-eu-north-1.pooler.supabase.com
-      SUPABASE_PORT: 5432
-      SUPABASE_USER: postgres.skduopoakfeaurttcaip
-      SUPABASE_PASSWORD: crg3pjm8ych4ctu@KXT
-      SUPABASE_DB: postgres
-      
-      # Local database settings
-      POSTGRES_DB: n8n_scraper
-      POSTGRES_USER: scraper_user
-      POSTGRES_PASSWORD: scraper_pass
-      PGDATA: /var/lib/postgresql/data/pgdata
-    
-    # Port mapping
-    ports:
-      - "5432:5432"
-    
-    # Volume for local data
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    
-    # Health check - simple test
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U scraper_user -d n8n_scraper"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    
-    # Simple startup - just start PostgreSQL
-    command: ["postgres"]
-
-  # ============================================================================
-  # APPLICATION SERVICE
+  # APPLICATION SERVICE - Connects directly to Supabase
   # ============================================================================
   n8n-scraper-app:
     build: .
@@ -55,8 +13,8 @@ services:
     
     # Environment variables
     environment:
-      # Database connection (local PostgreSQL)
-      DATABASE_URL: postgresql://scraper_user:scraper_pass@n8n-scraper-database:5432/n8n_scraper
+      # Database connection (DIRECT TO SUPABASE)
+      DATABASE_URL: postgresql://postgres.skduopoakfeaurttcaip:crg3pjm8ych4ctu%40KXT@aws-1-eu-north-1.pooler.supabase.com:5432/postgres
       
       # Application settings
       PYTHONPATH: /app
@@ -113,10 +71,7 @@ services:
       retries: 3
       start_period: 40s
     
-    # Dependencies
-    depends_on:
-      n8n-scraper-database:
-        condition: service_healthy
+    # No local database dependency - connects directly to Supabase
     
     # Resource limits
     deploy:
@@ -131,9 +86,7 @@ services:
 # ============================================================================
 # VOLUMES
 # ============================================================================
-volumes:
-  postgres_data:
-    driver: local
+# No volumes needed - using Supabase cloud database
 
 # ============================================================================
 # NETWORKS
