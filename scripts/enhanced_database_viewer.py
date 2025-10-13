@@ -11,13 +11,14 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import urllib.parse
 
-# Database connection - SUPABASE
+# Database connection - SUPABASE (with connect_timeout for reliability)
 DB_CONFIG = {
     'host': 'aws-1-eu-north-1.pooler.supabase.com',
     'port': 5432,
     'database': 'postgres',
     'user': 'postgres.skduopoakfeaurttcaip',
-    'password': 'crg3pjm8ych4ctu@KXT'
+    'password': 'crg3pjm8ych4ctu@KXT',
+    'connect_timeout': 10
 }
 
 def get_db_connection():

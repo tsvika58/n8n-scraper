@@ -177,6 +177,20 @@ class WorkflowRepository:
                     existing_structure.extraction_type = layer2_data.get('extraction_type', 'full')
                     existing_structure.fallback_used = layer2_data.get('fallback_used', False)
                     existing_structure.workflow_json = layer2_data.get('data')
+                    
+                    # NEW: Add iframe data if available (from Layer 2 Enhanced)
+                    if 'iframe_data' in layer2_data:
+                        existing_structure.iframe_data = layer2_data.get('iframe_data')
+                    if 'visual_layout' in layer2_data:
+                        existing_structure.visual_layout = layer2_data.get('visual_layout')
+                    if 'enhanced_content' in layer2_data:
+                        existing_structure.enhanced_content = layer2_data.get('enhanced_content')
+                    if 'media_content' in layer2_data:
+                        existing_structure.media_content = layer2_data.get('media_content')
+                    if 'extraction_sources' in layer2_data:
+                        existing_structure.extraction_sources = layer2_data.get('extraction_sources')
+                    if 'completeness_metrics' in layer2_data:
+                        existing_structure.completeness_metrics = layer2_data.get('completeness_metrics')
                 else:
                     # Create new structure
                     structure = WorkflowStructure(
@@ -186,7 +200,15 @@ class WorkflowRepository:
                         node_types=layer2_data.get('node_types', []),
                         extraction_type=layer2_data.get('extraction_type', 'full'),
                         fallback_used=layer2_data.get('fallback_used', False),
-                        workflow_json=layer2_data.get('data')
+                        workflow_json=layer2_data.get('data'),
+                        
+                        # NEW: Add iframe data if available (from Layer 2 Enhanced)
+                        iframe_data=layer2_data.get('iframe_data'),
+                        visual_layout=layer2_data.get('visual_layout'),
+                        enhanced_content=layer2_data.get('enhanced_content'),
+                        media_content=layer2_data.get('media_content'),
+                        extraction_sources=layer2_data.get('extraction_sources'),
+                        completeness_metrics=layer2_data.get('completeness_metrics')
                     )
                     session.add(structure)
             

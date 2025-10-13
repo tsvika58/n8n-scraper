@@ -1,0 +1,4590 @@
+{
+  "workflow_id": "2462",
+  "url": "https://n8n.io/workflows/2462",
+  "extraction_time": 25.039364,
+  "sources": {
+    "api": {
+      "success": true,
+      "workflow_id": "2462",
+      "data": {
+        "id": 2462,
+        "name": "Angie, Personal AI Assistant with Telegram Voice and Text",
+        "workflow": {
+          "meta": {
+            "instanceId": "04ddf1130268840c229f501edc57936c3c131339e8b0cdd696fcf3a7c69e696e",
+            "templateId": "2462"
+          },
+          "nodes": [
+            {
+              "id": "c70236ea-91ab-4e47-b6f6-63a70ede5d3c",
+              "name": "Google Calendar",
+              "type": "n8n-nodes-base.googleCalendarTool",
+              "position": [
+                2000,
+                704
+              ],
+              "parameters": {
+                "options": {
+                  "fields": "=items(summary, start(dateTime))",
+                  "timeMin": "={{$fromAI(\"date\",\"the date after which to fetch the messages in format YYYY-MM-DDTHH:MM:SS\")}}"
+                },
+                "calendar": {
+                  "__rl": true,
+                  "mode": "list",
+                  "value": "derekcheungsa@gmail.com",
+                  "cachedResultName": "derekcheungsa@gmail.com"
+                },
+                "operation": "getAll"
+              },
+              "typeVersion": 1.1,
+              "iframe_data": {
+                "name": "Google Calendar",
+                "type": "n8n-nodes-base.googleCalendarTool",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "d2287bea-de47-4180-8ee6-55d4ab1a89da",
+              "name": "Window Buffer Memory",
+              "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+              "position": [
+                1760,
+                704
+              ],
+              "parameters": {
+                "sessionKey": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+                "sessionIdType": "customKey"
+              },
+              "typeVersion": 1.2,
+              "iframe_data": {
+                "name": "Window Buffer Memory",
+                "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "fa955731-86f6-4e4d-8604-dab5f52dee87",
+              "name": "Get Email",
+              "type": "n8n-nodes-base.gmailTool",
+              "position": [
+                1872,
+                704
+              ],
+              "webhookId": "abf7e707-2eb8-4063-a920-b8ed975b0d70",
+              "parameters": {
+                "filters": {
+                  "labelIds": [
+                    "INBOX",
+                    "UNREAD"
+                  ],
+                  "readStatus": "unread",
+                  "receivedAfter": "={{$fromAI(\"date\",\"the date after which to fetch the messages in format YYYY-MM-DDTHH:MM:SS\")}}"
+                },
+                "operation": "getAll"
+              },
+              "typeVersion": 2.1,
+              "iframe_data": {
+                "name": "Get Email",
+                "type": "n8n-nodes-base.gmailTool",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "46511f47-1687-4cbe-ae41-ceb205ed1f11",
+              "name": "OpenAI Chat Model",
+              "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+              "position": [
+                1632,
+                704
+              ],
+              "parameters": {
+                "options": {}
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "OpenAI Chat Model",
+                "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "64fe44db-af19-43eb-9ff1-de0a72a9e645",
+              "name": "Listen for incoming events",
+              "type": "n8n-nodes-base.telegramTrigger",
+              "position": [
+                832,
+                384
+              ],
+              "webhookId": "322dce18-f93e-4f86-b9b1-3305519b7834",
+              "parameters": {
+                "updates": [
+                  "message"
+                ],
+                "additionalFields": {}
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "Listen for incoming events",
+                "type": "n8n-nodes-base.telegramTrigger",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "e35c04ff-a050-4564-8c1b-5b22b556872f",
+              "name": "Telegram",
+              "type": "n8n-nodes-base.telegram",
+              "onError": "continueErrorOutput",
+              "position": [
+                2272,
+                384
+              ],
+              "webhookId": "e699405e-8e52-4d38-a06b-1fa8edf050bd",
+              "parameters": {
+                "text": "={{ $json.output }}",
+                "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+                "additionalFields": {
+                  "parse_mode": "Markdown",
+                  "appendAttribution": false
+                }
+              },
+              "typeVersion": 1.1,
+              "iframe_data": {
+                "name": "Telegram",
+                "type": "n8n-nodes-base.telegram",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "e791d4f8-2c19-4c14-a71e-39a04f22e944",
+              "name": "If",
+              "type": "n8n-nodes-base.if",
+              "position": [
+                1200,
+                384
+              ],
+              "parameters": {
+                "options": {},
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "id": "a0bf9719-4272-46f6-ab3b-eda6f7b44fd8",
+                      "operator": {
+                        "type": "string",
+                        "operation": "empty",
+                        "singleValue": true
+                      },
+                      "leftValue": "={{ $json.message.text }}",
+                      "rightValue": ""
+                    }
+                  ]
+                }
+              },
+              "typeVersion": 2.2,
+              "iframe_data": {
+                "name": "If",
+                "type": "n8n-nodes-base.if",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "5bd1788a-3d08-4eb3-8e03-3ce82f44d2a7",
+              "name": "Speech to Text",
+              "type": "@n8n/n8n-nodes-langchain.openAi",
+              "position": [
+                1616,
+                384
+              ],
+              "parameters": {
+                "options": {},
+                "resource": "audio",
+                "operation": "transcribe"
+              },
+              "typeVersion": 1.3,
+              "iframe_data": {
+                "name": "Speech to Text",
+                "type": "@n8n/n8n-nodes-langchain.openAi",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "b67a2a93-517b-469e-aaa4-32c422710743",
+              "name": "Voice or Text",
+              "type": "n8n-nodes-base.set",
+              "position": [
+                1040,
+                384
+              ],
+              "parameters": {
+                "fields": {
+                  "values": [
+                    {
+                      "name": "text",
+                      "stringValue": "={{ $json?.message?.text || \"\" }}"
+                    }
+                  ]
+                },
+                "options": {}
+              },
+              "typeVersion": 3.2,
+              "iframe_data": {
+                "name": "Voice or Text",
+                "type": "n8n-nodes-base.set",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "8105c39f-9e87-44c4-9215-b3777f0b4164",
+              "name": "Get Voice File",
+              "type": "n8n-nodes-base.telegram",
+              "position": [
+                1376,
+                384
+              ],
+              "webhookId": "24273e7e-6133-415e-8627-a9d6dc0f107c",
+              "parameters": {
+                "fileId": "={{ $('Listen for incoming events').item.json.message.voice.file_id }}",
+                "resource": "file",
+                "additionalFields": {}
+              },
+              "typeVersion": 1.1,
+              "iframe_data": {
+                "name": "Get Voice File",
+                "type": "n8n-nodes-base.telegram",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "759b975f-d17c-4386-a5b3-12413f0361f4",
+              "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+              "type": "@n8n/n8n-nodes-langchain.agent",
+              "position": [
+                1776,
+                384
+              ],
+              "parameters": {
+                "text": "={{ $json.text }}",
+                "options": {
+                  "systemMessage": "=You are a helpful assistant.\n\nToday's date is {{ $now }}.\n\nGuidelines:\n- When fetching emails, filter out any promotional emails. \n- When summarizing emails, include Sender, Message date, subject, and brief summary of email.\n- if the user did not specify a date in the request assume they are asking for today\n- Use baserow tool to answer questions about tasks\n- When answering questions about calendar events, filter out events that don't apply to the question.  For example, the question is about events for today, only reply with events for today. Don't mention future events if it's more than 1 week away"
+                },
+                "promptType": "define"
+              },
+              "typeVersion": 1.6,
+              "iframe_data": {
+                "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                "type": "@n8n/n8n-nodes-langchain.agent",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "5537c777-f003-4673-b48a-4993a0c10520",
+              "name": "Sticky Note",
+              "type": "n8n-nodes-base.stickyNote",
+              "position": [
+                1008,
+                288
+              ],
+              "parameters": {
+                "color": 5,
+                "width": 496.25,
+                "height": 278.75,
+                "content": "## Process Telegram Request\n"
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "Sticky Note",
+                "type": "n8n-nodes-base.stickyNote",
+                "id": null,
+                "test_id": null,
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "40e92679-b47a-4213-bb23-3f8d086459f2",
+              "name": "Tasks",
+              "type": "n8n-nodes-base.baserowTool",
+              "position": [
+                2112,
+                704
+              ],
+              "parameters": {
+                "tableId": 372174,
+                "databaseId": 146496,
+                "additionalOptions": {}
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "Tasks",
+                "type": "n8n-nodes-base.baserowTool",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "570a0647-b571-4ebc-9dfe-40244b5a0b2a",
+              "name": "Contacts",
+              "type": "n8n-nodes-base.baserowTool",
+              "position": [
+                2240,
+                704
+              ],
+              "parameters": {
+                "tableId": 372177,
+                "databaseId": 146496,
+                "descriptionType": "manual",
+                "toolDescription": "Useful for getting contact information.  For example emails or phone numbers.",
+                "additionalOptions": {}
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "Contacts",
+                "type": "n8n-nodes-base.baserowTool",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "3f66a5dd-6cad-4239-94a8-1b30fbf32943",
+              "name": "Sticky Note2",
+              "type": "n8n-nodes-base.stickyNote",
+              "position": [
+                0,
+                128
+              ],
+              "parameters": {
+                "color": 5,
+                "width": 720,
+                "height": 960,
+                "content": "## [Video Tutorial](https://youtu.be/pXjowPc6V2s)\n@[youtube](pXjowPc6V2s)\n\n\n## Overview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\n**To get started:**\n\n1. **Connect all credentials** (Telegram, OpenAI, Gmail, etc.)\n2. **Activate the workflow** and message your Telegram bot:\n   \u2022 \"What emails do I have today?\"\n   \u2022 \"Show me my calendar for tomorrow\"\n   \u2022 \"Craete new to-do item\"\n   \u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\n## Questions or Need Help?\n\nFor setup assistance, customization, or workflow support, join my Skool community!\n\n## [AI Automation Engineering Community](https://www.skool.com/ai-automation-engineering-3014)\n\nHappy learning! -- Derek Cheung"
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "Sticky Note2",
+                "type": "n8n-nodes-base.stickyNote",
+                "id": null,
+                "test_id": null,
+                "source": "iframe"
+              }
+            }
+          ],
+          "pinData": {},
+          "connections": {
+            "If": {
+              "main": [
+                [
+                  {
+                    "node": "Get Voice File",
+                    "type": "main",
+                    "index": 0
+                  }
+                ],
+                [
+                  {
+                    "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Tasks": {
+              "ai_tool": [
+                [
+                  {
+                    "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                    "type": "ai_tool",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Contacts": {
+              "ai_tool": [
+                [
+                  {
+                    "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                    "type": "ai_tool",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Get Email": {
+              "ai_tool": [
+                [
+                  {
+                    "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                    "type": "ai_tool",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Voice or Text": {
+              "main": [
+                [
+                  {
+                    "node": "If",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Get Voice File": {
+              "main": [
+                [
+                  {
+                    "node": "Speech to Text",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Speech to Text": {
+              "main": [
+                [
+                  {
+                    "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Google Calendar": {
+              "ai_tool": [
+                [
+                  {
+                    "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                    "type": "ai_tool",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "OpenAI Chat Model": {
+              "ai_languageModel": [
+                [
+                  {
+                    "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                    "type": "ai_languageModel",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Window Buffer Memory": {
+              "ai_memory": [
+                [
+                  {
+                    "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                    "type": "ai_memory",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Listen for incoming events": {
+              "main": [
+                [
+                  {
+                    "node": "Voice or Text",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb": {
+              "main": [
+                [
+                  {
+                    "node": "Telegram",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "node_count": 15,
+      "connection_count": 12,
+      "extraction_time": 0.89578,
+      "error": null,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "source": "primary_api"
+    },
+    "iframe": {
+      "success": true,
+      "source": "iframe",
+      "nodes": [
+        {
+          "name": "Google Calendar",
+          "type": "n8n-nodes-base.googleCalendarTool",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Google Calendar",
+          "type": null,
+          "id": "__EMPTY__-c70236ea-91ab-4e47-b6f6-63a70ede5d3c-outputs/ai_tool/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Window Buffer Memory",
+          "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Window Buffer Memory",
+          "type": null,
+          "id": "__EMPTY__-d2287bea-de47-4180-8ee6-55d4ab1a89da-outputs/ai_memory/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Get Email",
+          "type": "n8n-nodes-base.gmailTool",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Get Email",
+          "type": null,
+          "id": "__EMPTY__-fa955731-86f6-4e4d-8604-dab5f52dee87-outputs/ai_tool/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "OpenAI Chat Model",
+          "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "OpenAI Chat Model",
+          "type": null,
+          "id": "__EMPTY__-46511f47-1687-4cbe-ae41-ceb205ed1f11-outputs/ai_languageModel/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Listen for incoming events",
+          "type": "n8n-nodes-base.telegramTrigger",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Listen for incoming events",
+          "type": null,
+          "id": "__EMPTY__-64fe44db-af19-43eb-9ff1-de0a72a9e645-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Telegram",
+          "type": "n8n-nodes-base.telegram",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Telegram",
+          "type": null,
+          "id": "__EMPTY__-e35c04ff-a050-4564-8c1b-5b22b556872f-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Telegram",
+          "type": null,
+          "id": "__EMPTY__-e35c04ff-a050-4564-8c1b-5b22b556872f-outputs/main/1-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Telegram",
+          "type": null,
+          "id": "__EMPTY__-e35c04ff-a050-4564-8c1b-5b22b556872f-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "If",
+          "type": "n8n-nodes-base.if",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "If",
+          "type": null,
+          "id": "__EMPTY__-e791d4f8-2c19-4c14-a71e-39a04f22e944-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "If",
+          "type": null,
+          "id": "__EMPTY__-e791d4f8-2c19-4c14-a71e-39a04f22e944-outputs/main/1-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "If",
+          "type": null,
+          "id": "__EMPTY__-e791d4f8-2c19-4c14-a71e-39a04f22e944-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Speech to Text",
+          "type": "@n8n/n8n-nodes-langchain.openAi",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Speech to Text",
+          "type": null,
+          "id": "__EMPTY__-5bd1788a-3d08-4eb3-8e03-3ce82f44d2a7-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Speech to Text",
+          "type": null,
+          "id": "__EMPTY__-5bd1788a-3d08-4eb3-8e03-3ce82f44d2a7-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Voice or Text",
+          "type": "n8n-nodes-base.set",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Voice or Text",
+          "type": null,
+          "id": "__EMPTY__-b67a2a93-517b-469e-aaa4-32c422710743-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Voice or Text",
+          "type": null,
+          "id": "__EMPTY__-b67a2a93-517b-469e-aaa4-32c422710743-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Get Voice File",
+          "type": "n8n-nodes-base.telegram",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Get Voice File",
+          "type": null,
+          "id": "__EMPTY__-8105c39f-9e87-44c4-9215-b3777f0b4164-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Get Voice File",
+          "type": null,
+          "id": "__EMPTY__-8105c39f-9e87-44c4-9215-b3777f0b4164-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": "@n8n/n8n-nodes-langchain.agent",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": null,
+          "id": "__EMPTY__-759b975f-d17c-4386-a5b3-12413f0361f4-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": null,
+          "id": "__EMPTY__-759b975f-d17c-4386-a5b3-12413f0361f4-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": null,
+          "id": "__EMPTY__-759b975f-d17c-4386-a5b3-12413f0361f4-inputs/ai_languageModel/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": null,
+          "id": "__EMPTY__-759b975f-d17c-4386-a5b3-12413f0361f4-inputs/ai_memory/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": null,
+          "id": "__EMPTY__-759b975f-d17c-4386-a5b3-12413f0361f4-inputs/ai_tool/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        },
+        {
+          "name": "Tasks",
+          "type": "n8n-nodes-base.baserowTool",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Tasks",
+          "type": null,
+          "id": "__EMPTY__-40e92679-b47a-4213-bb23-3f8d086459f2-outputs/ai_tool/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Contacts",
+          "type": "n8n-nodes-base.baserowTool",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Contacts",
+          "type": null,
+          "id": "__EMPTY__-570a0647-b571-4ebc-9dfe-40244b5a0b2a-outputs/ai_tool/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note2",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        }
+      ],
+      "text_content": {
+        "all_text": "Google Calendar\ngetAll: event\nMemory\nWindow Buffer Memory\nGet Email\ngetAll: message\nModel\nOpenAI Chat Model\nListen for incoming events\nUpdates: message\nSuccess\nError\nTelegram\nsendMessage: message\ntrue\nfalse\nIf\nSpeech to Text\nTranscribe Recording\nVoice or Text\nmanual\nGet Voice File\nget: file\nChat Model\nMemory\nTool\nAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb\nProcess Telegram Request\nTasks\ngetAll:row\nContacts\ngetAll:row\nVideo Tutorial\n\n\n\u00a0\n\nOverview\n\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\nQuestions or Need Help?\n\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\n\nAI Automation Engineering Community\n\n\u00a0\nHappy learning! \u2013 Derek Cheung\n\nSet up template",
+        "all_text_length": 1018,
+        "text_blocks": [
+          {
+            "text": "Listen for incoming eventsUpdates: message",
+            "length": 42,
+            "source": "iframe"
+          },
+          {
+            "text": "Speech to TextTranscribe Recording",
+            "length": 34,
+            "source": "iframe"
+          },
+          {
+            "text": "Meet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:",
+            "length": 127,
+            "source": "iframe"
+          },
+          {
+            "text": "For setup assistance, customization, or workflow support, join my Skool community!",
+            "length": 86,
+            "source": "iframe"
+          },
+          {
+            "text": "I can answer most questions about building workflows in n8n.",
+            "length": 60,
+            "source": "iframe"
+          },
+          {
+            "text": "For specific tasks, you\u2019ll see the Ask Assistant button in the UI.",
+            "length": 66,
+            "source": "iframe"
+          }
+        ],
+        "input_hints": [
+          "Enter your response..."
+        ],
+        "source": "iframe"
+      },
+      "images": [
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Google/Calendar/googleCalendar.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Google/Gmail/gmail.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/llms/LMChatOpenAi/openAiLight.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Telegram/telegram.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Telegram/telegram.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/vendors/OpenAi/openAi.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Telegram/telegram.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Baserow/baserow.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Baserow/baserow.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        }
+      ],
+      "visual_layout": {
+        "node_positions": [
+          {
+            "node_name": "Google Calendar",
+            "x": 1040.7698364257812,
+            "y": 435.95269775390625,
+            "width": 19.96063232421875,
+            "height": 19.960601806640625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Google Calendar",
+            "x": 1048.7540893554688,
+            "y": 433.9566345214844,
+            "width": 3.99212646484375,
+            "height": 3.99212646484375,
+            "transform": "matrix(1, 0, 0, 1, -8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Window Buffer Memory",
+            "x": 980.8881225585938,
+            "y": 435.95269775390625,
+            "width": 19.9605712890625,
+            "height": 19.960601806640625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Window Buffer Memory",
+            "x": 988.872314453125,
+            "y": 433.9566345214844,
+            "width": 3.99212646484375,
+            "height": 3.99212646484375,
+            "transform": "matrix(1, 0, 0, 1, -8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Get Email",
+            "x": 1008.8329467773438,
+            "y": 435.95269775390625,
+            "width": 19.9605712890625,
+            "height": 19.960601806640625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Get Email",
+            "x": 1016.817138671875,
+            "y": 433.9566345214844,
+            "width": 3.99212646484375,
+            "height": 3.99212646484375,
+            "transform": "matrix(1, 0, 0, 1, -8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "OpenAI Chat Model",
+            "x": 948.951171875,
+            "y": 435.95269775390625,
+            "width": 19.9605712890625,
+            "height": 19.960601806640625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "OpenAI Chat Model",
+            "x": 956.9353942871094,
+            "y": 433.9566345214844,
+            "width": 3.99212646484375,
+            "height": 3.99212646484375,
+            "transform": "matrix(1, 0, 0, 1, -8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Listen for incoming events",
+            "x": 749.3453063964844,
+            "y": 356.1103515625,
+            "width": 23.95269775390625,
+            "height": 23.95269775390625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Listen for incoming events",
+            "x": 771.3019409179688,
+            "y": 366.0906677246094,
+            "width": 3.99212646484375,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Telegram",
+            "x": 1108.6358642578125,
+            "y": 356.1103515625,
+            "width": 23.95269775390625,
+            "height": 23.95269775390625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Telegram",
+            "x": 1130.592529296875,
+            "y": 362.0985412597656,
+            "width": 3.9920654296875,
+            "height": 3.99212646484375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Telegram",
+            "x": 1130.592529296875,
+            "y": 370.082763671875,
+            "width": 3.9920654296875,
+            "height": 3.99212646484375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Telegram",
+            "x": 1107.6378173828125,
+            "y": 366.0906677246094,
+            "width": 1.99609375,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "If",
+            "x": 841.1640014648438,
+            "y": 356.1103515625,
+            "width": 23.95269775390625,
+            "height": 23.95269775390625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "If",
+            "x": 863.1206359863281,
+            "y": 362.0985412597656,
+            "width": 3.99212646484375,
+            "height": 3.99212646484375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "If",
+            "x": 863.1206359863281,
+            "y": 370.082763671875,
+            "width": 3.99212646484375,
+            "height": 3.99212646484375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "If",
+            "x": 840.1659851074219,
+            "y": 366.0906677246094,
+            "width": 1.996063232421875,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Speech to Text",
+            "x": 944.9590454101562,
+            "y": 356.1103515625,
+            "width": 23.95269775390625,
+            "height": 23.95269775390625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Speech to Text",
+            "x": 966.9157104492188,
+            "y": 366.0906677246094,
+            "width": 3.99212646484375,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Speech to Text",
+            "x": 943.9610290527344,
+            "y": 366.0906677246094,
+            "width": 1.996063232421875,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Voice or Text",
+            "x": 801.2428283691406,
+            "y": 356.1103515625,
+            "width": 23.95269775390625,
+            "height": 23.95269775390625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Voice or Text",
+            "x": 823.1994934082031,
+            "y": 366.0906677246094,
+            "width": 3.992095947265625,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Voice or Text",
+            "x": 800.2448120117188,
+            "y": 366.0906677246094,
+            "width": 1.996063232421875,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Get Voice File",
+            "x": 885.0773010253906,
+            "y": 356.1103515625,
+            "width": 23.95269775390625,
+            "height": 23.95269775390625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Get Voice File",
+            "x": 907.033935546875,
+            "y": 366.0906677246094,
+            "width": 3.99212646484375,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Get Voice File",
+            "x": 884.0792541503906,
+            "y": 366.0906677246094,
+            "width": 1.996063232421875,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "x": 984.8802490234375,
+            "y": 356.1103515625,
+            "width": 55.88958740234375,
+            "height": 23.95269775390625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "x": 1038.7738037109375,
+            "y": 366.0906677246094,
+            "width": 3.99212646484375,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "x": 983.8822021484375,
+            "y": 366.0906677246094,
+            "width": 1.99603271484375,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "x": 992.8644409179688,
+            "y": 378.0670166015625,
+            "width": 3.99212646484375,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, -8, 8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "x": 1016.817138671875,
+            "y": 378.0670166015625,
+            "width": 3.99212646484375,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, -8, 8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "x": 1028.7935180664062,
+            "y": 378.0670166015625,
+            "width": 3.99212646484375,
+            "height": 3.992095947265625,
+            "transform": "matrix(1, 0, 0, 1, -8, 8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Sticky Note",
+            "x": 793.2586059570312,
+            "y": 332.15765380859375,
+            "width": 123.8179931640625,
+            "height": 69.5501708984375,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Tasks",
+            "x": 1068.7146606445312,
+            "y": 435.95269775390625,
+            "width": 19.96063232421875,
+            "height": 19.960601806640625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Tasks",
+            "x": 1076.6989135742188,
+            "y": 433.9566345214844,
+            "width": 3.99212646484375,
+            "height": 3.99212646484375,
+            "transform": "matrix(1, 0, 0, 1, -8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Contacts",
+            "x": 1100.651611328125,
+            "y": 435.95269775390625,
+            "width": 19.9605712890625,
+            "height": 19.960601806640625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Contacts",
+            "x": 1108.6358642578125,
+            "y": 433.9566345214844,
+            "width": 3.99212646484375,
+            "height": 3.99212646484375,
+            "transform": "matrix(1, 0, 0, 1, -8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Sticky Note2",
+            "x": 541.7552108764648,
+            "y": 292.2364807128906,
+            "width": 179.64527130126953,
+            "height": 239.52703857421875,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          }
+        ],
+        "canvas_state": {
+          "transform": "none",
+          "zoom": "1",
+          "width": 709,
+          "height": 520,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "spatial_metrics": {
+          "total_nodes": 39,
+          "bounding_box": {
+            "min_x": 541.7552108764648,
+            "max_x": 1134.5845947265625,
+            "min_y": 292.2364807128906,
+            "max_y": 531.7635192871094,
+            "width": 592.8293838500977,
+            "height": 239.52703857421875
+          },
+          "center_of_mass": {
+            "x": 950.998407412798,
+            "y": 383.6457331730769
+          },
+          "density": 0.00027465046614986776
+        },
+        "source": "iframe"
+      },
+      "enhanced_content": {
+        "all_text_blocks": [
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung\nn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. Set up templateWe\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 1487,
+            "tag": "div",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung\nn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. Set up templateWe\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 1487,
+            "tag": "div",
+            "classes": "_container_1tlmi_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung\nn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. Set up templateWe\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?",
+            "length": 1329,
+            "tag": "div",
+            "classes": "_app-grid_1tlmi_130",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung\nn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. Set up template",
+            "length": 1251,
+            "tag": "div",
+            "classes": "_content_1tlmi_144",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung\nn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. Set up template",
+            "length": 1251,
+            "tag": "div",
+            "classes": "_contentWrapper_1tlmi_162",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung\nn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. Set up template",
+            "length": 1251,
+            "tag": "div",
+            "classes": "_wrapper_16h3t_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung\nn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. Set up template",
+            "length": 1251,
+            "tag": "div",
+            "classes": "_wrapper_jyurh_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung\nn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 1235,
+            "tag": "div",
+            "classes": "_canvas_jyurh_131",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung\nn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 1235,
+            "tag": "div",
+            "classes": "vue-flow _canvas_ykcxs_123 _ready_ykcxs_129",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung",
+            "length": 965,
+            "tag": "div",
+            "classes": "vue-flow__viewport vue-flow__container",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung",
+            "length": 965,
+            "tag": "div",
+            "classes": "vue-flow__pane vue-flow__container selection",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung",
+            "length": 965,
+            "tag": "div",
+            "classes": "vue-flow__transformationpane vue-flow__container",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: eventMemoryWindow Buffer MemoryGet EmailgetAll: messageModelOpenAI Chat ModelListen for incoming eventsUpdates: messageSuccessErrorTelegramsendMessage: messagetruefalseIfSpeech to TextTranscribe RecordingVoice or TextmanualGet Voice Fileget: fileChat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfebProcess Telegram Request\nTasksgetAll:rowContactsgetAll:rowVideo Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung",
+            "length": 965,
+            "tag": "div",
+            "classes": "vue-flow__nodes vue-flow__container",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: event",
+            "length": 28,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: event",
+            "length": 28,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: event",
+            "length": 28,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configuration_z1mvy_148",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Google CalendargetAll: event",
+            "length": 28,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Google Calendar",
+            "length": 15,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "getAll: event",
+            "length": 13,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "MemoryWindow Buffer Memory",
+            "length": 26,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "MemoryWindow Buffer Memory",
+            "length": 26,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "vue-flow__handle vue-flow__handle-top vue-flow__handle-outputs/ai_memory/0 nodrag nopan source connectablestart connectableend _handle_1gtza_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "canvas-node-handle-non-main-output _handle_1blmu_123 _renderType_1gtza_140 _top_1gtza_140",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "_label_1blmu_130",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Window Buffer Memory",
+            "length": 20,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configuration_z1mvy_148",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Window Buffer Memory",
+            "length": 20,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Window Buffer Memory",
+            "length": 20,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Get EmailgetAll: message",
+            "length": 24,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Get EmailgetAll: message",
+            "length": 24,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Get EmailgetAll: message",
+            "length": 24,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configuration_z1mvy_148",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Get EmailgetAll: message",
+            "length": 24,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Get Email",
+            "length": 9,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "getAll: message",
+            "length": 15,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "ModelOpenAI Chat Model",
+            "length": 22,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "ModelOpenAI Chat Model",
+            "length": 22,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "OpenAI Chat Model",
+            "length": 17,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configuration_z1mvy_148",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "OpenAI Chat Model",
+            "length": 17,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "OpenAI Chat Model",
+            "length": 17,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Listen for incoming eventsUpdates: message",
+            "length": 42,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Listen for incoming eventsUpdates: message",
+            "length": 42,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Listen for incoming eventsUpdates: message",
+            "length": 42,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _trigger_z1mvy_145",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Listen for incoming eventsUpdates: message",
+            "length": 42,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Listen for incoming events",
+            "length": 26,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Updates: message",
+            "length": 16,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "SuccessErrorTelegramsendMessage: message",
+            "length": 40,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "SuccessErrorTelegramsendMessage: message",
+            "length": 40,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Success",
+            "length": 7,
+            "tag": "div",
+            "classes": "vue-flow__handle vue-flow__handle-right vue-flow__handle-outputs/main/0 nodrag nopan source connectablestart _handle_1gtza_123 _main_1gtza_136",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Success",
+            "length": 7,
+            "tag": "div",
+            "classes": "canvas-node-handle-main-output _handle_1o253_123 _renderType_1gtza_140 _right_1gtza_144",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Success",
+            "length": 7,
+            "tag": "div",
+            "classes": "_label_1o253_129 _outputLabel_1o253_148",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "TelegramsendMessage: message",
+            "length": 28,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "TelegramsendMessage: message",
+            "length": 28,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Telegram",
+            "length": 8,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "sendMessage: message",
+            "length": 20,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "truefalseIf",
+            "length": 11,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "truefalseIf",
+            "length": 11,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Speech to TextTranscribe Recording",
+            "length": 34,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Speech to TextTranscribe Recording",
+            "length": 34,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Speech to TextTranscribe Recording",
+            "length": 34,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Speech to TextTranscribe Recording",
+            "length": 34,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Speech to Text",
+            "length": 14,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Transcribe Recording",
+            "length": 20,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Voice or Textmanual",
+            "length": 19,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Voice or Textmanual",
+            "length": 19,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Voice or Textmanual",
+            "length": 19,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Voice or Textmanual",
+            "length": 19,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Voice or Text",
+            "length": 13,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "manual",
+            "length": 6,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Get Voice Fileget: file",
+            "length": 23,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Get Voice Fileget: file",
+            "length": 23,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Get Voice Fileget: file",
+            "length": 23,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Get Voice Fileget: file",
+            "length": 23,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Get Voice File",
+            "length": 14,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "get: file",
+            "length": 9,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Chat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "length": 44,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Chat ModelMemoryToolAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "length": 44,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Chat Model",
+            "length": 10,
+            "tag": "div",
+            "classes": "vue-flow__handle vue-flow__handle-bottom vue-flow__handle-inputs/ai_languageModel/0 nodrag nopan target _handle_1gtza_123 _inputs_1gtza_136",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Chat Model",
+            "length": 10,
+            "tag": "div",
+            "classes": "canvas-node-handle-non-main-input _handle_1hzlq_123 _required_1hzlq_143 _renderType_1gtza_140 _bottom_1gtza_152",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Chat Model",
+            "length": 10,
+            "tag": "div",
+            "classes": "_label_1hzlq_130",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "vue-flow__handle vue-flow__handle-bottom vue-flow__handle-inputs/ai_memory/0 nodrag nopan target _handle_1gtza_123 _inputs_1gtza_136",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "canvas-node-handle-non-main-input _handle_1hzlq_123 _renderType_1gtza_140 _bottom_1gtza_152",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "_label_1hzlq_130",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "length": 24,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configurable_z1mvy_156",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "length": 24,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "length": 24,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Process Telegram Request",
+            "length": 24,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Process Telegram Request",
+            "length": 24,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Process Telegram Request",
+            "length": 24,
+            "tag": "div",
+            "classes": "n8n-sticky _sticky_8r9jy_123 _clickable_8r9jy_134 _color-5_8r9jy_176 _sticky_1jyj2_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Process Telegram Request",
+            "length": 24,
+            "tag": "div",
+            "classes": "_wrapper_8r9jy_129",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Process Telegram Request",
+            "length": 24,
+            "tag": "div",
+            "classes": "n8n-markdown",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Process Telegram Request",
+            "length": 24,
+            "tag": "div",
+            "classes": "_sticky_tcjiv_186",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Process Telegram Request",
+            "length": 24,
+            "tag": "h2",
+            "classes": "",
+            "category": "heading",
+            "source": "iframe"
+          },
+          {
+            "text": "TasksgetAll:row",
+            "length": 15,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "TasksgetAll:row",
+            "length": 15,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "TasksgetAll:row",
+            "length": 15,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configuration_z1mvy_148",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "TasksgetAll:row",
+            "length": 15,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "getAll:row",
+            "length": 10,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "ContactsgetAll:row",
+            "length": 18,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "ContactsgetAll:row",
+            "length": 18,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "ContactsgetAll:row",
+            "length": 18,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configuration_z1mvy_148",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "ContactsgetAll:row",
+            "length": 18,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Contacts",
+            "length": 8,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "getAll:row",
+            "length": 10,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Video Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung",
+            "length": 594,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Video Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung",
+            "length": 594,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Video Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung",
+            "length": 594,
+            "tag": "div",
+            "classes": "n8n-sticky _sticky_8r9jy_123 _clickable_8r9jy_134 _color-5_8r9jy_176 _sticky_1jyj2_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Video Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung",
+            "length": 594,
+            "tag": "div",
+            "classes": "_wrapper_8r9jy_129",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Video Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung",
+            "length": 594,
+            "tag": "div",
+            "classes": "n8n-markdown",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Video Tutorial\n\n\u00a0\nOverview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\n\nQuestions or Need Help?\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\nAI Automation Engineering Community\n\u00a0\nHappy learning! \u2013 Derek Cheung",
+            "length": 594,
+            "tag": "div",
+            "classes": "_sticky_tcjiv_186",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Video Tutorial",
+            "length": 14,
+            "tag": "h2",
+            "classes": "",
+            "category": "heading",
+            "source": "iframe"
+          },
+          {
+            "text": "Video Tutorial",
+            "length": 14,
+            "tag": "a",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Overview",
+            "length": 8,
+            "tag": "h2",
+            "classes": "",
+            "category": "heading",
+            "source": "iframe"
+          },
+          {
+            "text": "Meet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:",
+            "length": 125,
+            "tag": "p",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Connect all credentials (Telegram, OpenAI, Gmail, etc.)",
+            "length": 55,
+            "tag": "li",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Activate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction",
+            "length": 199,
+            "tag": "li",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Questions or Need Help?",
+            "length": 23,
+            "tag": "h2",
+            "classes": "",
+            "category": "heading",
+            "source": "iframe"
+          },
+          {
+            "text": "For setup assistance, customization, or workflow support, join my Skool community!",
+            "length": 82,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Automation Engineering Community",
+            "length": 35,
+            "tag": "h2",
+            "classes": "",
+            "category": "heading",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Automation Engineering Community",
+            "length": 35,
+            "tag": "a",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Happy learning! \u2013 Derek Cheung",
+            "length": 30,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "n8n Minimap",
+            "length": 11,
+            "tag": "div",
+            "classes": "vue-flow__panel bottom left vue-flow__minimap pannable zoomable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.",
+            "length": 150,
+            "tag": "div",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 105,
+            "tag": "div",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Set up template",
+            "length": 15,
+            "tag": "button",
+            "classes": "button _button_3iv81_123 _secondary_3iv81_206 _large_3iv81_381 _withIcon_3iv81_513 _setupCredentialsButtonWrapper_16h3t_169 _setupCredentialsButtonWrapper_16h3t_169",
+            "category": "button_text",
+            "source": "iframe"
+          },
+          {
+            "text": "Set up template",
+            "length": 15,
+            "tag": "span",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?",
+            "length": 78,
+            "tag": "div",
+            "classes": "_modals_1tlmi_188",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?",
+            "length": 78,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "div",
+            "classes": "el-overlay",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "div",
+            "classes": "el-drawer ltr",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "span",
+            "classes": "_title_rchcj_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "el-overlay",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "nps-survey _npsSurvey_1dyir_209 el-drawer btt",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "_title_1dyir_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "h2",
+            "classes": "n8n-heading _text-xlight_ephjb_172 _size-medium_ephjb_146 _regular_ephjb_127",
+            "category": "heading",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_resize_1p19c_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_wrapper_6am3u_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_assistantContent_6am3u_129",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "wrapper",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_container_1h8jg_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "div",
+            "classes": "_header_1h8jg_134",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "div",
+            "classes": "_chatTitle_1h8jg_202",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "div",
+            "classes": "_headerText_1h8jg_207",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "span",
+            "classes": "_text_q04c1_123 _large_q04c1_141",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Hi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 146,
+            "tag": "div",
+            "classes": "_body_1h8jg_150",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Hi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 146,
+            "tag": "div",
+            "classes": "_placeholder_1h8jg_161",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "I can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 141,
+            "tag": "div",
+            "classes": "_info_1h8jg_217",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "I can answer most questions about building workflows in n8n.",
+            "length": 60,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "For specific tasks, you\u2019ll see the Ask Assistant button in the UI.",
+            "length": 66,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "button",
+            "classes": "_button_19od0_123",
+            "category": "button_text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "span",
+            "classes": "_text_q04c1_123 _small_q04c1_131",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How can I help?",
+            "length": 15,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          }
+        ],
+        "help_texts": [
+          {
+            "type": "aria-label",
+            "text": "Edge from e791d4f8-2c19-4c14-a71e-39a04f22e944 to 8105c39f-9e87-44c4-9215-b3777f0b4164"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from e791d4f8-2c19-4c14-a71e-39a04f22e944 to 759b975f-d17c-4386-a5b3-12413f0361f4"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from 40e92679-b47a-4213-bb23-3f8d086459f2 to 759b975f-d17c-4386-a5b3-12413f0361f4"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from 570a0647-b571-4ebc-9dfe-40244b5a0b2a to 759b975f-d17c-4386-a5b3-12413f0361f4"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from fa955731-86f6-4e4d-8604-dab5f52dee87 to 759b975f-d17c-4386-a5b3-12413f0361f4"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from b67a2a93-517b-469e-aaa4-32c422710743 to e791d4f8-2c19-4c14-a71e-39a04f22e944"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from 8105c39f-9e87-44c4-9215-b3777f0b4164 to 5bd1788a-3d08-4eb3-8e03-3ce82f44d2a7"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from 5bd1788a-3d08-4eb3-8e03-3ce82f44d2a7 to 759b975f-d17c-4386-a5b3-12413f0361f4"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from c70236ea-91ab-4e47-b6f6-63a70ede5d3c to 759b975f-d17c-4386-a5b3-12413f0361f4"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from 46511f47-1687-4cbe-ae41-ceb205ed1f11 to 759b975f-d17c-4386-a5b3-12413f0361f4"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from d2287bea-de47-4180-8ee6-55d4ab1a89da to 759b975f-d17c-4386-a5b3-12413f0361f4"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from 64fe44db-af19-43eb-9ff1-de0a72a9e645 to b67a2a93-517b-469e-aaa4-32c422710743"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from 759b975f-d17c-4386-a5b3-12413f0361f4 to e35c04ff-a050-4564-8c1b-5b22b556872f"
+          },
+          {
+            "type": "title",
+            "text": "YouTube video player"
+          },
+          {
+            "type": "aria-label",
+            "text": "Close this dialog"
+          },
+          {
+            "type": "aria-label",
+            "text": "Close this dialog"
+          }
+        ],
+        "error_messages": [],
+        "total_text_length": 23928,
+        "source": "iframe"
+      },
+      "media_content": {
+        "videos": [
+          {
+            "type": "iframe",
+            "source": "https://www.youtube-nocookie.com/embed/pXjowPc6V2s",
+            "platform": "youtube",
+            "source_type": "iframe"
+          }
+        ],
+        "images": [
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/Google/Calendar/googleCalendar.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/Google/Gmail/gmail.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/llms/LMChatOpenAi/openAiLight.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/Telegram/telegram.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/Telegram/telegram.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/vendors/OpenAi/openAi.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/Telegram/telegram.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/Baserow/baserow.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/Baserow/baserow.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          }
+        ],
+        "svgs": [
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__marker vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 448 512",
+            "classes": "svg-inline--fa fa-database fa-w-14",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 512 512",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 512 512",
+            "classes": "svg-inline--fa fa-map-signs fa-w-16",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 512 512",
+            "classes": "svg-inline--fa fa-pen fa-w-16",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 70",
+            "classes": "canvas-handle-plus-wrapper _wrapper_1igt0_123 _bottom_1igt0_130 _secondary_1igt0_133 target",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 640 512",
+            "classes": "svg-inline--fa fa-robot fa-w-20",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__background vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "-271.59379407616365 -408.8913963328631 3647.187588152327 2257.782792665726",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 1024 1024",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 1024 1024",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "_icon_19od0_170",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          }
+        ],
+        "video_count": 1,
+        "image_count": 9,
+        "svg_count": 63,
+        "source": "iframe"
+      },
+      "node_count": 39,
+      "extraction_count": 1
+    }
+  },
+  "merged": {
+    "success": true,
+    "source": "api_and_iframe",
+    "workflow_id": "2462",
+    "workflow": {
+      "meta": {
+        "instanceId": "04ddf1130268840c229f501edc57936c3c131339e8b0cdd696fcf3a7c69e696e",
+        "templateId": "2462"
+      },
+      "nodes": [
+        {
+          "id": "c70236ea-91ab-4e47-b6f6-63a70ede5d3c",
+          "name": "Google Calendar",
+          "type": "n8n-nodes-base.googleCalendarTool",
+          "position": [
+            2000,
+            704
+          ],
+          "parameters": {
+            "options": {
+              "fields": "=items(summary, start(dateTime))",
+              "timeMin": "={{$fromAI(\"date\",\"the date after which to fetch the messages in format YYYY-MM-DDTHH:MM:SS\")}}"
+            },
+            "calendar": {
+              "__rl": true,
+              "mode": "list",
+              "value": "derekcheungsa@gmail.com",
+              "cachedResultName": "derekcheungsa@gmail.com"
+            },
+            "operation": "getAll"
+          },
+          "typeVersion": 1.1,
+          "iframe_data": {
+            "name": "Google Calendar",
+            "type": "n8n-nodes-base.googleCalendarTool",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "d2287bea-de47-4180-8ee6-55d4ab1a89da",
+          "name": "Window Buffer Memory",
+          "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+          "position": [
+            1760,
+            704
+          ],
+          "parameters": {
+            "sessionKey": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+            "sessionIdType": "customKey"
+          },
+          "typeVersion": 1.2,
+          "iframe_data": {
+            "name": "Window Buffer Memory",
+            "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "fa955731-86f6-4e4d-8604-dab5f52dee87",
+          "name": "Get Email",
+          "type": "n8n-nodes-base.gmailTool",
+          "position": [
+            1872,
+            704
+          ],
+          "webhookId": "abf7e707-2eb8-4063-a920-b8ed975b0d70",
+          "parameters": {
+            "filters": {
+              "labelIds": [
+                "INBOX",
+                "UNREAD"
+              ],
+              "readStatus": "unread",
+              "receivedAfter": "={{$fromAI(\"date\",\"the date after which to fetch the messages in format YYYY-MM-DDTHH:MM:SS\")}}"
+            },
+            "operation": "getAll"
+          },
+          "typeVersion": 2.1,
+          "iframe_data": {
+            "name": "Get Email",
+            "type": "n8n-nodes-base.gmailTool",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "46511f47-1687-4cbe-ae41-ceb205ed1f11",
+          "name": "OpenAI Chat Model",
+          "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+          "position": [
+            1632,
+            704
+          ],
+          "parameters": {
+            "options": {}
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "OpenAI Chat Model",
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "64fe44db-af19-43eb-9ff1-de0a72a9e645",
+          "name": "Listen for incoming events",
+          "type": "n8n-nodes-base.telegramTrigger",
+          "position": [
+            832,
+            384
+          ],
+          "webhookId": "322dce18-f93e-4f86-b9b1-3305519b7834",
+          "parameters": {
+            "updates": [
+              "message"
+            ],
+            "additionalFields": {}
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "Listen for incoming events",
+            "type": "n8n-nodes-base.telegramTrigger",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "e35c04ff-a050-4564-8c1b-5b22b556872f",
+          "name": "Telegram",
+          "type": "n8n-nodes-base.telegram",
+          "onError": "continueErrorOutput",
+          "position": [
+            2272,
+            384
+          ],
+          "webhookId": "e699405e-8e52-4d38-a06b-1fa8edf050bd",
+          "parameters": {
+            "text": "={{ $json.output }}",
+            "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+            "additionalFields": {
+              "parse_mode": "Markdown",
+              "appendAttribution": false
+            }
+          },
+          "typeVersion": 1.1,
+          "iframe_data": {
+            "name": "Telegram",
+            "type": "n8n-nodes-base.telegram",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "e791d4f8-2c19-4c14-a71e-39a04f22e944",
+          "name": "If",
+          "type": "n8n-nodes-base.if",
+          "position": [
+            1200,
+            384
+          ],
+          "parameters": {
+            "options": {},
+            "conditions": {
+              "options": {
+                "version": 2,
+                "leftValue": "",
+                "caseSensitive": true,
+                "typeValidation": "strict"
+              },
+              "combinator": "and",
+              "conditions": [
+                {
+                  "id": "a0bf9719-4272-46f6-ab3b-eda6f7b44fd8",
+                  "operator": {
+                    "type": "string",
+                    "operation": "empty",
+                    "singleValue": true
+                  },
+                  "leftValue": "={{ $json.message.text }}",
+                  "rightValue": ""
+                }
+              ]
+            }
+          },
+          "typeVersion": 2.2,
+          "iframe_data": {
+            "name": "If",
+            "type": "n8n-nodes-base.if",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "5bd1788a-3d08-4eb3-8e03-3ce82f44d2a7",
+          "name": "Speech to Text",
+          "type": "@n8n/n8n-nodes-langchain.openAi",
+          "position": [
+            1616,
+            384
+          ],
+          "parameters": {
+            "options": {},
+            "resource": "audio",
+            "operation": "transcribe"
+          },
+          "typeVersion": 1.3,
+          "iframe_data": {
+            "name": "Speech to Text",
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "b67a2a93-517b-469e-aaa4-32c422710743",
+          "name": "Voice or Text",
+          "type": "n8n-nodes-base.set",
+          "position": [
+            1040,
+            384
+          ],
+          "parameters": {
+            "fields": {
+              "values": [
+                {
+                  "name": "text",
+                  "stringValue": "={{ $json?.message?.text || \"\" }}"
+                }
+              ]
+            },
+            "options": {}
+          },
+          "typeVersion": 3.2,
+          "iframe_data": {
+            "name": "Voice or Text",
+            "type": "n8n-nodes-base.set",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "8105c39f-9e87-44c4-9215-b3777f0b4164",
+          "name": "Get Voice File",
+          "type": "n8n-nodes-base.telegram",
+          "position": [
+            1376,
+            384
+          ],
+          "webhookId": "24273e7e-6133-415e-8627-a9d6dc0f107c",
+          "parameters": {
+            "fileId": "={{ $('Listen for incoming events').item.json.message.voice.file_id }}",
+            "resource": "file",
+            "additionalFields": {}
+          },
+          "typeVersion": 1.1,
+          "iframe_data": {
+            "name": "Get Voice File",
+            "type": "n8n-nodes-base.telegram",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "759b975f-d17c-4386-a5b3-12413f0361f4",
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": "@n8n/n8n-nodes-langchain.agent",
+          "position": [
+            1776,
+            384
+          ],
+          "parameters": {
+            "text": "={{ $json.text }}",
+            "options": {
+              "systemMessage": "=You are a helpful assistant.\n\nToday's date is {{ $now }}.\n\nGuidelines:\n- When fetching emails, filter out any promotional emails. \n- When summarizing emails, include Sender, Message date, subject, and brief summary of email.\n- if the user did not specify a date in the request assume they are asking for today\n- Use baserow tool to answer questions about tasks\n- When answering questions about calendar events, filter out events that don't apply to the question.  For example, the question is about events for today, only reply with events for today. Don't mention future events if it's more than 1 week away"
+            },
+            "promptType": "define"
+          },
+          "typeVersion": 1.6,
+          "iframe_data": {
+            "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "type": "@n8n/n8n-nodes-langchain.agent",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "5537c777-f003-4673-b48a-4993a0c10520",
+          "name": "Sticky Note",
+          "type": "n8n-nodes-base.stickyNote",
+          "position": [
+            1008,
+            288
+          ],
+          "parameters": {
+            "color": 5,
+            "width": 496.25,
+            "height": 278.75,
+            "content": "## Process Telegram Request\n"
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "Sticky Note",
+            "type": "n8n-nodes-base.stickyNote",
+            "id": null,
+            "test_id": null,
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "40e92679-b47a-4213-bb23-3f8d086459f2",
+          "name": "Tasks",
+          "type": "n8n-nodes-base.baserowTool",
+          "position": [
+            2112,
+            704
+          ],
+          "parameters": {
+            "tableId": 372174,
+            "databaseId": 146496,
+            "additionalOptions": {}
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "Tasks",
+            "type": "n8n-nodes-base.baserowTool",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "570a0647-b571-4ebc-9dfe-40244b5a0b2a",
+          "name": "Contacts",
+          "type": "n8n-nodes-base.baserowTool",
+          "position": [
+            2240,
+            704
+          ],
+          "parameters": {
+            "tableId": 372177,
+            "databaseId": 146496,
+            "descriptionType": "manual",
+            "toolDescription": "Useful for getting contact information.  For example emails or phone numbers.",
+            "additionalOptions": {}
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "Contacts",
+            "type": "n8n-nodes-base.baserowTool",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "3f66a5dd-6cad-4239-94a8-1b30fbf32943",
+          "name": "Sticky Note2",
+          "type": "n8n-nodes-base.stickyNote",
+          "position": [
+            0,
+            128
+          ],
+          "parameters": {
+            "color": 5,
+            "width": 720,
+            "height": 960,
+            "content": "## [Video Tutorial](https://youtu.be/pXjowPc6V2s)\n@[youtube](pXjowPc6V2s)\n\n\n## Overview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\n**To get started:**\n\n1. **Connect all credentials** (Telegram, OpenAI, Gmail, etc.)\n2. **Activate the workflow** and message your Telegram bot:\n   \u2022 \"What emails do I have today?\"\n   \u2022 \"Show me my calendar for tomorrow\"\n   \u2022 \"Craete new to-do item\"\n   \u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\n## Questions or Need Help?\n\nFor setup assistance, customization, or workflow support, join my Skool community!\n\n## [AI Automation Engineering Community](https://www.skool.com/ai-automation-engineering-3014)\n\nHappy learning! -- Derek Cheung"
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "Sticky Note2",
+            "type": "n8n-nodes-base.stickyNote",
+            "id": null,
+            "test_id": null,
+            "source": "iframe"
+          }
+        }
+      ],
+      "pinData": {},
+      "connections": {
+        "If": {
+          "main": [
+            [
+              {
+                "node": "Get Voice File",
+                "type": "main",
+                "index": 0
+              }
+            ],
+            [
+              {
+                "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Tasks": {
+          "ai_tool": [
+            [
+              {
+                "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                "type": "ai_tool",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Contacts": {
+          "ai_tool": [
+            [
+              {
+                "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                "type": "ai_tool",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Get Email": {
+          "ai_tool": [
+            [
+              {
+                "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                "type": "ai_tool",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Voice or Text": {
+          "main": [
+            [
+              {
+                "node": "If",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Get Voice File": {
+          "main": [
+            [
+              {
+                "node": "Speech to Text",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Speech to Text": {
+          "main": [
+            [
+              {
+                "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Google Calendar": {
+          "ai_tool": [
+            [
+              {
+                "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                "type": "ai_tool",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "OpenAI Chat Model": {
+          "ai_languageModel": [
+            [
+              {
+                "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                "type": "ai_languageModel",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Window Buffer Memory": {
+          "ai_memory": [
+            [
+              {
+                "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                "type": "ai_memory",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Listen for incoming events": {
+          "main": [
+            [
+              {
+                "node": "Voice or Text",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb": {
+          "main": [
+            [
+              {
+                "node": "Telegram",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "id": 2462,
+      "name": "Angie, Personal AI Assistant with Telegram Voice and Text",
+      "workflow": {
+        "meta": {
+          "instanceId": "04ddf1130268840c229f501edc57936c3c131339e8b0cdd696fcf3a7c69e696e",
+          "templateId": "2462"
+        },
+        "nodes": [
+          {
+            "id": "c70236ea-91ab-4e47-b6f6-63a70ede5d3c",
+            "name": "Google Calendar",
+            "type": "n8n-nodes-base.googleCalendarTool",
+            "position": [
+              2000,
+              704
+            ],
+            "parameters": {
+              "options": {
+                "fields": "=items(summary, start(dateTime))",
+                "timeMin": "={{$fromAI(\"date\",\"the date after which to fetch the messages in format YYYY-MM-DDTHH:MM:SS\")}}"
+              },
+              "calendar": {
+                "__rl": true,
+                "mode": "list",
+                "value": "derekcheungsa@gmail.com",
+                "cachedResultName": "derekcheungsa@gmail.com"
+              },
+              "operation": "getAll"
+            },
+            "typeVersion": 1.1,
+            "iframe_data": {
+              "name": "Google Calendar",
+              "type": "n8n-nodes-base.googleCalendarTool",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "d2287bea-de47-4180-8ee6-55d4ab1a89da",
+            "name": "Window Buffer Memory",
+            "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+            "position": [
+              1760,
+              704
+            ],
+            "parameters": {
+              "sessionKey": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+              "sessionIdType": "customKey"
+            },
+            "typeVersion": 1.2,
+            "iframe_data": {
+              "name": "Window Buffer Memory",
+              "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "fa955731-86f6-4e4d-8604-dab5f52dee87",
+            "name": "Get Email",
+            "type": "n8n-nodes-base.gmailTool",
+            "position": [
+              1872,
+              704
+            ],
+            "webhookId": "abf7e707-2eb8-4063-a920-b8ed975b0d70",
+            "parameters": {
+              "filters": {
+                "labelIds": [
+                  "INBOX",
+                  "UNREAD"
+                ],
+                "readStatus": "unread",
+                "receivedAfter": "={{$fromAI(\"date\",\"the date after which to fetch the messages in format YYYY-MM-DDTHH:MM:SS\")}}"
+              },
+              "operation": "getAll"
+            },
+            "typeVersion": 2.1,
+            "iframe_data": {
+              "name": "Get Email",
+              "type": "n8n-nodes-base.gmailTool",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "46511f47-1687-4cbe-ae41-ceb205ed1f11",
+            "name": "OpenAI Chat Model",
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "position": [
+              1632,
+              704
+            ],
+            "parameters": {
+              "options": {}
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "OpenAI Chat Model",
+              "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "64fe44db-af19-43eb-9ff1-de0a72a9e645",
+            "name": "Listen for incoming events",
+            "type": "n8n-nodes-base.telegramTrigger",
+            "position": [
+              832,
+              384
+            ],
+            "webhookId": "322dce18-f93e-4f86-b9b1-3305519b7834",
+            "parameters": {
+              "updates": [
+                "message"
+              ],
+              "additionalFields": {}
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "Listen for incoming events",
+              "type": "n8n-nodes-base.telegramTrigger",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "e35c04ff-a050-4564-8c1b-5b22b556872f",
+            "name": "Telegram",
+            "type": "n8n-nodes-base.telegram",
+            "onError": "continueErrorOutput",
+            "position": [
+              2272,
+              384
+            ],
+            "webhookId": "e699405e-8e52-4d38-a06b-1fa8edf050bd",
+            "parameters": {
+              "text": "={{ $json.output }}",
+              "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+              "additionalFields": {
+                "parse_mode": "Markdown",
+                "appendAttribution": false
+              }
+            },
+            "typeVersion": 1.1,
+            "iframe_data": {
+              "name": "Telegram",
+              "type": "n8n-nodes-base.telegram",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "e791d4f8-2c19-4c14-a71e-39a04f22e944",
+            "name": "If",
+            "type": "n8n-nodes-base.if",
+            "position": [
+              1200,
+              384
+            ],
+            "parameters": {
+              "options": {},
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "a0bf9719-4272-46f6-ab3b-eda6f7b44fd8",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": ""
+                  }
+                ]
+              }
+            },
+            "typeVersion": 2.2,
+            "iframe_data": {
+              "name": "If",
+              "type": "n8n-nodes-base.if",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "5bd1788a-3d08-4eb3-8e03-3ce82f44d2a7",
+            "name": "Speech to Text",
+            "type": "@n8n/n8n-nodes-langchain.openAi",
+            "position": [
+              1616,
+              384
+            ],
+            "parameters": {
+              "options": {},
+              "resource": "audio",
+              "operation": "transcribe"
+            },
+            "typeVersion": 1.3,
+            "iframe_data": {
+              "name": "Speech to Text",
+              "type": "@n8n/n8n-nodes-langchain.openAi",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "b67a2a93-517b-469e-aaa4-32c422710743",
+            "name": "Voice or Text",
+            "type": "n8n-nodes-base.set",
+            "position": [
+              1040,
+              384
+            ],
+            "parameters": {
+              "fields": {
+                "values": [
+                  {
+                    "name": "text",
+                    "stringValue": "={{ $json?.message?.text || \"\" }}"
+                  }
+                ]
+              },
+              "options": {}
+            },
+            "typeVersion": 3.2,
+            "iframe_data": {
+              "name": "Voice or Text",
+              "type": "n8n-nodes-base.set",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "8105c39f-9e87-44c4-9215-b3777f0b4164",
+            "name": "Get Voice File",
+            "type": "n8n-nodes-base.telegram",
+            "position": [
+              1376,
+              384
+            ],
+            "webhookId": "24273e7e-6133-415e-8627-a9d6dc0f107c",
+            "parameters": {
+              "fileId": "={{ $('Listen for incoming events').item.json.message.voice.file_id }}",
+              "resource": "file",
+              "additionalFields": {}
+            },
+            "typeVersion": 1.1,
+            "iframe_data": {
+              "name": "Get Voice File",
+              "type": "n8n-nodes-base.telegram",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "759b975f-d17c-4386-a5b3-12413f0361f4",
+            "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+            "type": "@n8n/n8n-nodes-langchain.agent",
+            "position": [
+              1776,
+              384
+            ],
+            "parameters": {
+              "text": "={{ $json.text }}",
+              "options": {
+                "systemMessage": "=You are a helpful assistant.\n\nToday's date is {{ $now }}.\n\nGuidelines:\n- When fetching emails, filter out any promotional emails. \n- When summarizing emails, include Sender, Message date, subject, and brief summary of email.\n- if the user did not specify a date in the request assume they are asking for today\n- Use baserow tool to answer questions about tasks\n- When answering questions about calendar events, filter out events that don't apply to the question.  For example, the question is about events for today, only reply with events for today. Don't mention future events if it's more than 1 week away"
+              },
+              "promptType": "define"
+            },
+            "typeVersion": 1.6,
+            "iframe_data": {
+              "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+              "type": "@n8n/n8n-nodes-langchain.agent",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "5537c777-f003-4673-b48a-4993a0c10520",
+            "name": "Sticky Note",
+            "type": "n8n-nodes-base.stickyNote",
+            "position": [
+              1008,
+              288
+            ],
+            "parameters": {
+              "color": 5,
+              "width": 496.25,
+              "height": 278.75,
+              "content": "## Process Telegram Request\n"
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "Sticky Note",
+              "type": "n8n-nodes-base.stickyNote",
+              "id": null,
+              "test_id": null,
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "40e92679-b47a-4213-bb23-3f8d086459f2",
+            "name": "Tasks",
+            "type": "n8n-nodes-base.baserowTool",
+            "position": [
+              2112,
+              704
+            ],
+            "parameters": {
+              "tableId": 372174,
+              "databaseId": 146496,
+              "additionalOptions": {}
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "Tasks",
+              "type": "n8n-nodes-base.baserowTool",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "570a0647-b571-4ebc-9dfe-40244b5a0b2a",
+            "name": "Contacts",
+            "type": "n8n-nodes-base.baserowTool",
+            "position": [
+              2240,
+              704
+            ],
+            "parameters": {
+              "tableId": 372177,
+              "databaseId": 146496,
+              "descriptionType": "manual",
+              "toolDescription": "Useful for getting contact information.  For example emails or phone numbers.",
+              "additionalOptions": {}
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "Contacts",
+              "type": "n8n-nodes-base.baserowTool",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "3f66a5dd-6cad-4239-94a8-1b30fbf32943",
+            "name": "Sticky Note2",
+            "type": "n8n-nodes-base.stickyNote",
+            "position": [
+              0,
+              128
+            ],
+            "parameters": {
+              "color": 5,
+              "width": 720,
+              "height": 960,
+              "content": "## [Video Tutorial](https://youtu.be/pXjowPc6V2s)\n@[youtube](pXjowPc6V2s)\n\n\n## Overview\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\n**To get started:**\n\n1. **Connect all credentials** (Telegram, OpenAI, Gmail, etc.)\n2. **Activate the workflow** and message your Telegram bot:\n   \u2022 \"What emails do I have today?\"\n   \u2022 \"Show me my calendar for tomorrow\"\n   \u2022 \"Craete new to-do item\"\n   \u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\n## Questions or Need Help?\n\nFor setup assistance, customization, or workflow support, join my Skool community!\n\n## [AI Automation Engineering Community](https://www.skool.com/ai-automation-engineering-3014)\n\nHappy learning! -- Derek Cheung"
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "Sticky Note2",
+              "type": "n8n-nodes-base.stickyNote",
+              "id": null,
+              "test_id": null,
+              "source": "iframe"
+            }
+          }
+        ],
+        "pinData": {},
+        "connections": {
+          "If": {
+            "main": [
+              [
+                {
+                  "node": "Get Voice File",
+                  "type": "main",
+                  "index": 0
+                }
+              ],
+              [
+                {
+                  "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Tasks": {
+            "ai_tool": [
+              [
+                {
+                  "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                  "type": "ai_tool",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Contacts": {
+            "ai_tool": [
+              [
+                {
+                  "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                  "type": "ai_tool",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Get Email": {
+            "ai_tool": [
+              [
+                {
+                  "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                  "type": "ai_tool",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Voice or Text": {
+            "main": [
+              [
+                {
+                  "node": "If",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Get Voice File": {
+            "main": [
+              [
+                {
+                  "node": "Speech to Text",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Speech to Text": {
+            "main": [
+              [
+                {
+                  "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Google Calendar": {
+            "ai_tool": [
+              [
+                {
+                  "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                  "type": "ai_tool",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "OpenAI Chat Model": {
+            "ai_languageModel": [
+              [
+                {
+                  "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                  "type": "ai_languageModel",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Window Buffer Memory": {
+            "ai_memory": [
+              [
+                {
+                  "node": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+                  "type": "ai_memory",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Listen for incoming events": {
+            "main": [
+              [
+                {
+                  "node": "Voice or Text",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb": {
+            "main": [
+              [
+                {
+                  "node": "Telegram",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "iframe_data": {
+      "nodes": [
+        {
+          "name": "Google Calendar",
+          "type": "n8n-nodes-base.googleCalendarTool",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Google Calendar",
+          "type": null,
+          "id": "__EMPTY__-c70236ea-91ab-4e47-b6f6-63a70ede5d3c-outputs/ai_tool/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Window Buffer Memory",
+          "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Window Buffer Memory",
+          "type": null,
+          "id": "__EMPTY__-d2287bea-de47-4180-8ee6-55d4ab1a89da-outputs/ai_memory/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Get Email",
+          "type": "n8n-nodes-base.gmailTool",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Get Email",
+          "type": null,
+          "id": "__EMPTY__-fa955731-86f6-4e4d-8604-dab5f52dee87-outputs/ai_tool/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "OpenAI Chat Model",
+          "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "OpenAI Chat Model",
+          "type": null,
+          "id": "__EMPTY__-46511f47-1687-4cbe-ae41-ceb205ed1f11-outputs/ai_languageModel/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Listen for incoming events",
+          "type": "n8n-nodes-base.telegramTrigger",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Listen for incoming events",
+          "type": null,
+          "id": "__EMPTY__-64fe44db-af19-43eb-9ff1-de0a72a9e645-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Telegram",
+          "type": "n8n-nodes-base.telegram",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Telegram",
+          "type": null,
+          "id": "__EMPTY__-e35c04ff-a050-4564-8c1b-5b22b556872f-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Telegram",
+          "type": null,
+          "id": "__EMPTY__-e35c04ff-a050-4564-8c1b-5b22b556872f-outputs/main/1-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Telegram",
+          "type": null,
+          "id": "__EMPTY__-e35c04ff-a050-4564-8c1b-5b22b556872f-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "If",
+          "type": "n8n-nodes-base.if",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "If",
+          "type": null,
+          "id": "__EMPTY__-e791d4f8-2c19-4c14-a71e-39a04f22e944-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "If",
+          "type": null,
+          "id": "__EMPTY__-e791d4f8-2c19-4c14-a71e-39a04f22e944-outputs/main/1-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "If",
+          "type": null,
+          "id": "__EMPTY__-e791d4f8-2c19-4c14-a71e-39a04f22e944-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Speech to Text",
+          "type": "@n8n/n8n-nodes-langchain.openAi",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Speech to Text",
+          "type": null,
+          "id": "__EMPTY__-5bd1788a-3d08-4eb3-8e03-3ce82f44d2a7-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Speech to Text",
+          "type": null,
+          "id": "__EMPTY__-5bd1788a-3d08-4eb3-8e03-3ce82f44d2a7-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Voice or Text",
+          "type": "n8n-nodes-base.set",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Voice or Text",
+          "type": null,
+          "id": "__EMPTY__-b67a2a93-517b-469e-aaa4-32c422710743-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Voice or Text",
+          "type": null,
+          "id": "__EMPTY__-b67a2a93-517b-469e-aaa4-32c422710743-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Get Voice File",
+          "type": "n8n-nodes-base.telegram",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Get Voice File",
+          "type": null,
+          "id": "__EMPTY__-8105c39f-9e87-44c4-9215-b3777f0b4164-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Get Voice File",
+          "type": null,
+          "id": "__EMPTY__-8105c39f-9e87-44c4-9215-b3777f0b4164-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": "@n8n/n8n-nodes-langchain.agent",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": null,
+          "id": "__EMPTY__-759b975f-d17c-4386-a5b3-12413f0361f4-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": null,
+          "id": "__EMPTY__-759b975f-d17c-4386-a5b3-12413f0361f4-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": null,
+          "id": "__EMPTY__-759b975f-d17c-4386-a5b3-12413f0361f4-inputs/ai_languageModel/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": null,
+          "id": "__EMPTY__-759b975f-d17c-4386-a5b3-12413f0361f4-inputs/ai_memory/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Angie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb",
+          "type": null,
+          "id": "__EMPTY__-759b975f-d17c-4386-a5b3-12413f0361f4-inputs/ai_tool/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        },
+        {
+          "name": "Tasks",
+          "type": "n8n-nodes-base.baserowTool",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Tasks",
+          "type": null,
+          "id": "__EMPTY__-40e92679-b47a-4213-bb23-3f8d086459f2-outputs/ai_tool/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Contacts",
+          "type": "n8n-nodes-base.baserowTool",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Contacts",
+          "type": null,
+          "id": "__EMPTY__-570a0647-b571-4ebc-9dfe-40244b5a0b2a-outputs/ai_tool/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note2",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        }
+      ],
+      "text_content": {
+        "all_text": "Google Calendar\ngetAll: event\nMemory\nWindow Buffer Memory\nGet Email\ngetAll: message\nModel\nOpenAI Chat Model\nListen for incoming events\nUpdates: message\nSuccess\nError\nTelegram\nsendMessage: message\ntrue\nfalse\nIf\nSpeech to Text\nTranscribe Recording\nVoice or Text\nmanual\nGet Voice File\nget: file\nChat Model\nMemory\nTool\nAngie, AI Assistant \ud83d\udc69\ud83c\udffb\u200d\ud83c\udfeb\nProcess Telegram Request\nTasks\ngetAll:row\nContacts\ngetAll:row\nVideo Tutorial\n\n\n\u00a0\n\nOverview\n\nMeet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:\n\u00a0\n\nConnect all credentials (Telegram, OpenAI, Gmail, etc.)\nActivate the workflow and message your Telegram bot:\n\u2022 \u201cWhat emails do I have today?\u201d\n\u2022 \u201cShow me my calendar for tomorrow\u201d\n\u2022 \u201cCraete new to-do item\u201d\n\u2022 \ud83c\udfa4 Send voice messages for hands-free interaction\n\u00a0\nQuestions or Need Help?\n\n\u00a0\nFor setup assistance, customization, or workflow support, join my Skool community!\n\u00a0\n\nAI Automation Engineering Community\n\n\u00a0\nHappy learning! \u2013 Derek Cheung\n\nSet up template",
+        "all_text_length": 1018,
+        "text_blocks": [
+          {
+            "text": "Listen for incoming eventsUpdates: message",
+            "length": 42,
+            "source": "iframe"
+          },
+          {
+            "text": "Speech to TextTranscribe Recording",
+            "length": 34,
+            "source": "iframe"
+          },
+          {
+            "text": "Meet Angie - your personal AI assistant that handles voice & text via Telegram to manage your digital life.\n\u00a0\nTo get started:",
+            "length": 127,
+            "source": "iframe"
+          },
+          {
+            "text": "For setup assistance, customization, or workflow support, join my Skool community!",
+            "length": 86,
+            "source": "iframe"
+          },
+          {
+            "text": "I can answer most questions about building workflows in n8n.",
+            "length": 60,
+            "source": "iframe"
+          },
+          {
+            "text": "For specific tasks, you\u2019ll see the Ask Assistant button in the UI.",
+            "length": 66,
+            "source": "iframe"
+          }
+        ],
+        "input_hints": [
+          "Enter your response..."
+        ],
+        "source": "iframe"
+      },
+      "images": [
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Google/Calendar/googleCalendar.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Google/Gmail/gmail.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/llms/LMChatOpenAi/openAiLight.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Telegram/telegram.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Telegram/telegram.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/vendors/OpenAi/openAi.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Telegram/telegram.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Baserow/baserow.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Baserow/baserow.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        }
+      ]
+    },
+    "node_count": 15,
+    "connection_count": 12,
+    "completeness": "complete"
+  },
+  "completeness": {
+    "api_only": 85.0,
+    "iframe_only": 15.0,
+    "merged": 100.0
+  },
+  "statistics": {
+    "api": {
+      "total": 1,
+      "primary_success": 1,
+      "fallback_success": 0,
+      "both_failed": 0
+    },
+    "iframe": {
+      "total_attempts": 1,
+      "successful": 1,
+      "failed": 0,
+      "nodes_extracted": 39,
+      "text_blocks_extracted": 6,
+      "images_extracted": 9
+    }
+  }
+}

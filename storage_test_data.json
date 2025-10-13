@@ -1,0 +1,1899 @@
+{
+  "workflow_id": "1954",
+  "url": "https://n8n.io/workflows/1954",
+  "extraction_time": 18.109451,
+  "sources": {
+    "api": {
+      "success": true,
+      "workflow_id": "1954",
+      "data": {
+        "id": 1954,
+        "name": "AI agent chat",
+        "workflow": {
+          "meta": {
+            "instanceId": "408f9fb9940c3cb18ffdef0e0150fe342d6e655c3a9fac21f0f644e8bedabcd9",
+            "templateCredsSetupCompleted": true
+          },
+          "nodes": [
+            {
+              "id": "ef4c6982-f746-4d48-944b-449f8bdbb69f",
+              "name": "When chat message received",
+              "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+              "position": [
+                -180,
+                -380
+              ],
+              "webhookId": "53c136fe-3e77-4709-a143-fe82746dd8b6",
+              "parameters": {
+                "options": {}
+              },
+              "typeVersion": 1.1,
+              "iframe_data": {
+                "name": "When chat message received",
+                "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "e6183978-5077-4252-9718-6b36b6a7cd74",
+              "name": "Simple Memory",
+              "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+              "position": [
+                160,
+                -160
+              ],
+              "parameters": {},
+              "typeVersion": 1.3,
+              "iframe_data": {
+                "name": "Simple Memory",
+                "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "1719e956-f9c8-48f5-9744-ee62345a9f7d",
+              "name": "OpenAI Chat Model",
+              "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+              "position": [
+                20,
+                -160
+              ],
+              "parameters": {
+                "model": {
+                  "__rl": true,
+                  "mode": "list",
+                  "value": "gpt-4o-mini"
+                },
+                "options": {}
+              },
+              "credentials": {
+                "openAiApi": {
+                  "id": "8gccIjcuf3gvaoEr",
+                  "name": "OpenAi account"
+                }
+              },
+              "typeVersion": 1.2,
+              "iframe_data": {
+                "name": "OpenAI Chat Model",
+                "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "f0815af7-da61-4863-9cfa-b35be836b59c",
+              "name": "SerpAPI",
+              "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+              "position": [
+                300,
+                -160
+              ],
+              "parameters": {
+                "options": {}
+              },
+              "credentials": {
+                "serpApi": {
+                  "id": "aJCKjxx6U3K7ydDe",
+                  "name": "SerpAPI account"
+                }
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "SerpAPI",
+                "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "2d3b4012-bd5f-46d5-be6d-af1ede6c155b",
+              "name": "AI Agent",
+              "type": "@n8n/n8n-nodes-langchain.agent",
+              "position": [
+                60,
+                -380
+              ],
+              "parameters": {
+                "options": {}
+              },
+              "typeVersion": 1.8,
+              "iframe_data": {
+                "name": "AI Agent",
+                "type": "@n8n/n8n-nodes-langchain.agent",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            }
+          ],
+          "pinData": {},
+          "connections": {
+            "SerpAPI": {
+              "ai_tool": [
+                [
+                  {
+                    "node": "AI Agent",
+                    "type": "ai_tool",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Simple Memory": {
+              "ai_memory": [
+                [
+                  {
+                    "node": "AI Agent",
+                    "type": "ai_memory",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "OpenAI Chat Model": {
+              "ai_languageModel": [
+                [
+                  {
+                    "node": "AI Agent",
+                    "type": "ai_languageModel",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "When chat message received": {
+              "main": [
+                [
+                  {
+                    "node": "AI Agent",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "node_count": 5,
+      "connection_count": 4,
+      "extraction_time": 0.653052,
+      "error": null,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "source": "primary_api"
+    },
+    "iframe": {
+      "success": true,
+      "source": "iframe",
+      "nodes": [
+        {
+          "name": "When chat message received",
+          "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "When chat message received",
+          "type": null,
+          "id": "__EMPTY__-ef4c6982-f746-4d48-944b-449f8bdbb69f-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Simple Memory",
+          "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Simple Memory",
+          "type": null,
+          "id": "__EMPTY__-e6183978-5077-4252-9718-6b36b6a7cd74-outputs/ai_memory/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "OpenAI Chat Model",
+          "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "OpenAI Chat Model",
+          "type": null,
+          "id": "__EMPTY__-1719e956-f9c8-48f5-9744-ee62345a9f7d-outputs/ai_languageModel/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "SerpAPI",
+          "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "SerpAPI",
+          "type": null,
+          "id": "__EMPTY__-f0815af7-da61-4863-9cfa-b35be836b59c-outputs/ai_tool/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": "@n8n/n8n-nodes-langchain.agent",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": null,
+          "id": "__EMPTY__-2d3b4012-bd5f-46d5-be6d-af1ede6c155b-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": null,
+          "id": "__EMPTY__-2d3b4012-bd5f-46d5-be6d-af1ede6c155b-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": null,
+          "id": "__EMPTY__-2d3b4012-bd5f-46d5-be6d-af1ede6c155b-inputs/ai_languageModel/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": null,
+          "id": "__EMPTY__-2d3b4012-bd5f-46d5-be6d-af1ede6c155b-inputs/ai_memory/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": null,
+          "id": "__EMPTY__-2d3b4012-bd5f-46d5-be6d-af1ede6c155b-inputs/ai_tool/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        }
+      ],
+      "text_content": {
+        "all_text": "When chat message received\nMemory\nSimple Memory\nModel\nOpenAI Chat Model\nTool\nSerpAPI\nChat Model\nMemory\nTool\nAI Agent",
+        "all_text_length": 116,
+        "text_blocks": [
+          {
+            "text": "I can answer most questions about building workflows in n8n.",
+            "length": 60,
+            "source": "iframe"
+          },
+          {
+            "text": "For specific tasks, you\u2019ll see the Ask Assistant button in the UI.",
+            "length": 66,
+            "source": "iframe"
+          }
+        ],
+        "input_hints": [
+          "Enter your response..."
+        ],
+        "source": "iframe"
+      },
+      "images": [
+        {
+          "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/llms/LMChatOpenAi/openAiLight.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/tools/ToolSerpApi/serpApi.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        }
+      ],
+      "visual_layout": {
+        "node_positions": [
+          {
+            "node_name": "When chat message received",
+            "x": 557.171875,
+            "y": 260,
+            "width": 96,
+            "height": 96,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "When chat message received",
+            "x": 645.171875,
+            "y": 300,
+            "width": 16,
+            "height": 16,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Simple Memory",
+            "x": 909.171875,
+            "y": 484,
+            "width": 80,
+            "height": 80,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Simple Memory",
+            "x": 941.171875,
+            "y": 476,
+            "width": 16,
+            "height": 16,
+            "transform": "matrix(1, 0, 0, 1, -8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "OpenAI Chat Model",
+            "x": 765.171875,
+            "y": 484,
+            "width": 80,
+            "height": 80,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "OpenAI Chat Model",
+            "x": 797.171875,
+            "y": 476,
+            "width": 16,
+            "height": 16,
+            "transform": "matrix(1, 0, 0, 1, -8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "SerpAPI",
+            "x": 1037.171875,
+            "y": 484,
+            "width": 80,
+            "height": 80,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "SerpAPI",
+            "x": 1069.171875,
+            "y": 476,
+            "width": 16,
+            "height": 16,
+            "transform": "matrix(1, 0, 0, 1, -8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "AI Agent",
+            "x": 797.171875,
+            "y": 260,
+            "width": 224,
+            "height": 96,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "AI Agent",
+            "x": 1013.171875,
+            "y": 300,
+            "width": 16,
+            "height": 16,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "AI Agent",
+            "x": 793.171875,
+            "y": 300,
+            "width": 8,
+            "height": 16,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "AI Agent",
+            "x": 829.171875,
+            "y": 348,
+            "width": 16,
+            "height": 16,
+            "transform": "matrix(1, 0, 0, 1, -8, 8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "AI Agent",
+            "x": 925.171875,
+            "y": 348,
+            "width": 16,
+            "height": 16,
+            "transform": "matrix(1, 0, 0, 1, -8, 8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "AI Agent",
+            "x": 973.171875,
+            "y": 348,
+            "width": 16,
+            "height": 16,
+            "transform": "matrix(1, 0, 0, 1, -8, 8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          }
+        ],
+        "canvas_state": {
+          "transform": "none",
+          "zoom": "1",
+          "width": 709,
+          "height": 520,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "spatial_metrics": {
+          "total_nodes": 14,
+          "bounding_box": {
+            "min_x": 557.171875,
+            "max_x": 1117.171875,
+            "min_y": 260,
+            "max_y": 564,
+            "width": 560.0,
+            "height": 304
+          },
+          "center_of_mass": {
+            "x": 860.8861607142857,
+            "y": 381.7142857142857
+          },
+          "density": 8.223684210526316e-05
+        },
+        "source": "iframe"
+      },
+      "enhanced_content": {
+        "all_text_blocks": [
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agentn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 612,
+            "tag": "div",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agentn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 612,
+            "tag": "div",
+            "classes": "_container_1tlmi_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agentn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?",
+            "length": 454,
+            "tag": "div",
+            "classes": "_app-grid_1tlmi_130",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agentn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 375,
+            "tag": "div",
+            "classes": "_content_1tlmi_144",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agentn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 375,
+            "tag": "div",
+            "classes": "_contentWrapper_1tlmi_162",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agentn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 375,
+            "tag": "div",
+            "classes": "_wrapper_16h3t_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agentn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 375,
+            "tag": "div",
+            "classes": "_wrapper_jyurh_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agentn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 375,
+            "tag": "div",
+            "classes": "_canvas_jyurh_131",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agentn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 375,
+            "tag": "div",
+            "classes": "vue-flow _canvas_ykcxs_123 _ready_ykcxs_129",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agent",
+            "length": 106,
+            "tag": "div",
+            "classes": "vue-flow__viewport vue-flow__container",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agent",
+            "length": 106,
+            "tag": "div",
+            "classes": "vue-flow__pane vue-flow__container selection",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agent",
+            "length": 106,
+            "tag": "div",
+            "classes": "vue-flow__transformationpane vue-flow__container",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message receivedMemorySimple MemoryModelOpenAI Chat ModelToolSerpAPIChat ModelMemoryToolAI Agent",
+            "length": 106,
+            "tag": "div",
+            "classes": "vue-flow__nodes vue-flow__container",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message received",
+            "length": 26,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message received",
+            "length": 26,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message received",
+            "length": 26,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _trigger_z1mvy_145",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message received",
+            "length": 26,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "When chat message received",
+            "length": 26,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "MemorySimple Memory",
+            "length": 19,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "MemorySimple Memory",
+            "length": 19,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "vue-flow__handle vue-flow__handle-top vue-flow__handle-outputs/ai_memory/0 nodrag nopan source connectablestart connectableend _handle_1gtza_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "canvas-node-handle-non-main-output _handle_1blmu_123 _renderType_1gtza_140 _top_1gtza_140",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "_label_1blmu_130",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Simple Memory",
+            "length": 13,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configuration_z1mvy_148",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Simple Memory",
+            "length": 13,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Simple Memory",
+            "length": 13,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "ModelOpenAI Chat Model",
+            "length": 22,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "ModelOpenAI Chat Model",
+            "length": 22,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "OpenAI Chat Model",
+            "length": 17,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configuration_z1mvy_148",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "OpenAI Chat Model",
+            "length": 17,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "OpenAI Chat Model",
+            "length": 17,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "ToolSerpAPI",
+            "length": 11,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "ToolSerpAPI",
+            "length": 11,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "SerpAPI",
+            "length": 7,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configuration_z1mvy_148",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "SerpAPI",
+            "length": 7,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "SerpAPI",
+            "length": 7,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Chat ModelMemoryToolAI Agent",
+            "length": 28,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Chat ModelMemoryToolAI Agent",
+            "length": 28,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Chat Model",
+            "length": 10,
+            "tag": "div",
+            "classes": "vue-flow__handle vue-flow__handle-bottom vue-flow__handle-inputs/ai_languageModel/0 nodrag nopan target _handle_1gtza_123 _inputs_1gtza_136",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Chat Model",
+            "length": 10,
+            "tag": "div",
+            "classes": "canvas-node-handle-non-main-input _handle_1hzlq_123 _required_1hzlq_143 _renderType_1gtza_140 _bottom_1gtza_152",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Chat Model",
+            "length": 10,
+            "tag": "div",
+            "classes": "_label_1hzlq_130",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "vue-flow__handle vue-flow__handle-bottom vue-flow__handle-inputs/ai_memory/0 nodrag nopan target _handle_1gtza_123 _inputs_1gtza_136",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "canvas-node-handle-non-main-input _handle_1hzlq_123 _renderType_1gtza_140 _bottom_1gtza_152",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Memory",
+            "length": 6,
+            "tag": "div",
+            "classes": "_label_1hzlq_130",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Agent",
+            "length": 8,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _configurable_z1mvy_156",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Agent",
+            "length": 8,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Agent",
+            "length": 8,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "n8n Minimap",
+            "length": 11,
+            "tag": "div",
+            "classes": "vue-flow__panel bottom left vue-flow__minimap pannable zoomable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.",
+            "length": 150,
+            "tag": "div",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 105,
+            "tag": "div",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?",
+            "length": 78,
+            "tag": "div",
+            "classes": "_modals_1tlmi_188",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?",
+            "length": 78,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "div",
+            "classes": "el-overlay",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "div",
+            "classes": "el-drawer ltr",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "span",
+            "classes": "_title_rchcj_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "el-overlay",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "nps-survey _npsSurvey_1dyir_209 el-drawer btt",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "_title_1dyir_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "h2",
+            "classes": "n8n-heading _text-xlight_ephjb_172 _size-medium_ephjb_146 _regular_ephjb_127",
+            "category": "heading",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_resize_1p19c_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_wrapper_6am3u_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_assistantContent_6am3u_129",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "wrapper",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_container_1h8jg_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "div",
+            "classes": "_header_1h8jg_134",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "div",
+            "classes": "_chatTitle_1h8jg_202",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "div",
+            "classes": "_headerText_1h8jg_207",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "span",
+            "classes": "_text_q04c1_123 _large_q04c1_141",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Hi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 146,
+            "tag": "div",
+            "classes": "_body_1h8jg_150",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Hi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 146,
+            "tag": "div",
+            "classes": "_placeholder_1h8jg_161",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "I can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 141,
+            "tag": "div",
+            "classes": "_info_1h8jg_217",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "I can answer most questions about building workflows in n8n.",
+            "length": 60,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "For specific tasks, you\u2019ll see the Ask Assistant button in the UI.",
+            "length": 66,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "button",
+            "classes": "_button_19od0_123",
+            "category": "button_text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "span",
+            "classes": "_text_q04c1_123 _small_q04c1_131",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How can I help?",
+            "length": 15,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          }
+        ],
+        "help_texts": [
+          {
+            "type": "aria-label",
+            "text": "Edge from f0815af7-da61-4863-9cfa-b35be836b59c to 2d3b4012-bd5f-46d5-be6d-af1ede6c155b"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from e6183978-5077-4252-9718-6b36b6a7cd74 to 2d3b4012-bd5f-46d5-be6d-af1ede6c155b"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from 1719e956-f9c8-48f5-9744-ee62345a9f7d to 2d3b4012-bd5f-46d5-be6d-af1ede6c155b"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from ef4c6982-f746-4d48-944b-449f8bdbb69f to 2d3b4012-bd5f-46d5-be6d-af1ede6c155b"
+          },
+          {
+            "type": "aria-label",
+            "text": "Close this dialog"
+          },
+          {
+            "type": "aria-label",
+            "text": "Close this dialog"
+          }
+        ],
+        "error_messages": [],
+        "total_text_length": 7102,
+        "source": "iframe"
+      },
+      "media_content": {
+        "videos": [],
+        "images": [
+          {
+            "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/llms/LMChatOpenAi/openAiLight.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/tools/ToolSerpApi/serpApi.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          }
+        ],
+        "svgs": [
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__marker vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 576 512",
+            "classes": "svg-inline--fa fa-comments fa-w-18",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 448 512",
+            "classes": "svg-inline--fa fa-database fa-w-14",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 70",
+            "classes": "canvas-handle-plus-wrapper _wrapper_1igt0_123 _bottom_1igt0_130 _secondary_1igt0_133 target",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 640 512",
+            "classes": "svg-inline--fa fa-robot fa-w-20",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__background vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "193.00000000000003 110.33333333333334 910 563.3333333333334",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 1024 1024",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 1024 1024",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "_icon_19od0_170",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          }
+        ],
+        "video_count": 0,
+        "image_count": 2,
+        "svg_count": 31,
+        "source": "iframe"
+      },
+      "node_count": 14,
+      "extraction_count": 1
+    }
+  },
+  "merged": {
+    "success": true,
+    "source": "api_and_iframe",
+    "workflow_id": "1954",
+    "workflow": {
+      "meta": {
+        "instanceId": "408f9fb9940c3cb18ffdef0e0150fe342d6e655c3a9fac21f0f644e8bedabcd9",
+        "templateCredsSetupCompleted": true
+      },
+      "nodes": [
+        {
+          "id": "ef4c6982-f746-4d48-944b-449f8bdbb69f",
+          "name": "When chat message received",
+          "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+          "position": [
+            -180,
+            -380
+          ],
+          "webhookId": "53c136fe-3e77-4709-a143-fe82746dd8b6",
+          "parameters": {
+            "options": {}
+          },
+          "typeVersion": 1.1,
+          "iframe_data": {
+            "name": "When chat message received",
+            "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "e6183978-5077-4252-9718-6b36b6a7cd74",
+          "name": "Simple Memory",
+          "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+          "position": [
+            160,
+            -160
+          ],
+          "parameters": {},
+          "typeVersion": 1.3,
+          "iframe_data": {
+            "name": "Simple Memory",
+            "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "1719e956-f9c8-48f5-9744-ee62345a9f7d",
+          "name": "OpenAI Chat Model",
+          "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+          "position": [
+            20,
+            -160
+          ],
+          "parameters": {
+            "model": {
+              "__rl": true,
+              "mode": "list",
+              "value": "gpt-4o-mini"
+            },
+            "options": {}
+          },
+          "credentials": {
+            "openAiApi": {
+              "id": "8gccIjcuf3gvaoEr",
+              "name": "OpenAi account"
+            }
+          },
+          "typeVersion": 1.2,
+          "iframe_data": {
+            "name": "OpenAI Chat Model",
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "f0815af7-da61-4863-9cfa-b35be836b59c",
+          "name": "SerpAPI",
+          "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+          "position": [
+            300,
+            -160
+          ],
+          "parameters": {
+            "options": {}
+          },
+          "credentials": {
+            "serpApi": {
+              "id": "aJCKjxx6U3K7ydDe",
+              "name": "SerpAPI account"
+            }
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "SerpAPI",
+            "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "2d3b4012-bd5f-46d5-be6d-af1ede6c155b",
+          "name": "AI Agent",
+          "type": "@n8n/n8n-nodes-langchain.agent",
+          "position": [
+            60,
+            -380
+          ],
+          "parameters": {
+            "options": {}
+          },
+          "typeVersion": 1.8,
+          "iframe_data": {
+            "name": "AI Agent",
+            "type": "@n8n/n8n-nodes-langchain.agent",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        }
+      ],
+      "pinData": {},
+      "connections": {
+        "SerpAPI": {
+          "ai_tool": [
+            [
+              {
+                "node": "AI Agent",
+                "type": "ai_tool",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Simple Memory": {
+          "ai_memory": [
+            [
+              {
+                "node": "AI Agent",
+                "type": "ai_memory",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "OpenAI Chat Model": {
+          "ai_languageModel": [
+            [
+              {
+                "node": "AI Agent",
+                "type": "ai_languageModel",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "When chat message received": {
+          "main": [
+            [
+              {
+                "node": "AI Agent",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "id": 1954,
+      "name": "AI agent chat",
+      "workflow": {
+        "meta": {
+          "instanceId": "408f9fb9940c3cb18ffdef0e0150fe342d6e655c3a9fac21f0f644e8bedabcd9",
+          "templateCredsSetupCompleted": true
+        },
+        "nodes": [
+          {
+            "id": "ef4c6982-f746-4d48-944b-449f8bdbb69f",
+            "name": "When chat message received",
+            "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+            "position": [
+              -180,
+              -380
+            ],
+            "webhookId": "53c136fe-3e77-4709-a143-fe82746dd8b6",
+            "parameters": {
+              "options": {}
+            },
+            "typeVersion": 1.1,
+            "iframe_data": {
+              "name": "When chat message received",
+              "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "e6183978-5077-4252-9718-6b36b6a7cd74",
+            "name": "Simple Memory",
+            "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+            "position": [
+              160,
+              -160
+            ],
+            "parameters": {},
+            "typeVersion": 1.3,
+            "iframe_data": {
+              "name": "Simple Memory",
+              "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "1719e956-f9c8-48f5-9744-ee62345a9f7d",
+            "name": "OpenAI Chat Model",
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "position": [
+              20,
+              -160
+            ],
+            "parameters": {
+              "model": {
+                "__rl": true,
+                "mode": "list",
+                "value": "gpt-4o-mini"
+              },
+              "options": {}
+            },
+            "credentials": {
+              "openAiApi": {
+                "id": "8gccIjcuf3gvaoEr",
+                "name": "OpenAi account"
+              }
+            },
+            "typeVersion": 1.2,
+            "iframe_data": {
+              "name": "OpenAI Chat Model",
+              "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "f0815af7-da61-4863-9cfa-b35be836b59c",
+            "name": "SerpAPI",
+            "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+            "position": [
+              300,
+              -160
+            ],
+            "parameters": {
+              "options": {}
+            },
+            "credentials": {
+              "serpApi": {
+                "id": "aJCKjxx6U3K7ydDe",
+                "name": "SerpAPI account"
+              }
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "SerpAPI",
+              "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "2d3b4012-bd5f-46d5-be6d-af1ede6c155b",
+            "name": "AI Agent",
+            "type": "@n8n/n8n-nodes-langchain.agent",
+            "position": [
+              60,
+              -380
+            ],
+            "parameters": {
+              "options": {}
+            },
+            "typeVersion": 1.8,
+            "iframe_data": {
+              "name": "AI Agent",
+              "type": "@n8n/n8n-nodes-langchain.agent",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          }
+        ],
+        "pinData": {},
+        "connections": {
+          "SerpAPI": {
+            "ai_tool": [
+              [
+                {
+                  "node": "AI Agent",
+                  "type": "ai_tool",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Simple Memory": {
+            "ai_memory": [
+              [
+                {
+                  "node": "AI Agent",
+                  "type": "ai_memory",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "OpenAI Chat Model": {
+            "ai_languageModel": [
+              [
+                {
+                  "node": "AI Agent",
+                  "type": "ai_languageModel",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "When chat message received": {
+            "main": [
+              [
+                {
+                  "node": "AI Agent",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "iframe_data": {
+      "nodes": [
+        {
+          "name": "When chat message received",
+          "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "When chat message received",
+          "type": null,
+          "id": "__EMPTY__-ef4c6982-f746-4d48-944b-449f8bdbb69f-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Simple Memory",
+          "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Simple Memory",
+          "type": null,
+          "id": "__EMPTY__-e6183978-5077-4252-9718-6b36b6a7cd74-outputs/ai_memory/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "OpenAI Chat Model",
+          "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "OpenAI Chat Model",
+          "type": null,
+          "id": "__EMPTY__-1719e956-f9c8-48f5-9744-ee62345a9f7d-outputs/ai_languageModel/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "SerpAPI",
+          "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "SerpAPI",
+          "type": null,
+          "id": "__EMPTY__-f0815af7-da61-4863-9cfa-b35be836b59c-outputs/ai_tool/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": "@n8n/n8n-nodes-langchain.agent",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": null,
+          "id": "__EMPTY__-2d3b4012-bd5f-46d5-be6d-af1ede6c155b-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": null,
+          "id": "__EMPTY__-2d3b4012-bd5f-46d5-be6d-af1ede6c155b-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": null,
+          "id": "__EMPTY__-2d3b4012-bd5f-46d5-be6d-af1ede6c155b-inputs/ai_languageModel/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": null,
+          "id": "__EMPTY__-2d3b4012-bd5f-46d5-be6d-af1ede6c155b-inputs/ai_memory/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "AI Agent",
+          "type": null,
+          "id": "__EMPTY__-2d3b4012-bd5f-46d5-be6d-af1ede6c155b-inputs/ai_tool/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        }
+      ],
+      "text_content": {
+        "all_text": "When chat message received\nMemory\nSimple Memory\nModel\nOpenAI Chat Model\nTool\nSerpAPI\nChat Model\nMemory\nTool\nAI Agent",
+        "all_text_length": 116,
+        "text_blocks": [
+          {
+            "text": "I can answer most questions about building workflows in n8n.",
+            "length": 60,
+            "source": "iframe"
+          },
+          {
+            "text": "For specific tasks, you\u2019ll see the Ask Assistant button in the UI.",
+            "length": 66,
+            "source": "iframe"
+          }
+        ],
+        "input_hints": [
+          "Enter your response..."
+        ],
+        "source": "iframe"
+      },
+      "images": [
+        {
+          "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/llms/LMChatOpenAi/openAiLight.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/@n8n/n8n-nodes-langchain/dist/nodes/tools/ToolSerpApi/serpApi.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        }
+      ]
+    },
+    "node_count": 5,
+    "connection_count": 4,
+    "completeness": "complete"
+  },
+  "completeness": {
+    "api_only": 85.0,
+    "iframe_only": 15.0,
+    "merged": 100.0
+  },
+  "statistics": {
+    "api": {
+      "total": 1,
+      "primary_success": 1,
+      "fallback_success": 0,
+      "both_failed": 0
+    },
+    "iframe": {
+      "total_attempts": 1,
+      "successful": 1,
+      "failed": 0,
+      "nodes_extracted": 14,
+      "text_blocks_extracted": 2,
+      "images_extracted": 2
+    }
+  }
+}

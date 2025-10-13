@@ -84,6 +84,65 @@ class MultimodalProcessor:
             await self.playwright.stop()
         logger.info("Multimodal processor cleaned up")
     
+    async def discover_n8n_workflow_content(self, page: Page, workflow_url: str) -> Dict[str, Any]:
+        """
+        Discover n8n workflow content including YouTube videos in the workflow canvas.
+        
+        Args:
+            page: Playwright page object
+            workflow_url: URL of workflow page
+            
+        Returns:
+            Dict containing workflow content found
+        """
+        try:
+            await page.goto(workflow_url, timeout=self.timeout)
+            await page.wait_for_load_state('networkidle', timeout=self.timeout)
+            await page.wait_for_timeout(3000)  # Wait for dynamic content
+            
+            result = {
+                'youtube_videos': [],
+                'workflow_nodes': [],
+                'text_content': []
+            }
+            
+            # Look for the n8n workflow iframe
+            n8n_iframe = await page.query_selector('iframe.embedded_workflow_iframe')
+            if not n8n_iframe:
+                # Try alternative selectors
+                n8n_iframe = await page.query_selector('iframe[src*="n8n-preview-service"]')
+            
+            if n8n_iframe:
+                frame = await n8n_iframe.content_frame()
+                if frame:
+                    # Look for YouTube videos in the n8n workflow
+                    youtube_links = await frame.query_selector_all('a[href*="youtu.be"], a[href*="youtube.com/watch"]')
+                    for link in youtube_links:
+                        href = await link.get_attribute('href')
+                        if href:
+                            result['youtube_videos'].append(href)
+                    
+                    # Look for YouTube images
+                    youtube_images = await frame.query_selector_all('img[src*="youtube"]')
+                    for img in youtube_images:
+                        src = await img.get_attribute('src')
+                        alt = await img.get_attribute('alt')
+                        if src:
+                            result['youtube_videos'].append(src)
+                    
+                    # Extract text content from workflow
+                    text_elements = await frame.query_selector_all('div, span, p')
+                    for elem in text_elements:
+                        text = await elem.inner_text()
+                        if text and text.strip() and len(text.strip()) > 10:
+                            result['text_content'].append(text.strip())
+            
+            return result
+            
+        except Exception as e:
+            logger.warning(f"Error discovering n8n workflow content: {e}")
+            return {'youtube_videos': [], 'workflow_nodes': [], 'text_content': []}
+
     async def discover_iframes(self, page: Page, workflow_url: str) -> List[str]:
         """
         Discover iframes in workflow page.
@@ -99,13 +158,11 @@ class MultimodalProcessor:
             await page.goto(workflow_url, timeout=self.timeout)
             await page.wait_for_load_state('networkidle', timeout=self.timeout)
             
-            # Try common iframe selectors
+            # Try n8n-specific selectors first
             iframe_selectors = [
-                'iframe[title*="explainer"]',
-                'iframe[title*="tutorial"]',
-                'iframe[title*="guide"]',
-                'iframe[name="explainer"]',
-                'iframe.explainer-content',
+                'iframe.embedded_workflow_iframe',  # n8n workflow iframe
+                'iframe[src*="n8n-preview-service"]',  # n8n preview service
+                'iframe[src*="workflows/demo"]',  # n8n demo workflow
                 'iframe'  # Fallback: any iframe
             ]
             
@@ -299,8 +356,10 @@ class MultimodalProcessor:
                 logger.debug("Iframe has no accessible frame for video discovery")
                 return []
             
-            # Look for YouTube embeds in the iframe
+            # Look for YouTube embeds and links in the iframe
             video_selectors = [
+                'a[href*="youtu.be"]',  # YouTube short links
+                'a[href*="youtube.com/watch"]',  # YouTube watch links
                 'iframe[src*="youtube.com/embed"]',
                 'iframe[src*="youtube-nocookie.com/embed"]',
                 'iframe[src*="youtu.be"]'
@@ -312,9 +371,14 @@ class MultimodalProcessor:
                     videos = await frame.locator(selector).all()
                     for video in videos:
                         try:
-                            src = await video.get_attribute('src')
-                            if src:
-                                video_urls.append(src)
+                            if 'iframe' in selector:
+                                src = await video.get_attribute('src')
+                                if src:
+                                    video_urls.append(src)
+                            else:  # link
+                                href = await video.get_attribute('href')
+                                if href:
+                                    video_urls.append(href)
                         except:
                             continue
                 except:
@@ -327,6 +391,67 @@ class MultimodalProcessor:
             
         except Exception as e:
             logger.warning(f"Error discovering videos in iframe: {e}")
+            return []
+    
+    async def discover_videos_on_main_page(self, page: Page) -> List[str]:
+        """
+        Discover YouTube videos on the main workflow page (not in iframes).
+        
+        Args:
+            page: Playwright page object
+            
+        Returns:
+            List of YouTube video URLs found
+        """
+        try:
+            # Look for YouTube videos directly on the main page
+            video_selectors = [
+                'iframe[src*="youtube.com/embed"]',
+                'iframe[src*="youtube-nocookie.com/embed"]',
+                'iframe[src*="youtu.be"]',
+                'a[href*="youtube.com/watch"]',
+                'a[href*="youtu.be"]'
+            ]
+            
+            video_urls = []
+            for selector in video_selectors:
+                try:
+                    elements = await page.locator(selector).all()
+                    for element in elements:
+                        try:
+                            if 'iframe' in selector:
+                                src = await element.get_attribute('src')
+                                if src:
+                                    video_urls.append(src)
+                            else:  # link
+                                href = await element.get_attribute('href')
+                                if href:
+                                    video_urls.append(href)
+                        except:
+                            continue
+                except:
+                    continue
+            
+            # Also search page content for YouTube URLs
+            page_content = await page.content()
+            youtube_patterns = [
+                r'https?://(?:www\.)?youtube\.com/watch\?v=[\w-]+',
+                r'https?://(?:www\.)?youtube\.com/embed/[\w-]+',
+                r'https://youtu\.be/[\w-]+',
+            ]
+            
+            for pattern in youtube_patterns:
+                matches = re.findall(pattern, page_content)
+                video_urls.extend(matches)
+            
+            # Remove duplicates
+            video_urls = list(set(video_urls))
+            
+            logger.debug(f"Found {len(video_urls)} YouTube videos on main page")
+            return video_urls
+            
+        except Exception as e:
+            logger.warning(f"Error discovering videos on main page: {e}")
             return []
     
     def extract_video_id_from_url(self, video_url: str) -> Optional[str]:
@@ -669,6 +794,7 @@ class MultimodalProcessor:
             'images_success': 0,
             'videos_found': 0,
             'videos_success': 0,
+            'video_urls': [],  # Store video URLs for transcript extraction
             'processing_time': 0.0,
             'errors': []
         }
@@ -678,13 +804,37 @@ class MultimodalProcessor:
             page = await self.browser.new_page()
             
             try:
-                # Step 1: Discover iframes
+                # Step 1: Discover n8n workflow content (including YouTube videos)
+                n8n_content = await self.discover_n8n_workflow_content(page, workflow_url)
+                youtube_videos = n8n_content['youtube_videos']
+                result['videos_found'] += len(youtube_videos)
+                
+                # Process YouTube videos found in n8n workflow
+                for video_url in youtube_videos:
+                    result['video_urls'].append(video_url)  # Add to result for transcript extraction
+                    video_id = self.extract_video_id_from_url(video_url)
+                    if video_id:
+                        result['videos_success'] += 1  # Video found successfully
+                        logger.info(f"Found YouTube video: {video_url}")
+                
+                # Also check main page for videos
+                main_page_videos = await self.discover_videos_on_main_page(page)
+                result['videos_found'] += len(main_page_videos)
+                
+                # Process main page videos
+                for video_url in main_page_videos:
+                    result['video_urls'].append(video_url)  # Add to result for transcript extraction
+                    video_id = self.extract_video_id_from_url(video_url)
+                    if video_id:
+                        result['videos_success'] += 1  # Video found successfully
+                
+                # Step 2: Discover iframes
                 iframes = await self.discover_iframes(page, workflow_url)
                 result['iframes_found'] = len(iframes)
                 
                 if not iframes:
                     logger.info(f"No iframes found for workflow {workflow_id}")
-                    result['success'] = True  # No iframes is not a failure
+                    result['success'] = True  # Success if we found videos on main page or no content
                     return result
                 
                 # Process all iframes to find content (content might be in any iframe)
@@ -703,7 +853,7 @@ class MultimodalProcessor:
                         text = element['text']
                         error = None
                         
-                        self.store_image_data(workflow_id, element_url, success, text, error)
+                        # self.store_image_data(workflow_id, element_url, success, text, error)
                         if success:
                             result['images_success'] += 1
                     
@@ -713,19 +863,18 @@ class MultimodalProcessor:
                     result['videos_found'] += iframe_video_count
                     
                     for video_url in video_urls:
+                        result['video_urls'].append(video_url)  # Add to result for transcript extraction
                         video_id = self.extract_video_id_from_url(video_url)
                         
-                        # Phase 1: Store video URL for later transcript extraction
-                        # Transcript extraction is deferred to Phase 2 (separate process)
-                        # This avoids YouTube's anti-bot detection which blocks extraction
-                        # when the same Playwright context has visited other domains
-                        logger.debug(f"Storing video {video_id} for deferred transcript extraction")
-                        self.store_video_data(
-                            workflow_id, video_url, video_id,
-                            success=True,  # Video discovered successfully
-                            transcript=None,  # Transcript extraction deferred to Phase 2
-                            error_message="Pending Phase 2 extraction"  # Status indicator
-                        )
+                        # Don't store in SQLite database - let E2E pipeline handle storage
+                        # logger.debug(f"Storing video {video_id} for deferred transcript extraction")
+                        # self.store_video_data(
+                        #     workflow_id, video_url, video_id,
+                        #     success=True,  # Video discovered successfully
+                        #     transcript=None,  # Transcript extraction deferred to Phase 2
+                        #     error_message="Pending Phase 2 extraction"  # Status indicator
+                        # )
+                        result['videos_success'] += 1
                     
                     # Log what we found in this iframe
                     if iframe_text_count > 0 or iframe_video_count > 0:
@@ -747,7 +896,7 @@ class MultimodalProcessor:
                     text = element['text']
                     error = None
                     
-                    self.store_image_data(workflow_id, element_url, success, text, error)
+                    # self.store_image_data(workflow_id, element_url, success, text, error)
                     if success:
                         result['images_success'] += 1
                 
@@ -756,11 +905,14 @@ class MultimodalProcessor:
                 result['videos_found'] = len(video_urls)
                 
                 for video_url in video_urls:
+                    result['video_urls'].append(video_url)  # Add to result for transcript extraction
                     video_id = self.extract_video_id_from_url(video_url)
-                    success, transcript, error = self.extract_video_transcript(video_url)
-                    self.store_video_data(workflow_id, video_url, video_id, success, transcript, error)
-                    if success:
-                        result['videos_success'] += 1
+                    # Don't extract transcript here - let E2E pipeline handle it
+                    # success, transcript, error = self.extract_video_transcript(video_url)
+                    # self.store_video_data(workflow_id, video_url, video_id, success, transcript, error)
+                    # if success:
+                    #     result['videos_success'] += 1
+                    result['videos_success'] += 1  # Video found successfully
                 
                 result['success'] = True
                 

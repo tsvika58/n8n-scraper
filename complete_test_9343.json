@@ -1,0 +1,3418 @@
+{
+  "workflow_id": "9343",
+  "url": "https://n8n.io/workflows/9343",
+  "extraction_time": 11.609037,
+  "sources": {
+    "api": {
+      "success": true,
+      "workflow_id": "9343",
+      "data": {
+        "id": 9343,
+        "name": "Monitor iOS App Store Reviews & Send Email Notifications Automatically",
+        "workflow": {
+          "id": "jokolRfKCTJ4umAw",
+          "meta": {
+            "instanceId": "14e4c77104722ab186539dfea5182e419aecc83d85963fe13f6de862c875ebfa",
+            "templateCredsSetupCompleted": true
+          },
+          "name": "iOS App Store Review Monitor",
+          "tags": [],
+          "nodes": [
+            {
+              "id": "156c62c9-b236-4d0d-ad17-540dfe8d60ff",
+              "name": "Schedule Trigger",
+              "type": "n8n-nodes-base.scheduleTrigger",
+              "position": [
+                -336,
+                -48
+              ],
+              "parameters": {
+                "rule": {
+                  "interval": [
+                    {
+                      "field": "cronExpression",
+                      "expression": "*/30 * * * *"
+                    }
+                  ]
+                }
+              },
+              "typeVersion": 1.2,
+              "iframe_data": {
+                "name": "Schedule Trigger",
+                "type": "n8n-nodes-base.scheduleTrigger",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "b33809e1-6e0e-4c3c-955c-3d5f7d200d72",
+              "name": "Extract Reviews",
+              "type": "n8n-nodes-base.code",
+              "position": [
+                384,
+                -80
+              ],
+              "parameters": {
+                "jsCode": "const jsonData = JSON.parse($input.all()[0].json.data);\n\nconst reviews = jsonData.feed.entry || [];\n\nreturn reviews.map(review => ({\n  rating: review['im:rating']?.label,\n  title: review.title?.label,\n  content: review.content?.label,\n  author: review.author?.name?.label,\n  version: review['im:version']?.label,\n  date: review.updated?.label,\n  reviewId: review.id?.label\n}));"
+              },
+              "typeVersion": 2,
+              "iframe_data": {
+                "name": "Extract Reviews",
+                "type": "n8n-nodes-base.code",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "db2f0933-6af5-440f-bbad-90878482d23f",
+              "name": "Any new reviews?",
+              "type": "n8n-nodes-base.if",
+              "position": [
+                880,
+                -96
+              ],
+              "parameters": {
+                "options": {},
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "id": "24aadf61-9388-47df-a03f-734b06589ed0",
+                      "operator": {
+                        "type": "number",
+                        "operation": "gt"
+                      },
+                      "leftValue": "={{ $items().length }}",
+                      "rightValue": 0
+                    }
+                  ]
+                }
+              },
+              "typeVersion": 2.2,
+              "iframe_data": {
+                "name": "Any new reviews?",
+                "type": "n8n-nodes-base.if",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "1f4e4fbc-abe7-4d2a-9a54-bcc5992413a6",
+              "name": "App Config",
+              "type": "n8n-nodes-base.set",
+              "position": [
+                -96,
+                -64
+              ],
+              "parameters": {
+                "options": {},
+                "assignments": {
+                  "assignments": [
+                    {
+                      "id": "31946ee3-e6d5-4084-93b4-4ef0f62c8cfe",
+                      "name": "appId",
+                      "type": "string",
+                      "value": "1234567890"
+                    },
+                    {
+                      "id": "4b88dc12-53e3-430e-9b88-f55903f943bf",
+                      "name": "country",
+                      "type": "string",
+                      "value": "US"
+                    },
+                    {
+                      "id": "22cec944-85bc-4786-b988-0c2cc71abad3",
+                      "name": "lang",
+                      "type": "string",
+                      "value": "en"
+                    }
+                  ]
+                }
+              },
+              "typeVersion": 3.4,
+              "iframe_data": {
+                "name": "App Config",
+                "type": "n8n-nodes-base.set",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "7fa5c285-0645-4641-8e27-2c2e33ff1a9c",
+              "name": "Fetch Reviews",
+              "type": "n8n-nodes-base.httpRequest",
+              "position": [
+                160,
+                -80
+              ],
+              "parameters": {
+                "url": "=https://itunes.apple.com/rss/customerreviews/page=1/id={{$json[\"appId\"]}}/sortby=mostrecent/json?l={{$json[\"lang\"]}}&cc={{$json[\"country\"]}}",
+                "options": {}
+              },
+              "typeVersion": 4.2,
+              "iframe_data": {
+                "name": "Fetch Reviews",
+                "type": "n8n-nodes-base.httpRequest",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "f4e2673d-1bb8-4871-9b84-124587e29d30",
+              "name": "Filter latest Review",
+              "type": "n8n-nodes-base.code",
+              "position": [
+                640,
+                -80
+              ],
+              "parameters": {
+                "jsCode": "const items = $input.all();\nconst sixHoursAgo = new Date(Date.now() - 78 * 60 * 60 * 1000);\nconst newOnes = [];\n\nfor (const item of items) {\n  const reviewDate = new Date(item.json.date);\n  if (reviewDate > sixHoursAgo) {\n    newOnes.push(item);\n  }\n}\n\nreturn newOnes;\n"
+              },
+              "typeVersion": 2,
+              "iframe_data": {
+                "name": "Filter latest Review",
+                "type": "n8n-nodes-base.code",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "bafee2c9-19cc-4f31-b1c5-7870b58ddcca",
+              "name": "Sticky Note",
+              "type": "n8n-nodes-base.stickyNote",
+              "position": [
+                -432,
+                -192
+              ],
+              "parameters": {
+                "width": 256,
+                "height": 112,
+                "content": "**Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs**"
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "Sticky Note",
+                "type": "n8n-nodes-base.stickyNote",
+                "id": null,
+                "test_id": null,
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "fe8162f2-745e-4ea4-8e1f-8d3fef8d9303",
+              "name": "Sticky Note1",
+              "type": "n8n-nodes-base.stickyNote",
+              "position": [
+                -160,
+                80
+              ],
+              "parameters": {
+                "width": 224,
+                "height": 112,
+                "content": "**Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL**"
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "Sticky Note1",
+                "type": "n8n-nodes-base.stickyNote",
+                "id": null,
+                "test_id": null,
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "fb9c717b-f9b2-4e53-a4b3-7fba3b5f4e71",
+              "name": "Sticky Note2",
+              "type": "n8n-nodes-base.stickyNote",
+              "position": [
+                96,
+                -208
+              ],
+              "parameters": {
+                "height": 96,
+                "content": "**Calls Apple's iTunes API to get latest customer reviews - sorted by most recent first**"
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "Sticky Note2",
+                "type": "n8n-nodes-base.stickyNote",
+                "id": null,
+                "test_id": null,
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "51b33b2b-379b-4232-9fa0-fa45b427ab5b",
+              "name": "Sticky Note3",
+              "type": "n8n-nodes-base.stickyNote",
+              "position": [
+                576,
+                64
+              ],
+              "parameters": {
+                "height": 96,
+                "content": "**Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications**"
+              },
+              "typeVersion": 1,
+              "iframe_data": {
+                "name": "Sticky Note3",
+                "type": "n8n-nodes-base.stickyNote",
+                "id": null,
+                "test_id": null,
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "fa7128e3-4ee0-4553-b999-f24b7bc43067",
+              "name": "Send notification",
+              "type": "n8n-nodes-base.gmail",
+              "position": [
+                1200,
+                -240
+              ],
+              "webhookId": "175f24c8-f55e-4cc4-91cf-b2d0a2517810",
+              "parameters": {
+                "sendTo": "infor@exmaple.com",
+                "message": "=\ud83c\udd95 New iOS App Store Review (\u2b50 {{$json.rating}}/5) \u201c{{$json.title}}\u201d by {{$json.author}} \u2014 v{{$json.version}} \u2014 {{$json.content}} ",
+                "options": {},
+                "subject": "=New App Store Review (\u2b50 {{$json.rating}}/5) \u2014 {{$json.title}}"
+              },
+              "credentials": {
+                "gmailOAuth2": {
+                  "id": "GsAjl8kiLaQnkjoK",
+                  "name": "Gmail account 10"
+                }
+              },
+              "typeVersion": 2.1,
+              "iframe_data": {
+                "name": "Send notification",
+                "type": "n8n-nodes-base.gmail",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            },
+            {
+              "id": "c2fce7f5-6b22-4d79-b374-19514c164d22",
+              "name": "False Case",
+              "type": "n8n-nodes-base.set",
+              "position": [
+                1216,
+                0
+              ],
+              "parameters": {
+                "options": {},
+                "assignments": {
+                  "assignments": [
+                    {
+                      "id": "8f36ed49-5b1a-4687-9a49-36eee4197824",
+                      "name": "status",
+                      "type": "string",
+                      "value": "no new reviews"
+                    }
+                  ]
+                }
+              },
+              "typeVersion": 3.4,
+              "iframe_data": {
+                "name": "False Case",
+                "type": "n8n-nodes-base.set",
+                "id": null,
+                "test_id": "canvas-node",
+                "source": "iframe"
+              }
+            }
+          ],
+          "active": false,
+          "pinData": {},
+          "settings": {
+            "executionOrder": "v1"
+          },
+          "versionId": "8b6459a1-d008-44db-8ebd-c516e2c111d1",
+          "connections": {
+            "App Config": {
+              "main": [
+                [
+                  {
+                    "node": "Fetch Reviews",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Fetch Reviews": {
+              "main": [
+                [
+                  {
+                    "node": "Extract Reviews",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Extract Reviews": {
+              "main": [
+                [
+                  {
+                    "node": "Filter latest Review",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Any new reviews?": {
+              "main": [
+                [
+                  {
+                    "node": "Send notification",
+                    "type": "main",
+                    "index": 0
+                  }
+                ],
+                [
+                  {
+                    "node": "False Case",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Schedule Trigger": {
+              "main": [
+                [
+                  {
+                    "node": "App Config",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Filter latest Review": {
+              "main": [
+                [
+                  {
+                    "node": "Any new reviews?",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "node_count": 12,
+      "connection_count": 6,
+      "extraction_time": 0.216545,
+      "error": null,
+      "fallback_used": false,
+      "extraction_type": "full",
+      "source": "primary_api"
+    },
+    "iframe": {
+      "success": true,
+      "source": "iframe",
+      "nodes": [
+        {
+          "name": "Schedule Trigger",
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Schedule Trigger",
+          "type": null,
+          "id": "__EMPTY__-156c62c9-b236-4d0d-ad17-540dfe8d60ff-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Extract Reviews",
+          "type": "n8n-nodes-base.code",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Extract Reviews",
+          "type": null,
+          "id": "__EMPTY__-b33809e1-6e0e-4c3c-955c-3d5f7d200d72-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Extract Reviews",
+          "type": null,
+          "id": "__EMPTY__-b33809e1-6e0e-4c3c-955c-3d5f7d200d72-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Any new reviews?",
+          "type": "n8n-nodes-base.if",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Any new reviews?",
+          "type": null,
+          "id": "__EMPTY__-db2f0933-6af5-440f-bbad-90878482d23f-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Any new reviews?",
+          "type": null,
+          "id": "__EMPTY__-db2f0933-6af5-440f-bbad-90878482d23f-outputs/main/1-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Any new reviews?",
+          "type": null,
+          "id": "__EMPTY__-db2f0933-6af5-440f-bbad-90878482d23f-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "App Config",
+          "type": "n8n-nodes-base.set",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "App Config",
+          "type": null,
+          "id": "__EMPTY__-1f4e4fbc-abe7-4d2a-9a54-bcc5992413a6-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "App Config",
+          "type": null,
+          "id": "__EMPTY__-1f4e4fbc-abe7-4d2a-9a54-bcc5992413a6-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Fetch Reviews",
+          "type": "n8n-nodes-base.httpRequest",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Fetch Reviews",
+          "type": null,
+          "id": "__EMPTY__-7fa5c285-0645-4641-8e27-2c2e33ff1a9c-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Fetch Reviews",
+          "type": null,
+          "id": "__EMPTY__-7fa5c285-0645-4641-8e27-2c2e33ff1a9c-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Filter latest Review",
+          "type": "n8n-nodes-base.code",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Filter latest Review",
+          "type": null,
+          "id": "__EMPTY__-f4e2673d-1bb8-4871-9b84-124587e29d30-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Filter latest Review",
+          "type": null,
+          "id": "__EMPTY__-f4e2673d-1bb8-4871-9b84-124587e29d30-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note1",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note2",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note3",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        },
+        {
+          "name": "Send notification",
+          "type": "n8n-nodes-base.gmail",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Send notification",
+          "type": null,
+          "id": "__EMPTY__-fa7128e3-4ee0-4553-b999-f24b7bc43067-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Send notification",
+          "type": null,
+          "id": "__EMPTY__-fa7128e3-4ee0-4553-b999-f24b7bc43067-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "False Case",
+          "type": "n8n-nodes-base.set",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "False Case",
+          "type": null,
+          "id": "__EMPTY__-c2fce7f5-6b22-4d79-b374-19514c164d22-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "False Case",
+          "type": null,
+          "id": "__EMPTY__-c2fce7f5-6b22-4d79-b374-19514c164d22-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        }
+      ],
+      "text_content": {
+        "all_text": "Schedule Trigger\nExtract Reviews\ntrue\nfalse\nAny new reviews?\nApp Config\nmanual\nFetch Reviews\nFilter latest Review\n\nRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\n\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\n\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\n\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\n\nSend notification\nsend: message\nFalse Case\nmanual",
+        "all_text_length": 557,
+        "text_blocks": [
+          {
+            "text": "Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs",
+            "length": 90,
+            "source": "iframe"
+          },
+          {
+            "text": "Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL",
+            "length": 102,
+            "source": "iframe"
+          },
+          {
+            "text": "Calls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first",
+            "length": 85,
+            "source": "iframe"
+          },
+          {
+            "text": "Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications",
+            "length": 108,
+            "source": "iframe"
+          },
+          {
+            "text": "I can answer most questions about building workflows in n8n.",
+            "length": 60,
+            "source": "iframe"
+          },
+          {
+            "text": "For specific tasks, you\u2019ll see the Ask Assistant button in the UI.",
+            "length": 66,
+            "source": "iframe"
+          }
+        ],
+        "input_hints": [
+          "Enter your response..."
+        ],
+        "source": "iframe"
+      },
+      "images": [
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Code/code.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/HttpRequest/httprequest.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Code/code.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Google/Gmail/gmail.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        }
+      ],
+      "visual_layout": {
+        "node_positions": [
+          {
+            "node_name": "Schedule Trigger",
+            "x": 574.2781372070312,
+            "y": 403.8692626953125,
+            "width": 32.52294921875,
+            "height": 32.52294921875,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Schedule Trigger",
+            "x": 604.0908355712891,
+            "y": 417.42047119140625,
+            "width": 5.4204864501953125,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Extract Reviews",
+            "x": 818.2001647949219,
+            "y": 393.0282897949219,
+            "width": 32.52294921875,
+            "height": 32.522918701171875,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Extract Reviews",
+            "x": 848.0128479003906,
+            "y": 406.5794982910156,
+            "width": 5.420501708984375,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Extract Reviews",
+            "x": 816.8450317382812,
+            "y": 406.5794982910156,
+            "width": 2.71026611328125,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Any new reviews?",
+            "x": 986.2353210449219,
+            "y": 387.6077880859375,
+            "width": 32.522979736328125,
+            "height": 32.52294921875,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Any new reviews?",
+            "x": 1016.0479736328125,
+            "y": 395.738525390625,
+            "width": 5.4205322265625,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Any new reviews?",
+            "x": 1016.0479736328125,
+            "y": 406.5794982910156,
+            "width": 5.4205322265625,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Any new reviews?",
+            "x": 984.8802185058594,
+            "y": 401.1590270996094,
+            "width": 2.710205078125,
+            "height": 5.42047119140625,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "App Config",
+            "x": 655.5854797363281,
+            "y": 398.4487762451172,
+            "width": 32.52294921875,
+            "height": 32.52293395996094,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "App Config",
+            "x": 685.3981628417969,
+            "y": 412,
+            "width": 5.420501708984375,
+            "height": 5.42047119140625,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "App Config",
+            "x": 654.2303619384766,
+            "y": 412,
+            "width": 2.7102508544921875,
+            "height": 5.42047119140625,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Fetch Reviews",
+            "x": 742.3133239746094,
+            "y": 393.0282897949219,
+            "width": 32.522918701171875,
+            "height": 32.522918701171875,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Fetch Reviews",
+            "x": 772.1260070800781,
+            "y": 406.5794982910156,
+            "width": 5.42047119140625,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Fetch Reviews",
+            "x": 740.9581909179688,
+            "y": 406.5794982910156,
+            "width": 2.710235595703125,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Filter latest Review",
+            "x": 904.927978515625,
+            "y": 393.0282897949219,
+            "width": 32.522918701171875,
+            "height": 32.522918701171875,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Filter latest Review",
+            "x": 934.7406921386719,
+            "y": 406.5794982910156,
+            "width": 5.42047119140625,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Filter latest Review",
+            "x": 903.5728759765625,
+            "y": 406.5794982910156,
+            "width": 2.710235595703125,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Sticky Note",
+            "x": 541.7552108764648,
+            "y": 355.0848693847656,
+            "width": 86.72782135009766,
+            "height": 37.94342041015625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Sticky Note1",
+            "x": 633.9035339355469,
+            "y": 447.2331848144531,
+            "width": 75.8868408203125,
+            "height": 37.94342041015625,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Sticky Note2",
+            "x": 720.63134765625,
+            "y": 349.66436767578125,
+            "width": 81.30734252929688,
+            "height": 32.52294921875,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Sticky Note3",
+            "x": 883.2460327148438,
+            "y": 441.81268310546875,
+            "width": 81.30734252929688,
+            "height": 32.52294921875,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Send notification",
+            "x": 1094.6451416015625,
+            "y": 338.8233947753906,
+            "width": 32.52294921875,
+            "height": 32.52293395996094,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Send notification",
+            "x": 1124.457763671875,
+            "y": 352.3746032714844,
+            "width": 5.4205322265625,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "Send notification",
+            "x": 1093.2900390625,
+            "y": 352.3746032714844,
+            "width": 2.710205078125,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "False Case",
+            "x": 1100.0655517578125,
+            "y": 420.1307373046875,
+            "width": 32.52294921875,
+            "height": 32.522918701171875,
+            "transform": "none",
+            "css_position": "static",
+            "source": "iframe"
+          },
+          {
+            "node_name": "False Case",
+            "x": 1129.8782958984375,
+            "y": 433.68194580078125,
+            "width": 5.4205322265625,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, 8, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          },
+          {
+            "node_name": "False Case",
+            "x": 1098.71044921875,
+            "y": 433.68194580078125,
+            "width": 2.7103271484375,
+            "height": 5.420501708984375,
+            "transform": "matrix(1, 0, 0, 1, -4, -8)",
+            "css_position": "absolute",
+            "source": "iframe"
+          }
+        ],
+        "canvas_state": {
+          "transform": "none",
+          "zoom": "1",
+          "width": 709,
+          "height": 520,
+          "scrollLeft": 0,
+          "scrollTop": 0
+        },
+        "spatial_metrics": {
+          "total_nodes": 28,
+          "bounding_box": {
+            "min_x": 541.7552108764648,
+            "max_x": 1135.298828125,
+            "min_y": 338.8233947753906,
+            "max_y": 485.1766052246094,
+            "width": 593.5436172485352,
+            "height": 146.35321044921875
+          },
+          "center_of_mass": {
+            "x": 859.9669622693743,
+            "y": 399.22312654767717
+          },
+          "density": 0.0003223317889557445
+        },
+        "source": "iframe"
+      },
+      "enhanced_content": {
+        "all_text_blocks": [
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanualn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 1046,
+            "tag": "div",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanualn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 1046,
+            "tag": "div",
+            "classes": "_container_1tlmi_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanualn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel. We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?",
+            "length": 888,
+            "tag": "div",
+            "classes": "_app-grid_1tlmi_130",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanualn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 809,
+            "tag": "div",
+            "classes": "_content_1tlmi_144",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanualn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 809,
+            "tag": "div",
+            "classes": "_contentWrapper_1tlmi_162",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanualn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 809,
+            "tag": "div",
+            "classes": "_wrapper_16h3t_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanualn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 809,
+            "tag": "div",
+            "classes": "_wrapper_jyurh_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanualn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 809,
+            "tag": "div",
+            "classes": "_canvas_jyurh_131",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanualn8n Minimap Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.  Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 809,
+            "tag": "div",
+            "classes": "vue-flow _canvas_ykcxs_123 _ready_ykcxs_129",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanual",
+            "length": 540,
+            "tag": "div",
+            "classes": "vue-flow__viewport vue-flow__container",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanual",
+            "length": 540,
+            "tag": "div",
+            "classes": "vue-flow__pane vue-flow__container selection",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanual",
+            "length": 540,
+            "tag": "div",
+            "classes": "vue-flow__transformationpane vue-flow__container",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule TriggerExtract ReviewstruefalseAny new reviews?App ConfigmanualFetch ReviewsFilter latest ReviewRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\nSend notificationsend: messageFalse Casemanual",
+            "length": 540,
+            "tag": "div",
+            "classes": "vue-flow__nodes vue-flow__container",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule Trigger",
+            "length": 16,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule Trigger",
+            "length": 16,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule Trigger",
+            "length": 16,
+            "tag": "div",
+            "classes": "_node_z1mvy_123 _trigger_z1mvy_145",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule Trigger",
+            "length": 16,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Schedule Trigger",
+            "length": 16,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Extract Reviews",
+            "length": 15,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Extract Reviews",
+            "length": 15,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Extract Reviews",
+            "length": 15,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Extract Reviews",
+            "length": 15,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Extract Reviews",
+            "length": 15,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "truefalseAny new reviews?",
+            "length": 25,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "truefalseAny new reviews?",
+            "length": 25,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Any new reviews?",
+            "length": 16,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Any new reviews?",
+            "length": 16,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Any new reviews?",
+            "length": 16,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "App Configmanual",
+            "length": 16,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "App Configmanual",
+            "length": 16,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "App Configmanual",
+            "length": 16,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "App Configmanual",
+            "length": 16,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "App Config",
+            "length": 10,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "manual",
+            "length": 6,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Fetch Reviews",
+            "length": 13,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Fetch Reviews",
+            "length": 13,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Fetch Reviews",
+            "length": 13,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Fetch Reviews",
+            "length": 13,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Fetch Reviews",
+            "length": 13,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Filter latest Review",
+            "length": 20,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Filter latest Review",
+            "length": 20,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Filter latest Review",
+            "length": 20,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Filter latest Review",
+            "length": 20,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Filter latest Review",
+            "length": 20,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs",
+            "length": 90,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs",
+            "length": 90,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs",
+            "length": 90,
+            "tag": "div",
+            "classes": "n8n-sticky _sticky_8r9jy_123 _clickable_8r9jy_134 undefined _sticky_1jyj2_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs",
+            "length": 90,
+            "tag": "div",
+            "classes": "_wrapper_8r9jy_129",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs",
+            "length": 90,
+            "tag": "div",
+            "classes": "n8n-markdown",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs",
+            "length": 90,
+            "tag": "div",
+            "classes": "_sticky_tcjiv_186",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs",
+            "length": 90,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL",
+            "length": 102,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL",
+            "length": 102,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL",
+            "length": 102,
+            "tag": "div",
+            "classes": "n8n-sticky _sticky_8r9jy_123 _clickable_8r9jy_134 undefined _sticky_1jyj2_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL",
+            "length": 102,
+            "tag": "div",
+            "classes": "_wrapper_8r9jy_129",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL",
+            "length": 102,
+            "tag": "div",
+            "classes": "n8n-markdown",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL",
+            "length": 102,
+            "tag": "div",
+            "classes": "_sticky_tcjiv_186",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL",
+            "length": 102,
+            "tag": "p",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Calls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first",
+            "length": 85,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Calls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first",
+            "length": 85,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Calls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first",
+            "length": 85,
+            "tag": "div",
+            "classes": "n8n-sticky _sticky_8r9jy_123 _clickable_8r9jy_134 undefined _sticky_1jyj2_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Calls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first",
+            "length": 85,
+            "tag": "div",
+            "classes": "_wrapper_8r9jy_129",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Calls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first",
+            "length": 85,
+            "tag": "div",
+            "classes": "n8n-markdown",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Calls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first",
+            "length": 85,
+            "tag": "div",
+            "classes": "_sticky_tcjiv_186",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Calls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first",
+            "length": 85,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications",
+            "length": 108,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications",
+            "length": 108,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications",
+            "length": 108,
+            "tag": "div",
+            "classes": "n8n-sticky _sticky_8r9jy_123 _clickable_8r9jy_134 undefined _sticky_1jyj2_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications",
+            "length": 108,
+            "tag": "div",
+            "classes": "_wrapper_8r9jy_129",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications",
+            "length": 108,
+            "tag": "div",
+            "classes": "n8n-markdown",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications",
+            "length": 108,
+            "tag": "div",
+            "classes": "_sticky_tcjiv_186",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications",
+            "length": 108,
+            "tag": "p",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Send notificationsend: message",
+            "length": 30,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Send notificationsend: message",
+            "length": 30,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Send notificationsend: message",
+            "length": 30,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Send notificationsend: message",
+            "length": 30,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "Send notification",
+            "length": 17,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "send: message",
+            "length": 13,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "False Casemanual",
+            "length": 16,
+            "tag": "div",
+            "classes": "vue-flow__node vue-flow__node-canvas-node nopan draggable selectable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "False Casemanual",
+            "length": 16,
+            "tag": "div",
+            "classes": "_canvasNode_1k8iq_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "False Casemanual",
+            "length": 16,
+            "tag": "div",
+            "classes": "_node_z1mvy_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "False Casemanual",
+            "length": 16,
+            "tag": "div",
+            "classes": "_description_z1mvy_159",
+            "category": "description",
+            "source": "iframe"
+          },
+          {
+            "text": "False Case",
+            "length": 10,
+            "tag": "div",
+            "classes": "_label_z1mvy_172",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "manual",
+            "length": 6,
+            "tag": "div",
+            "classes": "_subtitle_z1mvy_175",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "n8n Minimap",
+            "length": 11,
+            "tag": "div",
+            "classes": "vue-flow__panel bottom left vue-flow__minimap pannable zoomable",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Press enter or space to select a node.  You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.",
+            "length": 150,
+            "tag": "div",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Press enter or space to select an edge. You can then press delete to remove it or press escape to cancel.",
+            "length": 105,
+            "tag": "div",
+            "classes": "",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?",
+            "length": 78,
+            "tag": "div",
+            "classes": "_modals_1tlmi_188",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728How likely are you to recommend n8n to a friend or colleague?",
+            "length": 78,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "div",
+            "classes": "el-overlay",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "div",
+            "classes": "el-drawer ltr",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "We\u2019ve been busy \u2728",
+            "length": 17,
+            "tag": "span",
+            "classes": "_title_rchcj_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "el-overlay",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "nps-survey _npsSurvey_1dyir_209 el-drawer btt",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "div",
+            "classes": "_title_1dyir_123",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How likely are you to recommend n8n to a friend or colleague?",
+            "length": 61,
+            "tag": "h2",
+            "classes": "n8n-heading _text-xlight_ephjb_172 _size-medium_ephjb_146 _regular_ephjb_127",
+            "category": "heading",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_resize_1p19c_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_wrapper_6am3u_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_assistantContent_6am3u_129",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "wrapper",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI AssistantHi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 158,
+            "tag": "div",
+            "classes": "_container_1h8jg_123",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "div",
+            "classes": "_header_1h8jg_134",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "div",
+            "classes": "_chatTitle_1h8jg_202",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "div",
+            "classes": "_headerText_1h8jg_207",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "AI Assistant",
+            "length": 12,
+            "tag": "span",
+            "classes": "_text_q04c1_123 _large_q04c1_141",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Hi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 146,
+            "tag": "div",
+            "classes": "_body_1h8jg_150",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "Hi  \ud83d\udc4bI can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 146,
+            "tag": "div",
+            "classes": "_placeholder_1h8jg_161",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "I can answer most questions about building workflows in n8n.For specific tasks, you\u2019ll see the Ask Assistant button in the UI.How can I help?",
+            "length": 141,
+            "tag": "div",
+            "classes": "_info_1h8jg_217",
+            "category": "paragraph",
+            "source": "iframe"
+          },
+          {
+            "text": "I can answer most questions about building workflows in n8n.",
+            "length": 60,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "For specific tasks, you\u2019ll see the Ask Assistant button in the UI.",
+            "length": 66,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "button",
+            "classes": "_button_19od0_123",
+            "category": "button_text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "div",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "Ask Assistant",
+            "length": 13,
+            "tag": "span",
+            "classes": "_text_q04c1_123 _small_q04c1_131",
+            "category": "text",
+            "source": "iframe"
+          },
+          {
+            "text": "How can I help?",
+            "length": 15,
+            "tag": "p",
+            "classes": "",
+            "category": "text",
+            "source": "iframe"
+          }
+        ],
+        "help_texts": [
+          {
+            "type": "aria-label",
+            "text": "Edge from 1f4e4fbc-abe7-4d2a-9a54-bcc5992413a6 to 7fa5c285-0645-4641-8e27-2c2e33ff1a9c"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from 7fa5c285-0645-4641-8e27-2c2e33ff1a9c to b33809e1-6e0e-4c3c-955c-3d5f7d200d72"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from b33809e1-6e0e-4c3c-955c-3d5f7d200d72 to f4e2673d-1bb8-4871-9b84-124587e29d30"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from db2f0933-6af5-440f-bbad-90878482d23f to fa7128e3-4ee0-4553-b999-f24b7bc43067"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from db2f0933-6af5-440f-bbad-90878482d23f to c2fce7f5-6b22-4d79-b374-19514c164d22"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from 156c62c9-b236-4d0d-ad17-540dfe8d60ff to 1f4e4fbc-abe7-4d2a-9a54-bcc5992413a6"
+          },
+          {
+            "type": "aria-label",
+            "text": "Edge from f4e2673d-1bb8-4871-9b84-124587e29d30 to db2f0933-6af5-440f-bbad-90878482d23f"
+          },
+          {
+            "type": "aria-label",
+            "text": "Close this dialog"
+          },
+          {
+            "type": "aria-label",
+            "text": "Close this dialog"
+          }
+        ],
+        "error_messages": [],
+        "total_text_length": 15676,
+        "source": "iframe"
+      },
+      "media_content": {
+        "videos": [],
+        "images": [
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/Code/code.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/HttpRequest/httprequest.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/Code/code.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          },
+          {
+            "src": "/icons/n8n-nodes-base/dist/nodes/Google/Gmail/gmail.svg",
+            "alt": "",
+            "width": null,
+            "height": null,
+            "type": "node_icon",
+            "source": "iframe"
+          }
+        ],
+        "svgs": [
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__marker vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__edges vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 512 512",
+            "classes": "svg-inline--fa fa-clock fa-w-16",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 512 512",
+            "classes": "svg-inline--fa fa-map-signs fa-w-16",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 512 512",
+            "classes": "svg-inline--fa fa-pen fa-w-16",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 512 512",
+            "classes": "svg-inline--fa fa-pen fa-w-16",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": null,
+            "classes": "vue-flow__background vue-flow__container",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "-103.05218617771473 -423.41325811001406 2686.1043723554294 1662.826516220028",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 1024 1024",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 1024 1024",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": null,
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "_icon_19od0_170",
+            "source": "iframe"
+          },
+          {
+            "type": "svg",
+            "viewBox": "0 0 24 24",
+            "classes": "n8n-icon",
+            "source": "iframe"
+          }
+        ],
+        "video_count": 0,
+        "image_count": 4,
+        "svg_count": 45,
+        "source": "iframe"
+      },
+      "node_count": 28,
+      "extraction_count": 2
+    }
+  },
+  "merged": {
+    "success": true,
+    "source": "api_and_iframe",
+    "workflow_id": "9343",
+    "workflow": {
+      "id": "jokolRfKCTJ4umAw",
+      "meta": {
+        "instanceId": "14e4c77104722ab186539dfea5182e419aecc83d85963fe13f6de862c875ebfa",
+        "templateCredsSetupCompleted": true
+      },
+      "name": "iOS App Store Review Monitor",
+      "tags": [],
+      "nodes": [
+        {
+          "id": "156c62c9-b236-4d0d-ad17-540dfe8d60ff",
+          "name": "Schedule Trigger",
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "position": [
+            -336,
+            -48
+          ],
+          "parameters": {
+            "rule": {
+              "interval": [
+                {
+                  "field": "cronExpression",
+                  "expression": "*/30 * * * *"
+                }
+              ]
+            }
+          },
+          "typeVersion": 1.2,
+          "iframe_data": {
+            "name": "Schedule Trigger",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "b33809e1-6e0e-4c3c-955c-3d5f7d200d72",
+          "name": "Extract Reviews",
+          "type": "n8n-nodes-base.code",
+          "position": [
+            384,
+            -80
+          ],
+          "parameters": {
+            "jsCode": "const jsonData = JSON.parse($input.all()[0].json.data);\n\nconst reviews = jsonData.feed.entry || [];\n\nreturn reviews.map(review => ({\n  rating: review['im:rating']?.label,\n  title: review.title?.label,\n  content: review.content?.label,\n  author: review.author?.name?.label,\n  version: review['im:version']?.label,\n  date: review.updated?.label,\n  reviewId: review.id?.label\n}));"
+          },
+          "typeVersion": 2,
+          "iframe_data": {
+            "name": "Extract Reviews",
+            "type": "n8n-nodes-base.code",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "db2f0933-6af5-440f-bbad-90878482d23f",
+          "name": "Any new reviews?",
+          "type": "n8n-nodes-base.if",
+          "position": [
+            880,
+            -96
+          ],
+          "parameters": {
+            "options": {},
+            "conditions": {
+              "options": {
+                "version": 2,
+                "leftValue": "",
+                "caseSensitive": true,
+                "typeValidation": "strict"
+              },
+              "combinator": "and",
+              "conditions": [
+                {
+                  "id": "24aadf61-9388-47df-a03f-734b06589ed0",
+                  "operator": {
+                    "type": "number",
+                    "operation": "gt"
+                  },
+                  "leftValue": "={{ $items().length }}",
+                  "rightValue": 0
+                }
+              ]
+            }
+          },
+          "typeVersion": 2.2,
+          "iframe_data": {
+            "name": "Any new reviews?",
+            "type": "n8n-nodes-base.if",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "1f4e4fbc-abe7-4d2a-9a54-bcc5992413a6",
+          "name": "App Config",
+          "type": "n8n-nodes-base.set",
+          "position": [
+            -96,
+            -64
+          ],
+          "parameters": {
+            "options": {},
+            "assignments": {
+              "assignments": [
+                {
+                  "id": "31946ee3-e6d5-4084-93b4-4ef0f62c8cfe",
+                  "name": "appId",
+                  "type": "string",
+                  "value": "1234567890"
+                },
+                {
+                  "id": "4b88dc12-53e3-430e-9b88-f55903f943bf",
+                  "name": "country",
+                  "type": "string",
+                  "value": "US"
+                },
+                {
+                  "id": "22cec944-85bc-4786-b988-0c2cc71abad3",
+                  "name": "lang",
+                  "type": "string",
+                  "value": "en"
+                }
+              ]
+            }
+          },
+          "typeVersion": 3.4,
+          "iframe_data": {
+            "name": "App Config",
+            "type": "n8n-nodes-base.set",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "7fa5c285-0645-4641-8e27-2c2e33ff1a9c",
+          "name": "Fetch Reviews",
+          "type": "n8n-nodes-base.httpRequest",
+          "position": [
+            160,
+            -80
+          ],
+          "parameters": {
+            "url": "=https://itunes.apple.com/rss/customerreviews/page=1/id={{$json[\"appId\"]}}/sortby=mostrecent/json?l={{$json[\"lang\"]}}&cc={{$json[\"country\"]}}",
+            "options": {}
+          },
+          "typeVersion": 4.2,
+          "iframe_data": {
+            "name": "Fetch Reviews",
+            "type": "n8n-nodes-base.httpRequest",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "f4e2673d-1bb8-4871-9b84-124587e29d30",
+          "name": "Filter latest Review",
+          "type": "n8n-nodes-base.code",
+          "position": [
+            640,
+            -80
+          ],
+          "parameters": {
+            "jsCode": "const items = $input.all();\nconst sixHoursAgo = new Date(Date.now() - 78 * 60 * 60 * 1000);\nconst newOnes = [];\n\nfor (const item of items) {\n  const reviewDate = new Date(item.json.date);\n  if (reviewDate > sixHoursAgo) {\n    newOnes.push(item);\n  }\n}\n\nreturn newOnes;\n"
+          },
+          "typeVersion": 2,
+          "iframe_data": {
+            "name": "Filter latest Review",
+            "type": "n8n-nodes-base.code",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "bafee2c9-19cc-4f31-b1c5-7870b58ddcca",
+          "name": "Sticky Note",
+          "type": "n8n-nodes-base.stickyNote",
+          "position": [
+            -432,
+            -192
+          ],
+          "parameters": {
+            "width": 256,
+            "height": 112,
+            "content": "**Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs**"
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "Sticky Note",
+            "type": "n8n-nodes-base.stickyNote",
+            "id": null,
+            "test_id": null,
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "fe8162f2-745e-4ea4-8e1f-8d3fef8d9303",
+          "name": "Sticky Note1",
+          "type": "n8n-nodes-base.stickyNote",
+          "position": [
+            -160,
+            80
+          ],
+          "parameters": {
+            "width": 224,
+            "height": 112,
+            "content": "**Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL**"
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "Sticky Note1",
+            "type": "n8n-nodes-base.stickyNote",
+            "id": null,
+            "test_id": null,
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "fb9c717b-f9b2-4e53-a4b3-7fba3b5f4e71",
+          "name": "Sticky Note2",
+          "type": "n8n-nodes-base.stickyNote",
+          "position": [
+            96,
+            -208
+          ],
+          "parameters": {
+            "height": 96,
+            "content": "**Calls Apple's iTunes API to get latest customer reviews - sorted by most recent first**"
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "Sticky Note2",
+            "type": "n8n-nodes-base.stickyNote",
+            "id": null,
+            "test_id": null,
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "51b33b2b-379b-4232-9fa0-fa45b427ab5b",
+          "name": "Sticky Note3",
+          "type": "n8n-nodes-base.stickyNote",
+          "position": [
+            576,
+            64
+          ],
+          "parameters": {
+            "height": 96,
+            "content": "**Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications**"
+          },
+          "typeVersion": 1,
+          "iframe_data": {
+            "name": "Sticky Note3",
+            "type": "n8n-nodes-base.stickyNote",
+            "id": null,
+            "test_id": null,
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "fa7128e3-4ee0-4553-b999-f24b7bc43067",
+          "name": "Send notification",
+          "type": "n8n-nodes-base.gmail",
+          "position": [
+            1200,
+            -240
+          ],
+          "webhookId": "175f24c8-f55e-4cc4-91cf-b2d0a2517810",
+          "parameters": {
+            "sendTo": "infor@exmaple.com",
+            "message": "=\ud83c\udd95 New iOS App Store Review (\u2b50 {{$json.rating}}/5) \u201c{{$json.title}}\u201d by {{$json.author}} \u2014 v{{$json.version}} \u2014 {{$json.content}} ",
+            "options": {},
+            "subject": "=New App Store Review (\u2b50 {{$json.rating}}/5) \u2014 {{$json.title}}"
+          },
+          "credentials": {
+            "gmailOAuth2": {
+              "id": "GsAjl8kiLaQnkjoK",
+              "name": "Gmail account 10"
+            }
+          },
+          "typeVersion": 2.1,
+          "iframe_data": {
+            "name": "Send notification",
+            "type": "n8n-nodes-base.gmail",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        },
+        {
+          "id": "c2fce7f5-6b22-4d79-b374-19514c164d22",
+          "name": "False Case",
+          "type": "n8n-nodes-base.set",
+          "position": [
+            1216,
+            0
+          ],
+          "parameters": {
+            "options": {},
+            "assignments": {
+              "assignments": [
+                {
+                  "id": "8f36ed49-5b1a-4687-9a49-36eee4197824",
+                  "name": "status",
+                  "type": "string",
+                  "value": "no new reviews"
+                }
+              ]
+            }
+          },
+          "typeVersion": 3.4,
+          "iframe_data": {
+            "name": "False Case",
+            "type": "n8n-nodes-base.set",
+            "id": null,
+            "test_id": "canvas-node",
+            "source": "iframe"
+          }
+        }
+      ],
+      "active": false,
+      "pinData": {},
+      "settings": {
+        "executionOrder": "v1"
+      },
+      "versionId": "8b6459a1-d008-44db-8ebd-c516e2c111d1",
+      "connections": {
+        "App Config": {
+          "main": [
+            [
+              {
+                "node": "Fetch Reviews",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Fetch Reviews": {
+          "main": [
+            [
+              {
+                "node": "Extract Reviews",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Extract Reviews": {
+          "main": [
+            [
+              {
+                "node": "Filter latest Review",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Any new reviews?": {
+          "main": [
+            [
+              {
+                "node": "Send notification",
+                "type": "main",
+                "index": 0
+              }
+            ],
+            [
+              {
+                "node": "False Case",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Schedule Trigger": {
+          "main": [
+            [
+              {
+                "node": "App Config",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Filter latest Review": {
+          "main": [
+            [
+              {
+                "node": "Any new reviews?",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "metadata": {
+      "id": 9343,
+      "name": "Monitor iOS App Store Reviews & Send Email Notifications Automatically",
+      "workflow": {
+        "id": "jokolRfKCTJ4umAw",
+        "meta": {
+          "instanceId": "14e4c77104722ab186539dfea5182e419aecc83d85963fe13f6de862c875ebfa",
+          "templateCredsSetupCompleted": true
+        },
+        "name": "iOS App Store Review Monitor",
+        "tags": [],
+        "nodes": [
+          {
+            "id": "156c62c9-b236-4d0d-ad17-540dfe8d60ff",
+            "name": "Schedule Trigger",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "position": [
+              -336,
+              -48
+            ],
+            "parameters": {
+              "rule": {
+                "interval": [
+                  {
+                    "field": "cronExpression",
+                    "expression": "*/30 * * * *"
+                  }
+                ]
+              }
+            },
+            "typeVersion": 1.2,
+            "iframe_data": {
+              "name": "Schedule Trigger",
+              "type": "n8n-nodes-base.scheduleTrigger",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "b33809e1-6e0e-4c3c-955c-3d5f7d200d72",
+            "name": "Extract Reviews",
+            "type": "n8n-nodes-base.code",
+            "position": [
+              384,
+              -80
+            ],
+            "parameters": {
+              "jsCode": "const jsonData = JSON.parse($input.all()[0].json.data);\n\nconst reviews = jsonData.feed.entry || [];\n\nreturn reviews.map(review => ({\n  rating: review['im:rating']?.label,\n  title: review.title?.label,\n  content: review.content?.label,\n  author: review.author?.name?.label,\n  version: review['im:version']?.label,\n  date: review.updated?.label,\n  reviewId: review.id?.label\n}));"
+            },
+            "typeVersion": 2,
+            "iframe_data": {
+              "name": "Extract Reviews",
+              "type": "n8n-nodes-base.code",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "db2f0933-6af5-440f-bbad-90878482d23f",
+            "name": "Any new reviews?",
+            "type": "n8n-nodes-base.if",
+            "position": [
+              880,
+              -96
+            ],
+            "parameters": {
+              "options": {},
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "24aadf61-9388-47df-a03f-734b06589ed0",
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    },
+                    "leftValue": "={{ $items().length }}",
+                    "rightValue": 0
+                  }
+                ]
+              }
+            },
+            "typeVersion": 2.2,
+            "iframe_data": {
+              "name": "Any new reviews?",
+              "type": "n8n-nodes-base.if",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "1f4e4fbc-abe7-4d2a-9a54-bcc5992413a6",
+            "name": "App Config",
+            "type": "n8n-nodes-base.set",
+            "position": [
+              -96,
+              -64
+            ],
+            "parameters": {
+              "options": {},
+              "assignments": {
+                "assignments": [
+                  {
+                    "id": "31946ee3-e6d5-4084-93b4-4ef0f62c8cfe",
+                    "name": "appId",
+                    "type": "string",
+                    "value": "1234567890"
+                  },
+                  {
+                    "id": "4b88dc12-53e3-430e-9b88-f55903f943bf",
+                    "name": "country",
+                    "type": "string",
+                    "value": "US"
+                  },
+                  {
+                    "id": "22cec944-85bc-4786-b988-0c2cc71abad3",
+                    "name": "lang",
+                    "type": "string",
+                    "value": "en"
+                  }
+                ]
+              }
+            },
+            "typeVersion": 3.4,
+            "iframe_data": {
+              "name": "App Config",
+              "type": "n8n-nodes-base.set",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "7fa5c285-0645-4641-8e27-2c2e33ff1a9c",
+            "name": "Fetch Reviews",
+            "type": "n8n-nodes-base.httpRequest",
+            "position": [
+              160,
+              -80
+            ],
+            "parameters": {
+              "url": "=https://itunes.apple.com/rss/customerreviews/page=1/id={{$json[\"appId\"]}}/sortby=mostrecent/json?l={{$json[\"lang\"]}}&cc={{$json[\"country\"]}}",
+              "options": {}
+            },
+            "typeVersion": 4.2,
+            "iframe_data": {
+              "name": "Fetch Reviews",
+              "type": "n8n-nodes-base.httpRequest",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "f4e2673d-1bb8-4871-9b84-124587e29d30",
+            "name": "Filter latest Review",
+            "type": "n8n-nodes-base.code",
+            "position": [
+              640,
+              -80
+            ],
+            "parameters": {
+              "jsCode": "const items = $input.all();\nconst sixHoursAgo = new Date(Date.now() - 78 * 60 * 60 * 1000);\nconst newOnes = [];\n\nfor (const item of items) {\n  const reviewDate = new Date(item.json.date);\n  if (reviewDate > sixHoursAgo) {\n    newOnes.push(item);\n  }\n}\n\nreturn newOnes;\n"
+            },
+            "typeVersion": 2,
+            "iframe_data": {
+              "name": "Filter latest Review",
+              "type": "n8n-nodes-base.code",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "bafee2c9-19cc-4f31-b1c5-7870b58ddcca",
+            "name": "Sticky Note",
+            "type": "n8n-nodes-base.stickyNote",
+            "position": [
+              -432,
+              -192
+            ],
+            "parameters": {
+              "width": 256,
+              "height": 112,
+              "content": "**Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs**"
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "Sticky Note",
+              "type": "n8n-nodes-base.stickyNote",
+              "id": null,
+              "test_id": null,
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "fe8162f2-745e-4ea4-8e1f-8d3fef8d9303",
+            "name": "Sticky Note1",
+            "type": "n8n-nodes-base.stickyNote",
+            "position": [
+              -160,
+              80
+            ],
+            "parameters": {
+              "width": 224,
+              "height": 112,
+              "content": "**Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL**"
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "Sticky Note1",
+              "type": "n8n-nodes-base.stickyNote",
+              "id": null,
+              "test_id": null,
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "fb9c717b-f9b2-4e53-a4b3-7fba3b5f4e71",
+            "name": "Sticky Note2",
+            "type": "n8n-nodes-base.stickyNote",
+            "position": [
+              96,
+              -208
+            ],
+            "parameters": {
+              "height": 96,
+              "content": "**Calls Apple's iTunes API to get latest customer reviews - sorted by most recent first**"
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "Sticky Note2",
+              "type": "n8n-nodes-base.stickyNote",
+              "id": null,
+              "test_id": null,
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "51b33b2b-379b-4232-9fa0-fa45b427ab5b",
+            "name": "Sticky Note3",
+            "type": "n8n-nodes-base.stickyNote",
+            "position": [
+              576,
+              64
+            ],
+            "parameters": {
+              "height": 96,
+              "content": "**Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications**"
+            },
+            "typeVersion": 1,
+            "iframe_data": {
+              "name": "Sticky Note3",
+              "type": "n8n-nodes-base.stickyNote",
+              "id": null,
+              "test_id": null,
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "fa7128e3-4ee0-4553-b999-f24b7bc43067",
+            "name": "Send notification",
+            "type": "n8n-nodes-base.gmail",
+            "position": [
+              1200,
+              -240
+            ],
+            "webhookId": "175f24c8-f55e-4cc4-91cf-b2d0a2517810",
+            "parameters": {
+              "sendTo": "infor@exmaple.com",
+              "message": "=\ud83c\udd95 New iOS App Store Review (\u2b50 {{$json.rating}}/5) \u201c{{$json.title}}\u201d by {{$json.author}} \u2014 v{{$json.version}} \u2014 {{$json.content}} ",
+              "options": {},
+              "subject": "=New App Store Review (\u2b50 {{$json.rating}}/5) \u2014 {{$json.title}}"
+            },
+            "credentials": {
+              "gmailOAuth2": {
+                "id": "GsAjl8kiLaQnkjoK",
+                "name": "Gmail account 10"
+              }
+            },
+            "typeVersion": 2.1,
+            "iframe_data": {
+              "name": "Send notification",
+              "type": "n8n-nodes-base.gmail",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          },
+          {
+            "id": "c2fce7f5-6b22-4d79-b374-19514c164d22",
+            "name": "False Case",
+            "type": "n8n-nodes-base.set",
+            "position": [
+              1216,
+              0
+            ],
+            "parameters": {
+              "options": {},
+              "assignments": {
+                "assignments": [
+                  {
+                    "id": "8f36ed49-5b1a-4687-9a49-36eee4197824",
+                    "name": "status",
+                    "type": "string",
+                    "value": "no new reviews"
+                  }
+                ]
+              }
+            },
+            "typeVersion": 3.4,
+            "iframe_data": {
+              "name": "False Case",
+              "type": "n8n-nodes-base.set",
+              "id": null,
+              "test_id": "canvas-node",
+              "source": "iframe"
+            }
+          }
+        ],
+        "active": false,
+        "pinData": {},
+        "settings": {
+          "executionOrder": "v1"
+        },
+        "versionId": "8b6459a1-d008-44db-8ebd-c516e2c111d1",
+        "connections": {
+          "App Config": {
+            "main": [
+              [
+                {
+                  "node": "Fetch Reviews",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Fetch Reviews": {
+            "main": [
+              [
+                {
+                  "node": "Extract Reviews",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Extract Reviews": {
+            "main": [
+              [
+                {
+                  "node": "Filter latest Review",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Any new reviews?": {
+            "main": [
+              [
+                {
+                  "node": "Send notification",
+                  "type": "main",
+                  "index": 0
+                }
+              ],
+              [
+                {
+                  "node": "False Case",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Schedule Trigger": {
+            "main": [
+              [
+                {
+                  "node": "App Config",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          },
+          "Filter latest Review": {
+            "main": [
+              [
+                {
+                  "node": "Any new reviews?",
+                  "type": "main",
+                  "index": 0
+                }
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "iframe_data": {
+      "nodes": [
+        {
+          "name": "Schedule Trigger",
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Schedule Trigger",
+          "type": null,
+          "id": "__EMPTY__-156c62c9-b236-4d0d-ad17-540dfe8d60ff-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Extract Reviews",
+          "type": "n8n-nodes-base.code",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Extract Reviews",
+          "type": null,
+          "id": "__EMPTY__-b33809e1-6e0e-4c3c-955c-3d5f7d200d72-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Extract Reviews",
+          "type": null,
+          "id": "__EMPTY__-b33809e1-6e0e-4c3c-955c-3d5f7d200d72-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Any new reviews?",
+          "type": "n8n-nodes-base.if",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Any new reviews?",
+          "type": null,
+          "id": "__EMPTY__-db2f0933-6af5-440f-bbad-90878482d23f-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Any new reviews?",
+          "type": null,
+          "id": "__EMPTY__-db2f0933-6af5-440f-bbad-90878482d23f-outputs/main/1-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Any new reviews?",
+          "type": null,
+          "id": "__EMPTY__-db2f0933-6af5-440f-bbad-90878482d23f-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "App Config",
+          "type": "n8n-nodes-base.set",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "App Config",
+          "type": null,
+          "id": "__EMPTY__-1f4e4fbc-abe7-4d2a-9a54-bcc5992413a6-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "App Config",
+          "type": null,
+          "id": "__EMPTY__-1f4e4fbc-abe7-4d2a-9a54-bcc5992413a6-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Fetch Reviews",
+          "type": "n8n-nodes-base.httpRequest",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Fetch Reviews",
+          "type": null,
+          "id": "__EMPTY__-7fa5c285-0645-4641-8e27-2c2e33ff1a9c-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Fetch Reviews",
+          "type": null,
+          "id": "__EMPTY__-7fa5c285-0645-4641-8e27-2c2e33ff1a9c-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Filter latest Review",
+          "type": "n8n-nodes-base.code",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Filter latest Review",
+          "type": null,
+          "id": "__EMPTY__-f4e2673d-1bb8-4871-9b84-124587e29d30-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Filter latest Review",
+          "type": null,
+          "id": "__EMPTY__-f4e2673d-1bb8-4871-9b84-124587e29d30-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note1",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note2",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        },
+        {
+          "name": "Sticky Note3",
+          "type": "n8n-nodes-base.stickyNote",
+          "id": null,
+          "test_id": null,
+          "source": "iframe"
+        },
+        {
+          "name": "Send notification",
+          "type": "n8n-nodes-base.gmail",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "Send notification",
+          "type": null,
+          "id": "__EMPTY__-fa7128e3-4ee0-4553-b999-f24b7bc43067-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "Send notification",
+          "type": null,
+          "id": "__EMPTY__-fa7128e3-4ee0-4553-b999-f24b7bc43067-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "False Case",
+          "type": "n8n-nodes-base.set",
+          "id": null,
+          "test_id": "canvas-node",
+          "source": "iframe"
+        },
+        {
+          "name": "False Case",
+          "type": null,
+          "id": "__EMPTY__-c2fce7f5-6b22-4d79-b374-19514c164d22-outputs/main/0-source",
+          "test_id": "canvas-node-output-handle",
+          "source": "iframe"
+        },
+        {
+          "name": "False Case",
+          "type": null,
+          "id": "__EMPTY__-c2fce7f5-6b22-4d79-b374-19514c164d22-inputs/main/0-target",
+          "test_id": "canvas-node-input-handle",
+          "source": "iframe"
+        }
+      ],
+      "text_content": {
+        "all_text": "Schedule Trigger\nExtract Reviews\ntrue\nfalse\nAny new reviews?\nApp Config\nmanual\nFetch Reviews\nFilter latest Review\n\nRuns every 6 hours to check for new reviews - adjust timing based on your monitoring needs\n\nSet your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL\n\nCalls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first\n\nCompares with last check time to find only NEW reviews since previous run - prevents duplicate notifications\n\nSend notification\nsend: message\nFalse Case\nmanual",
+        "all_text_length": 557,
+        "text_blocks": [
+          {
+            "text": "Runs every 6 hours to check for new reviews - adjust timing based on your monitoring needs",
+            "length": 90,
+            "source": "iframe"
+          },
+          {
+            "text": "Set your App Store ID, country (us/gb/de), and language (en/es/fr) - find App ID in your App Store URL",
+            "length": 102,
+            "source": "iframe"
+          },
+          {
+            "text": "Calls Apple\u2019s iTunes API to get latest customer reviews - sorted by most recent first",
+            "length": 85,
+            "source": "iframe"
+          },
+          {
+            "text": "Compares with last check time to find only NEW reviews since previous run - prevents duplicate notifications",
+            "length": 108,
+            "source": "iframe"
+          },
+          {
+            "text": "I can answer most questions about building workflows in n8n.",
+            "length": 60,
+            "source": "iframe"
+          },
+          {
+            "text": "For specific tasks, you\u2019ll see the Ask Assistant button in the UI.",
+            "length": 66,
+            "source": "iframe"
+          }
+        ],
+        "input_hints": [
+          "Enter your response..."
+        ],
+        "source": "iframe"
+      },
+      "images": [
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Code/code.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/HttpRequest/httprequest.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Code/code.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        },
+        {
+          "src": "/icons/n8n-nodes-base/dist/nodes/Google/Gmail/gmail.svg",
+          "alt": "",
+          "type": "node_icon",
+          "source": "iframe"
+        }
+      ]
+    },
+    "node_count": 12,
+    "connection_count": 6,
+    "completeness": "complete"
+  },
+  "completeness": {
+    "api_only": 85.0,
+    "iframe_only": 15.0,
+    "merged": 100.0
+  },
+  "statistics": {
+    "api": {
+      "total": 2,
+      "primary_success": 2,
+      "fallback_success": 0,
+      "both_failed": 0
+    },
+    "iframe": {
+      "total_attempts": 2,
+      "successful": 2,
+      "failed": 0,
+      "nodes_extracted": 67,
+      "text_blocks_extracted": 12,
+      "images_extracted": 13
+    }
+  }
+}

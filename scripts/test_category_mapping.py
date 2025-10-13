@@ -192,3 +192,5 @@ if __name__ == "__main__":
         print("\n❌ SOME TESTS FAILED! Category mapping needs fixes.")
         sys.exit(1)
 
+
+

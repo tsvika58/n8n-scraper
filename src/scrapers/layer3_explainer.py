@@ -422,6 +422,20 @@ class ExplainerContentExtractor:
                 matches = re.findall(pattern, href)
                 video_urls.extend(matches)
         
+        # Search in ALL page content (including JavaScript and data attributes)
+        page_text = str(soup)
+        for pattern in youtube_patterns:
+            matches = re.findall(pattern, page_text)
+            video_urls.extend(matches)
+        
+        # Search in data attributes
+        elements_with_data = soup.find_all(attrs={'data-src': True})
+        for element in elements_with_data:
+            data_src = element.get('data-src', '')
+            for pattern in youtube_patterns:
+                matches = re.findall(pattern, data_src)
+                video_urls.extend(matches)
+        
         return list(set(video_urls))  # Remove duplicates
     
     def _extract_code_snippets(self, soup: BeautifulSoup) -> List[Dict]:

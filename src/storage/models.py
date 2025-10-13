@@ -182,7 +182,7 @@ class WorkflowStructure(Base):
     Layer 2: Workflow structure (JSON, nodes, connections).
     
     Stores the complete n8n workflow definition with node data.
-    May be missing if workflow was deleted (60% success rate).
+    Enhanced with iframe extraction data (Phases 1-4).
     """
     __tablename__ = 'workflow_structure'
     
@@ -194,17 +194,27 @@ class WorkflowStructure(Base):
         nullable=False
     )
     
-    # Structure Summary
+    # Structure Summary (API)
     node_count = Column(Integer, index=True)
     connection_count = Column(Integer)
     node_types = Column(JSONB)  # ["httpRequest", "set", "if"]
     
-    # Extraction Method
+    # Extraction Method (API)
     extraction_type = Column(String(50))  # 'full', 'fallback', 'failed'
     fallback_used = Column(Boolean, default=False)
     
-    # Complete Workflow JSON
+    # Complete Workflow JSON (API)
     workflow_json = Column(JSONB)  # Full n8n workflow definition
+    
+    # NEW: Iframe Extraction Data (Phase 1-4)
+    iframe_data = Column(JSONB)  # Phase 1: Node metadata, UI hints, icons
+    visual_layout = Column(JSONB)  # Phase 2: Positions, canvas state, spatial metrics
+    enhanced_content = Column(JSONB)  # Phase 3: Text blocks, help texts, categorization
+    media_content = Column(JSONB)  # Phase 4: Videos, images, SVGs
+    
+    # NEW: Extraction Metadata
+    extraction_sources = Column(JSONB)  # API + iframe source tracking
+    completeness_metrics = Column(JSONB)  # Completeness percentages
     
     # Timestamp
     extracted_at = Column(DateTime, default=datetime.utcnow, nullable=False)

@@ -107,3 +107,5 @@ The Recent Workflows section is now fully functional with:
 Visit: `http://localhost:5001/`
 
 The Recent Workflows section will show the 10 most recently processed workflows, updating every second with the newest ones at the top.
+
+

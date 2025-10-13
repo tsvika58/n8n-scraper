@@ -463,7 +463,7 @@ Complete dataset in JSON format.
   "workflows": [
     {
       "id": "2462",
-      "url": "https://n8n.io/workflows/2462",
+  "url": "https://n8n.io/workflows/2462",
       "scraped_at": "2025-10-09T10:30:00Z",
       "basic_metadata": { /* ... */ },
       "workflow_content": { /* ... */ },

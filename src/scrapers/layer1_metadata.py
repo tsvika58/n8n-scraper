@@ -165,27 +165,33 @@ class PageMetadataExtractor:
     
     async def _extract_title(self, page: Page) -> str:
         """
-        Extract workflow title from page.
+        Extract workflow title from n8n page.
         
         Returns:
             Workflow title string
         """
         try:
-            # Try multiple selectors (will discover actual ones)
+            # Try n8n-specific selectors for workflow title
             selectors = [
-                'h1',
+                'h1',  # Main title
                 '[data-test-id="workflow-title"]',
                 '.workflow-title',
-                'header h1'
+                'header h1',
+                'main h1',
+                '.n8n-markdown h1',
+                'h1:not([class*="sticky"])'  # Exclude sticky note titles
             ]
             
             for selector in selectors:
                 try:
-                    element = page.locator(selector).first
-                    if await element.count() > 0:
+                    elements = await page.query_selector_all(selector)
+                    for element in elements:
                         title = await element.text_content()
-                        if title and title.strip():
-                            return title.strip()
+                        if title and title.strip() and len(title.strip()) > 3:
+                            # Skip common non-title text
+                            if not any(skip in title.lower() for skip in ['more templates', 'stars', 'there\'s nothing', 'start building']):
+                                logger.info(f"Found title with selector '{selector}': '{title.strip()}'")
+                                return title.strip()
                 except:
                     continue
             
@@ -197,13 +203,20 @@ class PageMetadataExtractor:
             return "Unknown Title"
     
     async def _extract_description(self, page: Page) -> str:
-        """Extract workflow description."""
+        """Extract workflow description from n8n page."""
         try:
+            # Look for setup guide and workflow details
             selectors = [
                 'meta[name="description"]',
                 '[data-test-id="workflow-description"]',
                 '.workflow-description',
-                'p.description'
+                'p.description',
+                '.n8n-markdown',  # n8n markdown content
+                'div:has-text("Setup Guide")',  # Setup guide section
+                'div:has-text("What this workflow does")',  # Workflow description
+                'div:has-text("Who this is for")',  # Target audience
+                'h2:has-text("Setup Guide") + div',  # Content after Setup Guide heading
+                'h2:has-text("What this workflow does") + div'  # Content after description heading
             ]
             
             for selector in selectors:
@@ -215,11 +228,13 @@ class PageMetadataExtractor:
                             if desc and desc.strip():
                                 return desc.strip()
                     else:
-                        element = page.locator(selector).first
-                        if await element.count() > 0:
+                        elements = await page.query_selector_all(selector)
+                        for element in elements:
                             desc = await element.text_content()
-                            if desc and desc.strip():
-                                return desc.strip()
+                            if desc and desc.strip() and len(desc.strip()) > 50:
+                                # Skip very short or common text
+                                if not any(skip in desc.lower() for skip in ['more templates', 'stars', 'there\'s nothing']):
+                                    return desc.strip()
                 except:
                     continue
             
@@ -230,23 +245,76 @@ class PageMetadataExtractor:
             logger.error(f"Error extracting description: {e}")
             return ""
     
-    async def _extract_author(self, page: Page) -> str:
-        """Extract workflow author name."""
+    async def _extract_views(self, page: Page) -> int:
+        """Extract view count from n8n page."""
         try:
+            # Look for view count indicators
             selectors = [
-                '[data-test-id="workflow-author"]',
-                '.author-name',
-                'a.author',
-                '[class*="author"]'
+                '[data-test-id="views"]',
+                '.views',
+                'span:has-text("views")',
+                'div:has-text("views")',
+                '[class*="view"]'
             ]
             
             for selector in selectors:
                 try:
-                    element = page.locator(selector).first
-                    if await element.count() > 0:
-                        author = await element.text_content()
-                        if author and author.strip():
-                            return author.strip()
+                    elements = await page.query_selector_all(selector)
+                    for element in elements:
+                        text = await element.text_content()
+                        if text and 'view' in text.lower():
+                            # Extract number from text like "1.2k views" or "500 views"
+                            import re
+                            numbers = re.findall(r'[\d,]+', text)
+                            if numbers:
+                                # Convert to integer (handle k, m suffixes)
+                                num_str = numbers[0].replace(',', '')
+                                if 'k' in text.lower():
+                                    return int(float(num_str) * 1000)
+                                elif 'm' in text.lower():
+                                    return int(float(num_str) * 1000000)
+                                else:
+                                    return int(num_str)
+                except:
+                    continue
+            
+            logger.warning("Views not found")
+            return 0
+            
+        except Exception as e:
+            logger.error(f"Error extracting views: {e}")
+            return 0
+
+    async def _extract_author(self, page: Page) -> str:
+        """Extract workflow author name from n8n page."""
+        try:
+            # Look for "Created by" text pattern
+            selectors = [
+                'a[href*="/users/"]',  # User profile links
+                '[data-test-id="workflow-author"]',
+                '.author-name',
+                'a.author',
+                '[class*="author"]',
+                'div:has-text("Created by")',  # Look for "Created by" div
+                'span:has-text("Created by")'  # Look for "Created by" span
+            ]
+            
+            for selector in selectors:
+                try:
+                    elements = await page.query_selector_all(selector)
+                    for element in elements:
+                        author_text = await element.text_content()
+                        if author_text and 'Created by' in author_text:
+                            # Look for "Created by" followed by name
+                            import re
+                            created_by_match = re.search(r'Created by\s*([^|\n]+)', author_text)
+                            if created_by_match:
+                                name_part = created_by_match.group(1).strip()
+                                # Clean up the name (remove extra whitespace, etc.)
+                                name_part = re.sub(r'\s+', ' ', name_part)
+                                if name_part and len(name_part) > 1 and len(name_part) < 50:
+                                    logger.info(f"Found author with selector '{selector}': '{name_part}'")
+                                    return name_part
                 except:
                     continue
             
@@ -276,27 +344,40 @@ class PageMetadataExtractor:
     
     async def _extract_categories(self, page: Page) -> Tuple[str, List[str]]:
         """
-        Extract primary and secondary categories.
+        Extract primary and secondary categories from n8n page.
         
         Returns:
             Tuple of (primary_category, secondary_categories_list)
         """
         try:
+            # Look for workflow category pills/badges (not cookie categories)
             selectors = [
-                '[data-test-id="category"]',
+                'button:has-text("Lead Generation")',  # Category buttons
+                'button:has-text("Multimodal AI")',
+                'div:has-text("Categories") + div',  # Content after "Categories" heading
+                'h2:has-text("Categories") + div',  # Content after "Categories" h2
                 '.category-badge',
                 '.category',
-                '[class*="category"]'
+                '[data-test-id="category"]',
+                'span:has-text("Lead Generation")',
+                'span:has-text("Multimodal AI")',
+                'div:has-text("Lead Generation"):not([class*="cookie"])',  # Exclude cookie categories
+                'div:has-text("Multimodal AI"):not([class*="cookie"])'
             ]
             
             categories = []
             for selector in selectors:
                 try:
-                    elements = await page.locator(selector).all()
+                    elements = await page.query_selector_all(selector)
                     for element in elements:
                         cat = await element.text_content()
-                        if cat and cat.strip():
-                            categories.append(cat.strip())
+                        if cat and cat.strip() and len(cat.strip()) > 2:
+                            # Skip common non-category text and cookie categories
+                            skip_terms = ['more templates', 'stars', 'there\'s nothing', 'strictly necessary', 'performance', 'targeting', 'functional', 'cookie']
+                            if not any(skip in cat.lower() for skip in skip_terms):
+                                # Only add actual workflow categories
+                                if any(workflow_cat in cat for workflow_cat in ['Lead Generation', 'Multimodal AI', 'Marketing', 'Sales', 'AI', 'Automation']):
+                                    categories.append(cat.strip())
                     if categories:
                         break
                 except:

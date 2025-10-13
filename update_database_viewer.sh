@@ -40,3 +40,5 @@ else
     echo "   Check logs: docker logs n8n-scraper-app"
 fi
 
+
+

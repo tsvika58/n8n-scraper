@@ -300,3 +300,5 @@ From n8n.io workflow pages, we should extract:
 
 **Next Priority:** Fix category extraction to enable proper workflow categorization and filtering.
 
+
+

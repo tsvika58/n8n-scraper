@@ -10,13 +10,14 @@ import json
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import urllib.parse
 
-# Database connection
+# Database connection - SUPABASE (working configuration)
 DB_CONFIG = {
-    'host': 'n8n-scraper-database',
+    'host': 'aws-1-eu-north-1.pooler.supabase.com',
     'port': 5432,
-    'database': 'n8n_scraper',
-    'user': 'scraper_user',
-    'password': 'scraper_pass'
+    'database': 'postgres',
+    'user': 'postgres.skduopoakfeaurttcaip',
+    'password': 'crg3pjm8ych4ctu@KXT',
+    'connect_timeout': 10
 }
 
 def get_workflows(limit=50, offset=0, search=None, sort_by='workflow_id', sort_order='DESC', category=None, status=None, layers=None):

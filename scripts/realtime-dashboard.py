@@ -156,15 +156,24 @@ class RealtimeDashboard:
             
             recent = cursor.fetchone()
             
-            # Check for active scraping processes (Chrome/Playwright)
+            # Check for active scraping processes (Chrome/Playwright and scraping scripts)
             import subprocess
             try:
-                result = subprocess.run(['pgrep', '-f', 'chrome.*headless'], 
-                                      capture_output=True, text=True, timeout=5)
-                active_processes = len(result.stdout.strip().split('\n')) if result.stdout.strip() else 0
-                has_active_scraping = active_processes > 10  # More than 10 Chrome processes indicates scraping
+                # Check for Chrome processes (indicates active scraping)
+                chrome_result = subprocess.run(['pgrep', '-f', 'chrome.*headless'], 
+                                              capture_output=True, text=True, timeout=5)
+                chrome_processes = len(chrome_result.stdout.strip().split('\n')) if chrome_result.stdout.strip() else 0
+                
+                # Check for active scraping scripts
+                scraper_result = subprocess.run(['pgrep', '-f', 'layer1_to_supabase.py'], 
+                                               capture_output=True, text=True, timeout=5)
+                scraper_processes = len(scraper_result.stdout.strip().split('\n')) if scraper_result.stdout.strip() else 0
+                
+                active_processes = chrome_processes
+                has_active_scraping = (chrome_processes > 5) or (scraper_processes > 0)  # Active Chrome or scraping script
             except:
                 has_active_scraping = False
+                active_processes = 0
             
             # Get current workflow being processed (if any)
             cursor.execute("""
@@ -1877,13 +1886,17 @@ class DashboardHandler(BaseHTTPRequestHandler):
                     const realCompleted = stats.recent_workflows || 0;
                     if (realCompleted > 0) {{
                         statusIndicator.className = 'status-indicator scraping';
-                        statusText.textContent = `SCRAPING BATCH`;
+                        statusText.textContent = `SCRAPING ACTIVE`;
                         statusMessage.textContent = `Processing workflows...`;
                 }} else {{
                         statusIndicator.className = 'status-indicator scraping';
-                        statusText.textContent = `SCANNING METADATA`;
-                        statusMessage.textContent = `Scanning database metadata...`;
+                        statusText.textContent = `SCRAPING ACTIVE`;
+                        statusMessage.textContent = `Active scraping detected`;
                     }}
+                }} else if (stats.active_processes > 0) {{
+                    statusIndicator.className = 'status-indicator scraping';
+                    statusText.textContent = 'SCRAPING ACTIVE';
+                    statusMessage.textContent = `Chrome instances running`;
                 }} else {{
                     statusIndicator.className = 'status-indicator idle';
                     statusText.textContent = 'IDLE';

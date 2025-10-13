@@ -465,20 +465,23 @@ class E2EPipeline:
     async def _process_multimodal(self, workflow_id: str, url: str) -> Dict:
         """Process multimodal content (images and videos)."""
         try:
-            async with MultimodalProcessor(db_path=str(self.db_path), headless=self.headless, timeout=self.timeout) as processor:
-                # Note: MultimodalProcessor needs to be adapted to return results
-                # For now, we'll call its main processing method
-                # This is a placeholder - actual implementation depends on MultimodalProcessor interface
-                result = {
-                    'success': True,
-                    'workflow_id': workflow_id,
-                    'images_found': 0,
-                    'images_processed': 0,
-                    'video_urls': [],
-                    'extraction_time': 0,
-                    'errors': []
-                }
-                return result
+            if not self.multimodal_processor:
+                self.multimodal_processor = MultimodalProcessor(db_path=str(self.db_path), headless=self.headless, timeout=self.timeout)
+                await self.multimodal_processor.initialize()
+            
+            # Use the actual multimodal processor method
+            result = await self.multimodal_processor.process_workflow(workflow_id, url)
+            
+            # Convert to expected format
+            return {
+                'success': result.get('success', False),
+                'workflow_id': workflow_id,
+                'images_found': result.get('images_processed', 0),
+                'images_processed': result.get('images_success', 0),
+                'video_urls': result.get('video_urls', []),  # Pass video URLs to transcript extraction
+                'extraction_time': result.get('processing_time', 0),
+                'errors': result.get('errors', [])
+            }
         except Exception as e:
             logger.error(f"Multimodal processing exception for {workflow_id}: {str(e)}")
             return {
