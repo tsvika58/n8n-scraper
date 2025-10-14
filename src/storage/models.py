@@ -165,6 +165,11 @@ class WorkflowMetadata(Base):
     # Complete Layer 1 Data
     raw_metadata = Column(JSONB)
     
+    # Layer 1.5 Enhanced Content (new fields)
+    layer1_5_content_markdown = Column(Text)
+    layer1_5_metadata = Column(JSONB)
+    layer1_5_extracted_at = Column(DateTime)
+    
     # Relationship
     workflow = relationship("Workflow", back_populates="workflow_metadata")
     

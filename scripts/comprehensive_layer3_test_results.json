@@ -1,0 +1,32 @@
+[
+  {
+    "workflow_id": "6270",
+    "success": true,
+    "quality_score": 95,
+    "video_count": 2,
+    "video_urls_stored": 2,
+    "transcripts_extracted": 1,
+    "text_length": 22561,
+    "deduplication_stats": {
+      "raw_count": 5,
+      "deduplicated_count": 2,
+      "duplicates_removed": 3
+    },
+    "passes_completed": 5
+  },
+  {
+    "workflow_id": "8527",
+    "success": true,
+    "quality_score": 70,
+    "video_count": 1,
+    "video_urls_stored": 1,
+    "transcripts_extracted": 0,
+    "text_length": 20768,
+    "deduplication_stats": {
+      "raw_count": 4,
+      "deduplicated_count": 1,
+      "duplicates_removed": 3
+    },
+    "passes_completed": 5
+  }
+]

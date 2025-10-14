@@ -1,0 +1,70 @@
+[
+  {
+    "workflow_id": "6270",
+    "success": false,
+    "error": "'dict' object has no attribute '_object'"
+  },
+  {
+    "workflow_id": "8527",
+    "success": true,
+    "extraction_time": 135.1527180671692,
+    "video_count": 4,
+    "text_length": 180325,
+    "quality_score": 90,
+    "videos": [
+      {
+        "type": "video_element",
+        "url": null,
+        "title": null,
+        "description": null,
+        "thumbnail": null,
+        "transcript_available": false,
+        "metadata": {},
+        "poster": null
+      },
+      {
+        "type": "video_link",
+        "url": "https://www.youtube.com/c/n8n-io",
+        "title": null,
+        "description": "",
+        "thumbnail": null,
+        "transcript_available": true,
+        "metadata": {}
+      },
+      {
+        "type": "video_thumbnail",
+        "url": null,
+        "title": null,
+        "description": null,
+        "thumbnail": null,
+        "transcript_available": false,
+        "metadata": {}
+      },
+      {
+        "type": "video_thumbnail",
+        "url": null,
+        "title": null,
+        "description": null,
+        "thumbnail": null,
+        "transcript_available": false,
+        "metadata": {}
+      }
+    ],
+    "discovery_metadata": {
+      "iframes_found": 0,
+      "videos_discovered": 4,
+      "text_areas_found": 651,
+      "fallback_videos": 0
+    }
+  },
+  {
+    "workflow_id": "8237",
+    "success": false,
+    "error": "'dict' object has no attribute '_object'"
+  },
+  {
+    "workflow_id": "7639",
+    "success": false,
+    "error": "'dict' object has no attribute '_object'"
+  }
+]
