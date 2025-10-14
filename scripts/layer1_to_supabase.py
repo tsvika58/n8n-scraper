@@ -261,8 +261,7 @@ class Layer1ToSupabase:
         bar = '█' * filled + '░' * (bar_length - filled)
         
         logger.info(f"\n{'='*80}")
-        logger.info(f"📊 PROGRESS: {self.stats['processed']}/{self.stats['total']} ({pct:.1f}%)")
-        logger.info(f"[{bar}]")
+        logger.info(f"📊 PROGRESS: {self.stats['processed']}/{self.stats['total']} ({pct:.1f}%) [{bar}]")
         logger.info(f"✅ Success: {self.stats['successful']} | ❌ Failed: {self.stats['failed']}")
         logger.info(f"⏱️  Elapsed: {int(elapsed//60)}m {int(elapsed%60)}s | ETA: {eta_str}")
         logger.info(f"⚡ Speed: {avg_time:.1f}s per workflow" if self.stats['processed'] > 0 else "")

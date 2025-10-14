@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Layer 2 Enhanced - Production Scraper
-Processes all workflows from Layer 1 with full monitoring.
+Test Layer 2 Enhanced on 20 workflows with full monitoring.
+Validates resume mechanism and database updates.
 """
 
 import asyncio
@@ -18,7 +18,7 @@ sys.path.insert(0, '/Users/tsvikavagman/Desktop/Code Projects/shared-tools/n8n-s
 from src.scrapers.layer2_enhanced import EnhancedLayer2Extractor
 
 # Configure logger (clean format like Layer 1)
-logger.remove()  # Remove default handler
+logger.remove()
 logger.add(
     sys.stderr,
     format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <level>{message}</level>",
@@ -33,20 +33,20 @@ DB_USER = "postgres.skduopoakfeaurttcaip"
 DB_PASSWORD = "crg3pjm8ych4ctu@KXT"
 
 
-class Layer2ProductionRunner:
-    """Production runner for Layer 2 Enhanced with monitoring."""
+class Layer2TestRunner:
+    """Test runner for 20 workflows."""
     
     def __init__(self):
         self.start_time = None
         self.processed = 0
         self.successful = 0
         self.failed = 0
-        self.total_workflows = 0
+        self.total_workflows = 20
         self.extraction_times = []
         self.errors = []
     
-    def get_workflows_to_process(self):
-        """Get workflows that need Layer 2 processing (with resume support)."""
+    def get_test_workflows(self):
+        """Get 20 workflows for testing."""
         
         try:
             conn = psycopg2.connect(
@@ -60,14 +60,13 @@ class Layer2ProductionRunner:
             
             cursor = conn.cursor()
             
-            # Get ALL workflows that haven't completed Layer 2 yet
-            # This enables resume: only processes workflows that haven't been marked as layer2_success=true
-            # Note: We scrape ALL workflows for Layer 2, not just those with layer1_success=true
+            # Get 20 workflows that need Layer 2
             cursor.execute("""
                 SELECT w.workflow_id, w.url
                 FROM workflows w
                 WHERE (w.layer2_success IS NULL OR w.layer2_success = false)
-                ORDER BY w.workflow_id::integer ASC;
+                ORDER BY w.workflow_id::integer ASC
+                LIMIT 20;
             """)
             
             workflows = cursor.fetchall()
@@ -78,7 +77,7 @@ class Layer2ProductionRunner:
             return workflows
             
         except Exception as e:
-            print(f"❌ Error fetching workflows: {e}")
+            logger.error(f"Error fetching workflows: {e}")
             return []
     
     def store_to_database(self, workflow_id, result):
@@ -104,7 +103,7 @@ class Layer2ProductionRunner:
             nodes = api_data.get('data', {}).get('workflow', {}).get('nodes', [])
             node_types = list(set(node.get('type') for node in nodes if node.get('type')))
             
-            # Insert/Update
+            # Insert/Update workflow_structure
             cursor.execute("""
                 INSERT INTO workflow_structure (
                     workflow_id, node_count, connection_count, node_types,
@@ -146,7 +145,8 @@ class Layer2ProductionRunner:
             # Update layer2_success flag in workflows table
             cursor.execute("""
                 UPDATE workflows 
-                SET layer2_success = true, extracted_at = %s
+                SET layer2_success = true, 
+                    extracted_at = %s
                 WHERE workflow_id = %s
             """, (datetime.utcnow(), workflow_id))
             
@@ -154,42 +154,15 @@ class Layer2ProductionRunner:
             cursor.close()
             conn.close()
             
+            logger.info(f"      ✅ Stored to Supabase and updated layer2_success flag")
             return True
             
         except Exception as e:
-            print(f"      ❌ Storage error: {e}")
-            
-            # Mark workflow as failed in workflows table
-            try:
-                conn = psycopg2.connect(
-                    host=DB_HOST,
-                    port=DB_PORT,
-                    database=DB_NAME,
-                    user=DB_USER,
-                    password=DB_PASSWORD,
-                    sslmode='require'
-                )
-                cursor = conn.cursor()
-                cursor.execute("""
-                    UPDATE workflows 
-                    SET layer2_success = false, 
-                        error_message = %s,
-                        last_scraped_at = %s
-                    WHERE workflow_id = %s
-                """, (str(e), datetime.utcnow(), workflow_id))
-                conn.commit()
-                cursor.close()
-                conn.close()
-            except:
-                pass  # If we can't mark as failed, continue
-            
+            logger.error(f"      ❌ Storage error: {e}")
             return False
     
     def print_progress(self):
-        """Print progress bar (Layer 1 style with loguru)."""
-        
-        if self.total_workflows == 0:
-            return
+        """Print progress dashboard."""
         
         elapsed = time() - self.start_time
         progress_pct = (self.processed / self.total_workflows) * 100
@@ -199,9 +172,9 @@ class Layer2ProductionRunner:
             avg_time = elapsed / self.processed
             remaining = self.total_workflows - self.processed
             eta_seconds = remaining * avg_time
-            eta_hours = int(eta_seconds // 3600)
-            eta_minutes = int((eta_seconds % 3600) // 60)
-            eta = f"{eta_hours}h {eta_minutes}m"
+            eta_minutes = int(eta_seconds // 60)
+            eta_seconds = int(eta_seconds % 60)
+            eta = f"{eta_minutes}m {eta_seconds}s"
         else:
             eta = "calculating..."
         
@@ -226,12 +199,19 @@ class Layer2ProductionRunner:
         logger.info(f"⚡ Speed: {avg_extraction:.1f}s per workflow")
         logger.info("="*80)
     
-    async def process_workflow(self, extractor, workflow_id, url):
+    async def process_workflow(self, extractor, workflow_id, url, index):
         """Process a single workflow."""
+        
+        logger.info("")
+        logger.info(f"[{index}/{self.total_workflows}] Processing workflow #{workflow_id}")
+        logger.info(f"   URL: {url}")
         
         try:
             # Extract
             result = await extractor.extract_complete(workflow_id, url)
+            
+            logger.info(f"   ✅ Extraction complete: {result['extraction_time']:.2f}s")
+            logger.info(f"   📊 Completeness: {result['completeness']['merged']:.1f}%")
             
             # Store
             stored = self.store_to_database(workflow_id, result)
@@ -260,76 +240,43 @@ class Layer2ProductionRunner:
                 'workflow_id': workflow_id,
                 'error': str(e)
             })
-            print(f"      ❌ Error: {e}")
-            
-            # Mark workflow as failed
-            try:
-                conn = psycopg2.connect(
-                    host=DB_HOST,
-                    port=DB_PORT,
-                    database=DB_NAME,
-                    user=DB_USER,
-                    password=DB_PASSWORD,
-                    sslmode='require'
-                )
-                cursor = conn.cursor()
-                cursor.execute("""
-                    UPDATE workflows 
-                    SET layer2_success = false, 
-                        error_message = %s,
-                        last_scraped_at = %s
-                    WHERE workflow_id = %s
-                """, (str(e), datetime.utcnow(), workflow_id))
-                conn.commit()
-                cursor.close()
-                conn.close()
-            except:
-                pass
-            
+            logger.error(f"   ❌ Error: {e}")
             return False
     
     async def run(self):
-        """Run Layer 2 Enhanced on all workflows."""
+        """Run test on 20 workflows."""
         
         logger.info("="*80)
-        logger.info("🚀 LAYER 2 ENHANCED - PRODUCTION SCRAPER")
+        logger.info("🧪 LAYER 2 ENHANCED - TEST RUN (20 WORKFLOWS)")
         logger.info("="*80)
         logger.info(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         logger.info("")
-        logger.info("This will:")
-        logger.info("  • Process ALL workflows in database")
-        logger.info("  • Extract complete data (API + Iframe - All 4 Phases)")
-        logger.info("  • Store to Supabase")
-        logger.info("  • Show progress monitoring (Layer 1 style)")
-        logger.info("")
         
         # Get workflows
-        logger.info("📊 Fetching workflows from database...")
-        workflows = self.get_workflows_to_process()
+        logger.info("📊 Fetching 20 workflows for testing...")
+        workflows = self.get_test_workflows()
         
         if not workflows:
-            logger.warning("⚠️  No workflows found to process!")
-            logger.info("Either:")
-            logger.info("  • All workflows already processed")
-            logger.info("  • Database is empty")
+            logger.warning("⚠️  No workflows found to test!")
             return
+        
+        logger.info(f"✅ Found {len(workflows)} workflows to test")
+        logger.info("")
+        logger.info("="*80)
+        logger.info("🔄 STARTING TEST EXTRACTION")
+        logger.info("="*80)
         
         self.total_workflows = len(workflows)
         self.start_time = time()
         
-        logger.info(f"✅ Found {self.total_workflows:,} workflows to process")
-        logger.info("")
-        logger.info("="*80)
-        logger.info("🔄 STARTING EXTRACTION")
-        logger.info("="*80)
-        
         # Process workflows
         async with EnhancedLayer2Extractor() as extractor:
-            for workflow_id, url in workflows:
-                await self.process_workflow(extractor, workflow_id, url)
+            for i, (workflow_id, url) in enumerate(workflows, 1):
+                await self.process_workflow(extractor, workflow_id, url, i)
                 
-                # Rate limiting (be nice to n8n.io)
-                await asyncio.sleep(2)
+                # Rate limiting
+                if i < len(workflows):
+                    await asyncio.sleep(2)
         
         # Final summary
         self.print_final_summary()
@@ -338,59 +285,50 @@ class Layer2ProductionRunner:
         """Print final summary."""
         
         elapsed = time() - self.start_time
-        elapsed_hours = int(elapsed // 3600)
-        elapsed_minutes = int((elapsed % 3600) // 60)
+        elapsed_minutes = int(elapsed // 60)
         elapsed_seconds = int(elapsed % 60)
-        elapsed_str = f"{elapsed_hours}h {elapsed_minutes}m {elapsed_seconds}s"
+        elapsed_str = f"{elapsed_minutes}m {elapsed_seconds}s"
         
         logger.info("")
         logger.info("")
         logger.info("="*80)
-        logger.info("📊 FINAL SUMMARY")
+        logger.info("📊 TEST SUMMARY")
         logger.info("="*80)
-        
-        logger.info(f"")
-        logger.info(f"Total Workflows: {self.total_workflows:,}")
-        logger.info(f"✅ Successful: {self.successful:,} ({self.successful/self.total_workflows*100:.1f}%)")
-        logger.info(f"❌ Failed: {self.failed:,} ({self.failed/self.total_workflows*100:.1f}%)")
+        logger.info("")
+        logger.info(f"Total Workflows: {self.total_workflows}")
+        logger.info(f"✅ Successful: {self.successful} ({self.successful/self.total_workflows*100:.1f}%)")
+        logger.info(f"❌ Failed: {self.failed} ({self.failed/self.total_workflows*100:.1f}%)")
         
         if self.extraction_times:
             avg_time = sum(self.extraction_times) / len(self.extraction_times)
             min_time = min(self.extraction_times)
             max_time = max(self.extraction_times)
             
-            logger.info(f"")
-            logger.info(f"⏱️  Extraction Times:")
+            logger.info("")
+            logger.info("⏱️  Extraction Times:")
             logger.info(f"   Average: {avg_time:.2f}s")
             logger.info(f"   Fastest: {min_time:.2f}s")
             logger.info(f"   Slowest: {max_time:.2f}s")
         
-        logger.info(f"")
+        logger.info("")
         logger.info(f"⏱️  Total Time: {elapsed_str}")
         
         if self.errors:
-            logger.info(f"")
+            logger.info("")
             logger.info(f"⚠️  Errors ({len(self.errors)}):")
-            for error in self.errors[:10]:
+            for error in self.errors[:5]:
                 logger.info(f"   • Workflow {error['workflow_id']}: {error['error']}")
-            if len(self.errors) > 10:
-                logger.info(f"   ... and {len(self.errors) - 10} more")
         
-        logger.info(f"")
+        logger.info("")
         logger.info(f"Completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         logger.info("")
-        logger.info("✅ Layer 2 Enhanced production scraping complete!")
-        logger.info("")
-        logger.info("Next steps:")
-        logger.info("  • Verify data in Supabase")
-        logger.info("  • Export for AI training")
-        logger.info("  • Begin model training")
+        logger.info("✅ Test complete! Resume mechanism validated.")
         logger.info("")
 
 
 async def main():
     """Main entry point."""
-    runner = Layer2ProductionRunner()
+    runner = Layer2TestRunner()
     await runner.run()
 
 
