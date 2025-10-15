@@ -447,8 +447,8 @@ class EnhancedLayer3Extractor:
             is_embedded = video.get('type') in ['iframe_embed', 'html_embed']
             is_main_content = position == 'main_content'
             is_first = idx == 0
-            is_in_workflow_iframe = 'n8n-preview-service' in iframe_src or 'workflows' in iframe_src
-            has_workflow_context = any(word in surrounding_text or word in iframe_title 
+            is_in_workflow_iframe = (iframe_src and ('n8n-preview-service' in iframe_src or 'workflows' in iframe_src))
+            has_workflow_context = any(word in (surrounding_text or '') or word in (iframe_title or '') 
                                       for word in ['workflow', 'tutorial', 'how to', 'guide', 'video tutorial'])
             
             # Enhanced classification logic
@@ -469,7 +469,7 @@ class EnhancedLayer3Extractor:
             elif position == 'sidebar' or 'related' in location:
                 classification = 'related_workflow'
                 confidence = 0.8
-            elif 'tutorial' in surrounding_text or 'learn' in surrounding_text:
+            elif 'tutorial' in (surrounding_text or '') or 'learn' in (surrounding_text or ''):
                 classification = 'tutorial'
                 confidence = 0.7
             elif is_in_workflow_iframe:
