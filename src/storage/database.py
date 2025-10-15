@@ -14,7 +14,7 @@ from contextlib import contextmanager
 from typing import Generator
 
 from dotenv import load_dotenv
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.pool import QueuePool
@@ -22,10 +22,23 @@ from sqlalchemy.pool import QueuePool
 from loguru import logger
 
 # Load environment variables from .env file
-load_dotenv('/app/.env')
+load_dotenv()
 
-# Database URL - Use environment variable or fallback to localhost
-DATABASE_URL = os.getenv('DATABASE_URL', 'postgresql://scraper_user:scraper_pass@localhost:5432/n8n_scraper')
+# Construct DATABASE_URL from individual environment variables
+db_host = os.getenv('DB_HOST')
+db_port = os.getenv('DB_PORT', '5432')
+db_name = os.getenv('DB_NAME')
+db_user = os.getenv('DB_USER')
+db_password = os.getenv('DB_PASSWORD')
+
+if not all([db_host, db_name, db_user, db_password]):
+    logger.error("❌ Database configuration not found in environment variables. Falling back to localhost.")
+    DATABASE_URL = 'postgresql://scraper_user:scraper_pass@localhost:5432/n8n_scraper'
+else:
+    import urllib.parse
+    encoded_password = urllib.parse.quote_plus(db_password)
+    DATABASE_URL = f"postgresql://{db_user}:{encoded_password}@{db_host}:{db_port}/{db_name}"
+    logger.info(f"🔧 Setting up database connection to: {db_host}:{db_port}/{db_name}")
 
 # Create engine with connection pooling (OPTIMIZED for SCRAPE-014)
 engine = create_engine(
@@ -114,7 +127,11 @@ def get_database_stats() -> dict:
 # Test connection on import
 try:
     with engine.connect() as conn:
-        logger.info(f"Database connected: {DATABASE_URL.split('@')[-1]}")
+        conn.execute(text("SELECT 1"))
+    if db_host:
+        logger.info(f"✅ Database connected: {db_host}:{db_port}/{db_name}")
+    else:
+        logger.info("✅ Database connected: localhost")
 except Exception as e:
-    logger.error(f"Database connection failed: {e}")
-    raise
+    logger.error(f"❌ Database connection failed: {e}")
+    # Don't raise to allow graceful fallback
