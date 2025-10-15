@@ -40,7 +40,7 @@ class EnhancedLayer3Extractor:
     def __init__(
         self,
         headless: bool = True,
-        timeout: int = 60000,  # Increased to 60s for transcripts
+        timeout: int = 120000,  # Increased to 120s for slow pages
         extract_transcripts: bool = True
     ):
         self.headless = headless
