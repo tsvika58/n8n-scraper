@@ -76,7 +76,7 @@ def init_database():
     Note: In production, use Alembic migrations instead.
     This is useful for testing and development.
     """
-    from src.storage.models import Base
+    from n8n_shared.models import Base
     
     logger.info("Initializing database...")
     Base.metadata.create_all(bind=engine)
@@ -89,7 +89,7 @@ def drop_all_tables():
     WARNING: This deletes all data!
     Only use in testing/development.
     """
-    from src.storage.models import Base
+    from n8n_shared.models import Base
     
     logger.warning("Dropping all database tables...")
     Base.metadata.drop_all(bind=engine)

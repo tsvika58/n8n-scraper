@@ -12,7 +12,7 @@ Date: October 10, 2025
 
 import asyncio
 import re
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 from playwright.async_api import Page, Browser, async_playwright, TimeoutError as PlaywrightTimeout
 from loguru import logger
 
@@ -29,7 +29,7 @@ class TranscriptExtractor:
     Performance: ~25-30 seconds per video
     """
     
-    def __init__(self, headless: bool = True, timeout: int = 30000):
+    def __init__(self, headless: bool = True, timeout: int = 30000, preferred_langs: Optional[List[str]] = None):
         """
         Initialize transcript extractor.
         
@@ -39,6 +39,11 @@ class TranscriptExtractor:
         """
         self.headless = headless
         self.timeout = timeout
+        self.preferred_langs = preferred_langs or [
+            "English",
+            "English (auto-generated)",
+            "English (United States)",
+        ]
         self.browser: Optional[Browser] = None
         self.playwright = None
     
@@ -91,14 +96,21 @@ class TranscriptExtractor:
             await page.wait_for_load_state("networkidle", timeout=10000)
             await asyncio.sleep(2)  # Wait for dynamic content
             
-            # Step 2: Try to open transcript panel
+            # Step 2: Dismiss potential overlays (consent/sign-in)
+            await self._dismiss_overlays(page)
+
+            # Step 3: Try to open transcript panel
             transcript_opened = await self._open_transcript_panel(page)
             
             if not transcript_opened:
                 return False, None, "Could not open transcript panel"
             
-            # Step 3: Extract transcript text
-            transcript_text = await self._extract_transcript_text(page)
+            # Step 4: Select language and expand panel
+            await self._select_transcript_language(page)
+            await self._expand_transcript_panel(page)
+
+            # Step 5: Extract transcript text as Markdown
+            transcript_text = await self._extract_transcript_markdown(page)
             
             if transcript_text and len(transcript_text) > 0:
                 logger.info(f"Successfully extracted transcript for {video_id}: {len(transcript_text)} chars")
@@ -119,6 +131,24 @@ class TranscriptExtractor:
         finally:
             if page:
                 await page.close()
+
+    async def _dismiss_overlays(self, page: Page) -> None:
+        """Best-effort dismissal of cookies/consent overlays."""
+        selectors = [
+            'button:has-text("I agree")',
+            'tp-yt-paper-button:has-text("I agree")',
+            'button:has-text("Accept all")',
+            'button:has-text("Accept")',
+            'button[aria-label*="Accept"]',
+        ]
+        for sel in selectors:
+            try:
+                btn = await page.query_selector(sel)
+                if btn:
+                    await btn.click()
+                    await asyncio.sleep(0.3)
+            except:
+                continue
     
     async def _open_transcript_panel(self, page: Page) -> bool:
         """
@@ -219,45 +249,112 @@ class TranscriptExtractor:
             logger.error(f"Error opening transcript panel: {e}")
             return False
     
-    async def _extract_transcript_text(self, page: Page) -> Optional[str]:
+    async def _select_transcript_language(self, page: Page) -> None:
+        """Attempt to select a preferred transcript language if dropdown exists."""
+        try:
+            # Open language dropdown if present
+            # New UI may use transcript header renderer; try multiple selectors
+            dropdown_triggers = [
+                'ytd-transcript-header-renderer tp-yt-paper-dropdown-menu',
+                'ytd-transcript-header-renderer yt-dropdown-menu',
+                'tp-yt-paper-dropdown-menu',
+            ]
+            opened = False
+            for sel in dropdown_triggers:
+                try:
+                    el = await page.query_selector(sel)
+                    if el:
+                        await el.click()
+                        await asyncio.sleep(0.3)
+                        opened = True
+                        break
+                except:
+                    continue
+            if not opened:
+                return
+
+            # Try to pick preferred languages
+            for lang in self.preferred_langs:
+                try:
+                    opt = await page.query_selector(f'yt-formatted-string:has-text("{lang}")')
+                    if opt:
+                        await opt.click()
+                        await asyncio.sleep(0.3)
+                        return
+                except:
+                    continue
+
+            # Fallback: click first available option
+            try:
+                first = await page.query_selector('ytd-transcript-language-dropdown-item-renderer')
+                if first:
+                    await first.click()
+            except:
+                pass
+        except:
+            pass
+
+    async def _expand_transcript_panel(self, page: Page) -> None:
+        """Ensure the transcript panel is fully visible and timestamps are toggled if available."""
+        # Try to toggle timestamps off for cleaner output
+        try:
+            toggle = await page.query_selector(
+                'yt-button-shape:has-text("Toggle timestamps"), button:has-text("Toggle timestamps")'
+            )
+            if toggle:
+                await toggle.click()
+                await asyncio.sleep(0.2)
+        except:
+            pass
+
+        # Scroll the panel to ensure all segments load
+        try:
+            for _ in range(10):
+                await page.evaluate(
+                    """
+                    const el=document.querySelector('ytd-transcript-renderer, ytd-engagement-panel-section-list-renderer');
+                    if(el){ el.scrollBy(0, Math.floor(window.innerHeight*0.9)); }
+                    """
+                )
+                await asyncio.sleep(0.15)
+        except:
+            pass
+
+    async def _extract_transcript_markdown(self, page: Page) -> Optional[str]:
         """
-        Extract transcript text from the transcript panel.
+        Extract transcript text from the transcript panel as Markdown.
         
         Args:
             page: Playwright page object
             
         Returns:
-            Transcript text or None if not found
+            Markdown transcript string or None if not found
         """
         try:
             # Wait for transcript segments to load
             await asyncio.sleep(1)
             
-            # Try multiple selectors for transcript segments
-            segment_selectors = [
-                'ytd-transcript-segment-renderer .segment-text',
-                '.ytd-transcript-segment-renderer',
-                '[class*="segment-text"]',
-                'yt-formatted-string.segment-text'
-            ]
-            
-            for selector in segment_selectors:
-                try:
-                    segments = await page.locator(selector).all_text_contents()
-                    
-                    if segments and len(segments) > 0:
-                        # Clean and join segments
-                        clean_segments = [seg.strip() for seg in segments if seg.strip()]
-                        full_text = ' '.join(clean_segments)
-                        
-                        if len(full_text) > 50:  # Reasonable minimum length
-                            logger.debug(f"Extracted {len(segments)} segments with selector: {selector}")
-                            return full_text
-                except:
-                    continue
-            
-            logger.warning("No transcript segments found with any selector")
-            return None
+            # Segment rows
+            row_sel = 'ytd-transcript-segment-renderer'
+            rows = await page.locator(row_sel).count()
+            if rows == 0:
+                logger.warning("No transcript segments found")
+                return None
+
+            lines: List[str] = []
+            for i in range(rows):
+                row = page.locator(row_sel).nth(i)
+                # timestamp
+                ts_nodes = await row.locator('.segment-timestamp').all_text_contents()
+                ts = ts_nodes[0].strip() if ts_nodes else ""
+                # text
+                txt_nodes = await row.locator('.segment-text, yt-formatted-string.segment-text').all_text_contents()
+                text = " ".join(t.strip() for t in txt_nodes if t.strip())
+                if text:
+                    lines.append(f"- {('`'+ts+'` ') if ts else ''}{text}")
+
+            md = "\n\n".join(lines).strip()
+            return md if len(md) > 50 else None
             
         except Exception as e:
             logger.error(f"Error extracting transcript text: {e}")

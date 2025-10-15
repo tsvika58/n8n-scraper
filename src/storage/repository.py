@@ -18,7 +18,7 @@ from sqlalchemy import func, and_, or_
 from loguru import logger
 
 from src.storage.database import get_session
-from src.storage.models import (
+from n8n_shared.models import (
     Workflow,
     WorkflowMetadata,
     WorkflowStructure,

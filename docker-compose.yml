@@ -1,20 +1,60 @@
 # N8N Workflow Scraper - Production Architecture
-# Version: 2.5 - Simple Service Separation with Supabase
-# Purpose: Clean separation with working Supabase connection
+# Version: 3.0 - With Redis for Global Connection Coordination
+# Purpose: Clean separation with working Supabase connection + Redis coordination
 
 services:
+  # ============================================================================
+  # REDIS - Connection Coordinator (Scraper Project Only)
+  # ============================================================================
+  scraper-redis:
+    image: redis:7-alpine
+    container_name: n8n-scraper-redis
+    restart: unless-stopped
+    
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    
+    volumes:
+      - scraper-redis-data:/data
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    
+    networks:
+      - n8n-scraper-network
+    
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+
   # ============================================================================
   # APPLICATION SERVICE - Connects directly to Supabase
   # ============================================================================
   n8n-scraper-app:
-    build: .
+    build: 
+      context: ..
+      dockerfile: n8n-scraper/Dockerfile
     container_name: n8n-scraper-app
     restart: unless-stopped
+    
+    depends_on:
+      scraper-redis:
+        condition: service_healthy
     
     # Environment variables
     environment:
       # Database connection (DIRECT TO SUPABASE)
       DATABASE_URL: postgresql://postgres.skduopoakfeaurttcaip:crg3pjm8ych4ctu%40KXT@aws-1-eu-north-1.pooler.supabase.com:5432/postgres
+      
+      # Redis connection coordination (SCRAPER PROJECT ONLY)
+      REDIS_URL: redis://scraper-redis:6379
+      SERVICE_NAME: scraper
+      SUPABASE_PLAN: free
+      SUPABASE_MAX_CONNECTIONS: 60
       
       # Application settings
       PYTHONPATH: /app
@@ -52,7 +92,7 @@ services:
     ports:
       - "5001:5001"  # WebSocket Dashboard (HTTP)
       - "5002:5002"  # WebSocket Dashboard (WebSocket)
-      - "5004:5004"  # Database Viewer
+      # Database Viewer now runs separately on port 8080 (n8n-workflow-viewer)
     
     # Volume mounts
     volumes:
@@ -62,6 +102,10 @@ services:
       - ./src:/app/src
       - ./tests:/app/tests
       - ./evidence:/app/evidence
+    
+    # Network configuration
+    networks:
+      - n8n-scraper-network
     
     # Health check
     healthcheck:
@@ -86,12 +130,14 @@ services:
 # ============================================================================
 # VOLUMES
 # ============================================================================
-# No volumes needed - using Supabase cloud database
+volumes:
+  scraper-redis-data:
+    driver: local
 
 # ============================================================================
 # NETWORKS
 # ============================================================================
 networks:
-  default:
+  n8n-scraper-network:
     name: n8n-scraper-network
     driver: bridge

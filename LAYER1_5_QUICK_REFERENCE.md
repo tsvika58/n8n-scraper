@@ -181,3 +181,5 @@ WHERE layer1_5_extracted_at > NOW() - INTERVAL '1 hour';
 3. Validate: Check SQL queries above
 4. Production: `docker exec -d n8n-scraper-app python /app/scripts/layer1_5_production_scraper.py --all`
 
+
+

@@ -231,7 +231,7 @@ class ProductionLayer3Extractor:
             for link in links:
                 try:
                     href = await link.get_attribute('href')
-                    if href:
+                    if href and self._is_valid_youtube_video_url(href):
                         videos.append({'type': 'video_link', 'url': href})
                 except:
                     pass
@@ -240,6 +240,31 @@ class ProductionLayer3Extractor:
         
         return videos
     
+    def _is_valid_youtube_video_url(self, url: str) -> bool:
+        """Check if URL is an actual YouTube video (not channel/playlist)"""
+        if not url:
+            return False
+        
+        # Skip channel/user/playlist URLs
+        invalid_patterns = [
+            r'youtube\.com/c/',           # Channel
+            r'youtube\.com/@',            # Handle
+            r'youtube\.com/user/',        # User
+            r'youtube\.com/playlist',     # Playlist
+            r'^/',                        # Relative URL
+        ]
+        
+        for pattern in invalid_patterns:
+            if re.search(pattern, url):
+                return False
+        
+        # Must have valid video ID (11 characters)
+        video_id = self._extract_youtube_id(url)
+        if video_id and len(video_id) == 11:
+            return True
+        
+        return False
+    
     def _discover_videos_beautifulsoup(self, soup: BeautifulSoup) -> List[Dict]:
         """Discover videos using BeautifulSoup (regex patterns)"""
         videos = []
@@ -247,23 +272,36 @@ class ProductionLayer3Extractor:
         # Get all page content
         page_text = str(soup)
         
-        # YouTube patterns
+        # YouTube video ID patterns (11-character alphanumeric)
         patterns = [
-            r'https?://(?:www\.)?youtube\.com/watch\?v=([\w-]+)',
-            r'https?://(?:www\.)?youtube\.com/embed/([\w-]+)',
-            r'https?://youtu\.be/([\w-]+)',
+            r'https?://(?:www\.)?youtube\.com/watch\?v=([\w-]{11})',
+            r'https?://(?:www\.)?youtube\.com/embed/([\w-]{11})',
+            r'https?://youtu\.be/([\w-]{11})',
         ]
         
         for pattern in patterns:
             matches = re.findall(pattern, page_text)
             for match in matches:
-                videos.append({
-                    'type': 'regex_discovered',
-                    'url': f'https://youtu.be/{match}',
-                    'youtube_id': match
-                })
+                # Validate it's not a channel/user URL
+                if self._is_valid_video_id(match):
+                    videos.append({
+                        'type': 'regex_discovered',
+                        'url': f'https://youtu.be/{match}',
+                        'youtube_id': match
+                    })
         
         return videos
+    
+    def _is_valid_video_id(self, video_id: str) -> bool:
+        """Validate YouTube video ID (must be exactly 11 characters)"""
+        if not video_id or len(video_id) != 11:
+            return False
+        
+        # Check it's alphanumeric with dashes/underscores
+        if not re.match(r'^[\w-]{11}$', video_id):
+            return False
+        
+        return True
     
     def _deduplicate_videos(self, videos: List[Dict]) -> List[Dict]:
         """Deduplicate videos by YouTube ID or URL"""

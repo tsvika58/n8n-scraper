@@ -19,7 +19,7 @@ from datetime import datetime
 from loguru import logger
 
 from src.storage.database import get_session
-from src.storage.models import WorkflowMetadata, Workflow
+from n8n_shared.models import WorkflowMetadata, Workflow
 from src.scrapers.layer1_metadata import PageMetadataExtractor
 from sqlalchemy import text
 

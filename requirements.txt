@@ -41,6 +41,7 @@ yt-dlp==2023.12.30              # Video metadata extraction
 sqlalchemy==2.0.23              # ORM for clean database operations
 alembic==1.13.1                 # Database migrations
 psycopg2-binary==2.9.9          # PostgreSQL adapter for Python
+redis==5.0.1                    # Redis client for connection coordination
 
 # ============================================================================
 # MONITORING & LOGGING (Essential)
@@ -86,3 +87,8 @@ pre-commit==3.6.0               # Pre-commit hooks
 # Total size: ~500MB
 # ============================================================================
 pytest-html==4.1.1   # HTML test reports
+
+# ============================================================================
+# SHARED PACKAGE (N8N Platform) - Installed via Dockerfile
+# ============================================================================
+# -e ../n8n-shared   # Shared models and utilities (installed in Dockerfile)

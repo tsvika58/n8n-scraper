@@ -134,3 +134,5 @@ def migrate_schema():
 if __name__ == "__main__":
     success = migrate_schema()
     sys.exit(0 if success else 1)
+
+

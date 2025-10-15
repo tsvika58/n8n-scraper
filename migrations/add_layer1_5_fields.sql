@@ -22,3 +22,5 @@ COMMENT ON COLUMN workflow_metadata.layer1_5_content_markdown IS 'Complete page 
 COMMENT ON COLUMN workflow_metadata.layer1_5_metadata IS 'Queryable metadata including content_length, examples_count, has_images, etc.';
 COMMENT ON COLUMN workflow_metadata.layer1_5_extracted_at IS 'Timestamp when Layer 1.5 extraction was completed';
 
+
+

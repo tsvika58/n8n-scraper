@@ -1,0 +1,168 @@
+# N8N Workflow Scraper - Production Architecture with Global Connection Coordination
+# Version: 3.0 - Redis-based cross-container connection management
+# Purpose: Coordinate database connections across all containers
+
+services:
+  # ============================================================================
+  # REDIS - Connection Coordinator
+  # ============================================================================
+  redis-coordinator:
+    image: redis:7-alpine
+    container_name: n8n-scraper-redis
+    restart: unless-stopped
+    
+    ports:
+      - "6379:6379"
+    
+    volumes:
+      - redis-data:/data
+    
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    
+    networks:
+      - scraper-network
+
+  # ============================================================================
+  # APPLICATION SERVICE - Scraper with Global Coordination
+  # ============================================================================
+  n8n-scraper-app:
+    build: .
+    container_name: n8n-scraper-app
+    restart: unless-stopped
+    
+    depends_on:
+      redis-coordinator:
+        condition: service_healthy
+    
+    environment:
+      # Database connection (DIRECT TO SUPABASE)
+      DATABASE_URL: postgresql://postgres.skduopoakfeaurttcaip:crg3pjm8ych4ctu%40KXT@aws-1-eu-north-1.pooler.supabase.com:5432/postgres
+      
+      # Global connection coordination
+      REDIS_URL: redis://redis-coordinator:6379
+      SERVICE_NAME: scraper
+      SUPABASE_PLAN: free  # Options: free, pro, team, enterprise
+      SUPABASE_MAX_CONNECTIONS: 60  # Adjust based on your plan
+      
+      # Application settings
+      PYTHONPATH: /app
+      PYTHONUNBUFFERED: 1
+      SCRAPER_ENV: production
+      SCRAPER_LOG_LEVEL: INFO
+      
+      # Browser settings
+      BROWSER_HEADLESS: "true"
+      BROWSER_TIMEOUT: 30000
+      BROWSER_VIEWPORT_WIDTH: 1920
+      BROWSER_VIEWPORT_HEIGHT: 1080
+      
+      # Rate limiting
+      RATE_LIMIT_REQUESTS_PER_MINUTE: 60
+      RATE_LIMIT_BURST_SIZE: 10
+      
+      # Retry settings
+      MAX_RETRIES: 3
+      RETRY_DELAY: 2
+      
+      # Batch processing
+      BATCH_SIZE: 10
+      MAX_CONCURRENT_WORKFLOWS: 5
+      
+      # Monitoring
+      ENABLE_METRICS: "true"
+      METRICS_PORT: 9090
+      
+      # Security
+      ENABLE_SSL: "true"
+      SSL_VERIFY: "true"
+    
+    ports:
+      - "5001:5001"  # WebSocket Dashboard (HTTP)
+      - "5002:5002"  # WebSocket Dashboard (WebSocket)
+    
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./scripts:/app/scripts
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./evidence:/app/evidence
+    
+    healthcheck:
+      test: ["CMD", "python", "-c", "from src.storage.global_connection_coordinator import global_coordinator; exit(0 if global_coordinator.use_redis else 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    networks:
+      - scraper-network
+    
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+
+  # ============================================================================
+  # VIEWER SERVICE - With Global Coordination
+  # ============================================================================
+  workflow-viewer:
+    build: ../n8n-workflow-viewer
+    container_name: scraper-db-viewer
+    restart: unless-stopped
+    
+    depends_on:
+      redis-coordinator:
+        condition: service_healthy
+    
+    environment:
+      # Database connection
+      DATABASE_URL: postgresql+asyncpg://postgres.skduopoakfeaurttcaip:crg3pjm8ych4ctu%40KXT@aws-1-eu-north-1.pooler.supabase.com:5432/postgres
+      
+      # Global connection coordination
+      REDIS_URL: redis://redis-coordinator:6379
+      SERVICE_NAME: viewer
+      SUPABASE_PLAN: free
+      SUPABASE_MAX_CONNECTIONS: 60
+      
+      # Viewer settings
+      READ_ONLY: "true"
+      DEBUG: "false"
+    
+    ports:
+      - "8080:8080"
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+    networks:
+      - scraper-network
+
+# ============================================================================
+# VOLUMES
+# ============================================================================
+volumes:
+  redis-data:
+    driver: local
+
+# ============================================================================
+# NETWORKS
+# ============================================================================
+networks:
+  scraper-network:
+    name: n8n-scraper-network
+    driver: bridge
+

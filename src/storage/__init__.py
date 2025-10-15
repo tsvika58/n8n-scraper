@@ -18,36 +18,32 @@ from src.storage.database import (
     get_database_stats
 )
 
-from src.storage.models import (
+from src.models import (
     Base,
     Workflow,
     WorkflowMetadata,
     WorkflowStructure,
     WorkflowContent,
-    VideoTranscript
+    VideoTranscript,
+    WorkflowBusinessIntelligence,
+    WorkflowCommunityData,
+    WorkflowTechnicalDetails,
 )
 
-from src.storage.repository import WorkflowRepository
-
 __all__ = [
-    # Database
-    'engine',
-    'SessionLocal', 
-    'get_session',
-    'init_database',
-    'drop_all_tables',
-    'get_database_stats',
-    
-    # Models
-    'Base',
-    'Workflow',
-    'WorkflowMetadata',
-    'WorkflowStructure', 
-    'WorkflowContent',
-    'VideoTranscript',
-    
-    # Repository
-    'WorkflowRepository',
+    "engine",
+    "SessionLocal", 
+    "get_session",
+    "init_database",
+    "drop_all_tables",
+    "get_database_stats",
+    "Base",
+    "Workflow",
+    "WorkflowMetadata", 
+    "WorkflowStructure",
+    "WorkflowContent",
+    "VideoTranscript",
+    "WorkflowBusinessIntelligence",
+    "WorkflowCommunityData",
+    "WorkflowTechnicalDetails",
 ]
-
-__version__ = '1.0.0'

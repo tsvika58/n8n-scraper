@@ -141,3 +141,5 @@ SELECT
 FROM pg_indexes
 WHERE tablename = 'workflow_content'
 ORDER BY indexname;
+
+

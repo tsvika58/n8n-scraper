@@ -71,10 +71,15 @@ WORKDIR /app
 # INSTALL PYTHON DEPENDENCIES
 # ============================================================================
 # Copy requirements first (better caching)
-COPY --chown=scraper:scraper requirements.txt .
+# Copy shared package first (for editable install)
+COPY --chown=scraper:scraper n8n-shared/ /app/n8n-shared/
 
-# Install Python packages
+# Copy requirements first (for better Docker layer caching)
+COPY --chown=scraper:scraper n8n-scraper/requirements.txt .
+
+# Install Python packages (including shared package)
 RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -e /app/n8n-shared && \
     pip install --no-cache-dir -r requirements.txt
 
 # Install Playwright browsers (Chromium only)
@@ -85,7 +90,7 @@ RUN playwright install chromium
 # ============================================================================
 # COPY APPLICATION CODE
 # ============================================================================
-COPY --chown=scraper:scraper . .
+COPY --chown=scraper:scraper n8n-scraper/ .
 
 # ============================================================================
 # CREATE DATA DIRECTORIES

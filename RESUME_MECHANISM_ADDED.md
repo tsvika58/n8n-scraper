@@ -140,3 +140,5 @@ docker exec n8n-scraper-app python /app/scripts/layer1_to_supabase.py --all --fo
 **Status:** ✅ **READY TO RESUME** - Just copy the updated script and run with `--all`
 
 
+
+

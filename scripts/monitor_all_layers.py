@@ -92,6 +92,44 @@ def get_layer2_stats():
             'pct': (result[1] / result[0] * 100) if result[0] > 0 else 0
         }
 
+def get_layer3_stats():
+    """Get Layer 3 statistics"""
+    with get_session() as session:
+        # Get total workflows that need Layer 3 processing
+        total_result = session.execute(text("""
+            SELECT COUNT(*) FROM workflows
+        """)).fetchone()
+        
+        # Get Layer 3 progress from workflow_content table
+        progress_result = session.execute(text("""
+            SELECT 
+                COUNT(*) as total_records,
+                COUNT(CASE WHEN layer3_success = true THEN 1 END) as completed,
+                COUNT(CASE WHEN layer3_success IS NULL THEN 1 END) as not_started,
+                COUNT(CASE WHEN layer3_success = false THEN 1 END) as failed,
+                COALESCE(SUM(CASE WHEN layer3_success = true THEN video_count ELSE 0 END), 0) as total_videos,
+                COALESCE(SUM(CASE WHEN layer3_success = true THEN transcript_count ELSE 0 END), 0) as total_transcripts,
+                COALESCE(AVG(CASE WHEN layer3_success = true THEN quality_score END), 0) as avg_quality
+            FROM workflow_content
+        """)).fetchone()
+        
+        total_workflows = total_result[0]
+        total_records = progress_result[0]
+        completed = progress_result[1] or 0
+        not_started = progress_result[2] or 0
+        failed = progress_result[3] or 0
+        remaining = total_workflows - total_records  # Workflows not yet in workflow_content
+        
+        return {
+            'total': total_workflows,
+            'completed': completed,
+            'remaining': remaining + not_started,
+            'total_videos': int(progress_result[4]) or 0,
+            'total_transcripts': int(progress_result[5]) or 0,
+            'avg_quality': int(progress_result[6]) if progress_result[6] else 0,
+            'pct': (completed / total_workflows * 100) if total_workflows > 0 else 0
+        }
+
 def draw_progress_bar(pct, width=40):
     """Draw a progress bar"""
     filled = int(width * pct / 100)
@@ -103,7 +141,7 @@ def monitor_all_layers():
     print("\033[2J\033[H")  # Clear screen
     print("🔄 UNIFIED SCRAPING PROGRESS MONITOR")
     print("=" * 80)
-    print("Monitoring Layer 1.5 (Page Content) & Layer 2 (Technical Data)")
+    print("Monitoring Layer 1.5, Layer 2 & Layer 3")
     print("Press Ctrl+C to stop monitoring\n")
     
     l1_5_start = get_layer_start_time('layer1_5')
@@ -120,6 +158,7 @@ def monitor_all_layers():
             # Get current stats
             l1_5 = get_layer1_5_stats()
             l2 = get_layer2_stats()
+            l3 = get_layer3_stats()
             
             now = datetime.utcnow()
             
@@ -150,9 +189,18 @@ def monitor_all_layers():
             print(f"Remaining: {l2['remaining']:,} workflows")
             print(f"⏱️  Elapsed: {l2_elapsed_str} | ETA: {l2_eta_str} | Complete: {l2_eta_jst} Jerusalem")
             
+            # Layer 3 Section
+            print("\n🎥 LAYER 3 - VIDEO & TRANSCRIPT EXTRACTION")
+            print("-" * 80)
+            print(f"Progress: {l3['completed']:,}/{l3['total']:,} workflows ({l3['pct']:.1f}%)")
+            print(f"[{draw_progress_bar(l3['pct'])}]")
+            print(f"Remaining: {l3['remaining']:,} workflows")
+            print(f"Videos Found: {l3['total_videos']:,} | Transcripts: {l3['total_transcripts']:,}")
+            print(f"Avg Quality: {l3['avg_quality']}/100")
+            
             # Overall Summary
-            total_completed = l1_5['completed'] + l2['completed']
-            total_workflows = l1_5['total'] + l2['total']
+            total_completed = l1_5['completed'] + l2['completed'] + l3['completed']
+            total_workflows = l1_5['total'] + l2['total'] + l3['total']
             overall_pct = (total_completed / total_workflows * 100) if total_workflows > 0 else 0
             
             print("\n📊 OVERALL PROGRESS")
@@ -185,11 +233,13 @@ def print_final_summary():
     """Print final summary"""
     l1_5 = get_layer1_5_stats()
     l2 = get_layer2_stats()
+    l3 = get_layer3_stats()
     
     print("\n📊 FINAL STATUS SUMMARY")
     print("=" * 80)
     print(f"Layer 1.5: {l1_5['completed']:,}/{l1_5['total']:,} ({l1_5['pct']:.1f}%)")
     print(f"Layer 2:   {l2['completed']:,}/{l2['total']:,} ({l2['pct']:.1f}%)")
+    print(f"Layer 3:   {l3['completed']:,}/{l3['total']:,} ({l3['pct']:.1f}%) - {l3['total_videos']} videos, {l3['total_transcripts']} transcripts")
     print("=" * 80)
 
 if __name__ == "__main__":

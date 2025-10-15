@@ -245,3 +245,5 @@ async def analyze_scrapable_data():
 if __name__ == '__main__':
     asyncio.run(analyze_scrapable_data())
 
+
+
