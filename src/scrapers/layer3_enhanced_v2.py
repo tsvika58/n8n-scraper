@@ -84,8 +84,8 @@ class EnhancedLayer3Extractor:
             
             # Navigate to page
             logger.info(f"📥 Loading {workflow_id}: {url}")
-            await page.goto(url, timeout=self.timeout, wait_until='networkidle')
-            await page.wait_for_timeout(2000)  # Let dynamic content load
+            await page.goto(url, timeout=self.timeout, wait_until='domcontentloaded')
+            await page.wait_for_timeout(5000)  # Let dynamic content load
             
             # Phase 1: Discover all videos with context
             logger.info(f"🔍 Discovering videos for {workflow_id}")

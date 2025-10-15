@@ -1,0 +1,27 @@
+
+🎯 PRODUCTION VALIDATION REPORT
+============================================================
+Start Time: 2025-10-15T20:27:16.422990
+End Time: 2025-10-15T20:31:01.047652
+Validation Passed: ❌ NO
+
+📊 RESULTS:
+- Database Connection: ✅
+- Scraping Results: 5/7 workflows
+- DB Viewer Main: ❌
+- DB Viewer Details: 0/7 workflows
+
+📈 SCRAPING RESULTS:
+  6270: 1 videos, 1 transcripts, Q:0
+  8642: 2 videos, 2 transcripts, Q:0
+  8527: 3 videos, 3 transcripts, Q:0
+  8237: 1 videos, 1 transcripts, Q:0
+  7639: 1 videos, 1 transcripts, Q:0
+
+❌ ERRORS (1):
+  - Scraping failed for 5170: Page.goto: Timeout 60000ms exceeded.
+Call log:
+  - navigating to "https://n8n.io/workflows/5170-learn-json-basics-with-an-interactive-step-by-step-tutorial-for-beginners/", waiting until "networkidle"
+
+
+============================================================

@@ -1,0 +1,52 @@
+{
+  "start_time": "2025-10-15T20:27:16.422990",
+  "database_connection": true,
+  "scraping_results": {
+    "6270": {
+      "success": true,
+      "video_count": 1,
+      "transcript_count": 1,
+      "content_length": 0,
+      "quality_score": 0
+    },
+    "8642": {
+      "success": true,
+      "video_count": 2,
+      "transcript_count": 2,
+      "content_length": 0,
+      "quality_score": 0
+    },
+    "8527": {
+      "success": true,
+      "video_count": 3,
+      "transcript_count": 3,
+      "content_length": 0,
+      "quality_score": 0
+    },
+    "8237": {
+      "success": true,
+      "video_count": 1,
+      "transcript_count": 1,
+      "content_length": 0,
+      "quality_score": 0
+    },
+    "7639": {
+      "success": true,
+      "video_count": 1,
+      "transcript_count": 1,
+      "content_length": 0,
+      "quality_score": 0
+    }
+  },
+  "db_viewer_main": false,
+  "db_viewer_details": {},
+  "errors": [
+    {
+      "message": "Scraping failed for 5170: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://n8n.io/workflows/5170-learn-json-basics-with-an-interactive-step-by-step-tutorial-for-beginners/\", waiting until \"networkidle\"\n",
+      "exception": null,
+      "timestamp": "2025-10-15T20:31:00.922804"
+    }
+  ],
+  "validation_passed": false,
+  "end_time": "2025-10-15T20:31:01.047652"
+}
