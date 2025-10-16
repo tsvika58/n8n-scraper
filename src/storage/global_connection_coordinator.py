@@ -408,3 +408,4 @@ def release_all_connections():
     """Release all connections (shutdown)"""
     global_coordinator.release_connections()
 
+

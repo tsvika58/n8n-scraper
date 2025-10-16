@@ -574,3 +574,4 @@ Global Connection Coordination provides:
 - Environment variables (SERVICE_NAME, REDIS_URL, SUPABASE_PLAN)
 - Minimal code changes (just import path)
 
+

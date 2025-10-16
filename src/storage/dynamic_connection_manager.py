@@ -405,3 +405,4 @@ def shutdown_dynamic_pool():
     """Shutdown dynamic connection pool"""
     dynamic_connection_manager.shutdown()
 
+

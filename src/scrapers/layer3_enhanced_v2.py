@@ -87,9 +87,16 @@ class EnhancedLayer3Extractor:
             await page.goto(url, timeout=self.timeout, wait_until='domcontentloaded')
             await page.wait_for_timeout(5000)  # Let dynamic content load
             
-            # Phase 1: Discover all videos with context
-            logger.info(f"🔍 Discovering videos for {workflow_id}")
-            videos_with_context = await self._discover_all_videos(page, workflow_id)
+            # Phase 1: Extract videos from JSON sticky notes (primary method)
+            logger.info(f"🔍 Extracting videos from JSON for {workflow_id}")
+            json_videos = await self._extract_videos_from_json(workflow_id)
+            
+            # Phase 1.5: Discover additional videos from iframe (fallback)
+            logger.info(f"🔍 Discovering additional videos from iframe for {workflow_id}")
+            iframe_videos = await self._discover_all_videos(page, workflow_id)
+            
+            # Combine videos from both sources
+            videos_with_context = json_videos + iframe_videos
             
             # Phase 2: Classify videos
             logger.info(f"🏷️  Classifying {len(videos_with_context)} videos")
@@ -98,6 +105,10 @@ class EnhancedLayer3Extractor:
             # Phase 3: Extract content
             logger.info(f"📝 Extracting content for {workflow_id}")
             content_data = await self._extract_content(page)
+            
+            # Phase 3.5: Extract standalone sticky notes
+            logger.info(f"📌 Extracting standalone sticky notes for {workflow_id}")
+            standalone_docs = await self._extract_standalone_sticky_notes(page, workflow_id)
             
             # Phase 4: Extract transcripts
             transcripts = {}
@@ -134,6 +145,11 @@ class EnhancedLayer3Extractor:
                     
                     # Content
                     **content_data,
+                    
+                    # Standalone docs
+                    'standalone_docs': standalone_docs,
+                    'standalone_doc_count': len(standalone_docs),
+                    'has_standalone_docs': len(standalone_docs) > 0,
                     
                     # Stats
                     'deduplication_stats': {
@@ -409,6 +425,248 @@ class EnhancedLayer3Extractor:
             logger.debug(f"Error discovering videos in {location}: {e}")
         
         return videos
+    
+    async def _extract_videos_from_json(self, workflow_id: str) -> List[Dict]:
+        """
+        Extract videos from JSON sticky notes.
+        This is the primary method for video discovery.
+        """
+        videos = []
+        
+        try:
+            # Get workflow JSON
+            from src.scrapers.layer2_json import WorkflowJSONExtractor
+            json_extractor = WorkflowJSONExtractor()
+            result = await json_extractor.extract(workflow_id)
+            
+            if not result.get('success') or not result.get('data'):
+                logger.warning(f"   ⚠️ Could not get JSON for {workflow_id}")
+                return videos
+            
+            workflow_data = result['data'].get('workflow', {})
+            nodes = workflow_data.get('nodes', [])
+            
+            # Look for sticky notes with video content
+            for node in nodes:
+                if node.get('type') == 'n8n-nodes-base.stickyNote':
+                    content = node.get('parameters', {}).get('content', '')
+                    if content:
+                        # Extract YouTube links from content
+                        youtube_links = self._extract_youtube_links_from_text(content)
+                        for link in youtube_links:
+                            video_id = self._extract_youtube_id(link)
+                            if video_id:
+                                videos.append({
+                                    'url': f'https://youtu.be/{video_id}',
+                                    'youtube_id': video_id,
+                                    'type': 'json_sticky_note',
+                                    'context': {
+                                        'location': 'json_sticky_note',
+                                        'sticky_note_id': node.get('id', ''),
+                                        'sticky_note_name': node.get('name', ''),
+                                        'position': {
+                                            'x': (node.get('position') or [0, 0])[0],
+                                            'y': (node.get('position') or [0, 0])[1]
+                                        },
+                                        'content_preview': content[:100] + '...' if len(content) > 100 else content
+                                    }
+                                })
+            
+            logger.info(f"   🎬 Found {len(videos)} videos in JSON sticky notes")
+            
+        except Exception as e:
+            logger.error(f"   ❌ Error extracting videos from JSON: {e}")
+        
+        return videos
+    
+    def _extract_youtube_links_from_text(self, text: str) -> List[str]:
+        """Extract YouTube links from text content."""
+        import re
+        
+        # Patterns for YouTube links
+        patterns = [
+            r'https?://(?:www\.)?youtube\.com/watch\?v=([\w-]{11})',
+            r'https?://(?:www\.)?youtu\.be/([\w-]{11})',
+            r'@\[youtube\]\(([\w-]{11})\)',  # n8n markdown format
+            r'youtube\.com/watch\?v=([\w-]{11})',
+            r'youtu\.be/([\w-]{11})'
+        ]
+        
+        links = []
+        for pattern in patterns:
+            matches = re.findall(pattern, text)
+            for match in matches:
+                if isinstance(match, tuple):
+                    match = match[0]
+                if self._is_valid_video_id(match):
+                    links.append(f'https://youtu.be/{match}')
+        
+        return list(set(links))  # Remove duplicates
+    
+    async def _extract_standalone_sticky_notes(self, page: Page, workflow_id: str) -> List[Dict[str, Any]]:
+        """
+        Extract standalone sticky notes from the workflow iframe.
+        These are sticky notes that don't contain nodes - just explanatory text.
+        L3 operates independently and classifies sticky notes based on visual/structural analysis.
+        """
+        standalone_docs = []
+        
+        try:
+            # Find the workflow iframe
+            workflow_frame = await self._find_workflow_iframe(page)
+            if not workflow_frame:
+                logger.warning(f"⚠️  No workflow iframe found for {workflow_id}")
+                return standalone_docs
+            
+            logger.info(f"🔍 Searching for standalone sticky notes in iframe for {workflow_id}")
+            
+            # Wait for iframe content to load
+            await workflow_frame.wait_for_timeout(3000)
+            
+            # Find all sticky note elements
+            sticky_selectors = [
+                '[class*="sticky"]',
+                '[data-test-id*="sticky"]', 
+                '[class*="note"]',
+                '[class*="annotation"]',
+                '[class*="explanation"]'
+            ]
+            
+            sticky_elements = []
+            for selector in sticky_selectors:
+                try:
+                    elements = await workflow_frame.query_selector_all(selector)
+                    sticky_elements.extend(elements)
+                    logger.debug(f"   Found {len(elements)} elements with selector: {selector}")
+                except Exception as e:
+                    logger.debug(f"   Selector {selector} failed: {e}")
+                    continue
+            
+            # Remove duplicates
+            sticky_elements = list(set(sticky_elements))
+            logger.info(f"   Found {len(sticky_elements)} total sticky elements")
+            
+            # Check each sticky note to see if it's standalone (no nodes inside)
+            for i, element in enumerate(sticky_elements):
+                try:
+                    # Get the text content
+                    text_content = await element.inner_text()
+                    if not text_content or len(text_content.strip()) < 10:
+                        continue
+                    
+                    # Check if this sticky note contains any nodes
+                    node_selectors = [
+                        '[data-node-name]',
+                        '[class*="node"]',
+                        '[data-test-id*="node"]'
+                    ]
+                    
+                    has_nodes = False
+                    for node_selector in node_selectors:
+                        try:
+                            nodes = await element.query_selector_all(node_selector)
+                            if nodes:
+                                has_nodes = True
+                                break
+                        except:
+                            continue
+                    
+                    # If no nodes found, this is a standalone sticky note
+                    if not has_nodes:
+                        # Get additional context
+                        element_html = await element.inner_html()
+                        element_class = await element.get_attribute('class') or ''
+                        
+                        doc = {
+                            'doc_type': 'standalone_sticky_note',
+                            'doc_title': f"Standalone Sticky Note {i+1}",
+                            'doc_content': text_content.strip(),
+                            'extraction_method': 'iframe_visual_detection',
+                            'confidence_score': 0.9,
+                            'context': {
+                                'location': 'workflow_iframe',
+                                'element_index': i,
+                                'has_nodes': False,
+                                'element_html': element_html,
+                                'element_class': element_class
+                            }
+                        }
+                        
+                        standalone_docs.append(doc)
+                        logger.debug(f"   ✅ Found standalone sticky note {i+1}: {len(text_content)} chars")
+                    
+                except Exception as e:
+                    logger.debug(f"   ❌ Error processing sticky element {i}: {e}")
+                    continue
+            
+            logger.info(f"   📌 Found {len(standalone_docs)} standalone sticky notes")
+            
+        except Exception as e:
+            logger.error(f"❌ Error extracting standalone sticky notes for {workflow_id}: {e}")
+        
+        return standalone_docs
+    
+    async def _find_workflow_iframe(self, page: Page) -> Optional[Frame]:
+        """
+        Find the workflow demo iframe specifically.
+        Returns the iframe frame or None if not found.
+        """
+        try:
+            # Wait for iframe to load dynamically
+            await page.wait_for_timeout(3000)
+            
+            # Look for iframe elements first (even without src)
+            iframe_elements = await page.query_selector_all('iframe')
+            logger.debug(f"   Found {len(iframe_elements)} iframe elements")
+            
+            for i, iframe_element in enumerate(iframe_elements):
+                try:
+                    # Check if this iframe has the right src
+                    src = await iframe_element.get_attribute('src')
+                    logger.debug(f"   Iframe {i+1}: {src}")
+                    
+                    if src and ('n8n-preview-service' in src or 'demo' in src or 'workflow' in src):
+                        logger.debug(f"   Found workflow iframe: {src}")
+                        # Get the frame from the iframe element
+                        frame = await iframe_element.content_frame()
+                        if frame:
+                            return frame
+                    
+                    # If no src yet, wait a bit more and check again
+                    if not src:
+                        await page.wait_for_timeout(2000)
+                        src = await iframe_element.get_attribute('src')
+                        logger.debug(f"   Iframe {i+1} after wait: {src}")
+                        
+                        if src and ('n8n-preview-service' in src or 'demo' in src or 'workflow' in src):
+                            logger.debug(f"   Found workflow iframe after wait: {src}")
+                            frame = await iframe_element.content_frame()
+                            if frame:
+                                return frame
+                                
+                except Exception as e:
+                    logger.debug(f"   Error checking iframe {i+1}: {e}")
+                    continue
+            
+            # Fallback: try to find any iframe that loads
+            logger.debug("   Trying fallback iframe detection...")
+            for i, iframe_element in enumerate(iframe_elements):
+                try:
+                    frame = await iframe_element.content_frame()
+                    if frame and frame.url:
+                        logger.debug(f"   Fallback iframe {i+1}: {frame.url}")
+                        if 'n8n' in frame.url or 'demo' in frame.url or 'workflow' in frame.url:
+                            return frame
+                except Exception as e:
+                    logger.debug(f"   Fallback error for iframe {i+1}: {e}")
+                    continue
+            
+            logger.warning("   No workflow iframe found")
+            return None
+            
+        except Exception as e:
+            logger.error(f"❌ Error finding workflow iframe: {e}")
+            return None
     
     def _get_surrounding_text(self, element, max_chars: int = 200) -> str:
         """Get text surrounding an element for context"""

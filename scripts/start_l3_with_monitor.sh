@@ -38,3 +38,4 @@ python scripts/run_l3_foreground.py
 
 echo ""
 echo "🏁 L3 Scraper finished"
+

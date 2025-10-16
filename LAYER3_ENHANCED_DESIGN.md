@@ -532,3 +532,4 @@ def _calculate_extraction_quality(self, result: Dict) -> int:
 **What do you think of this approach? Should I proceed with implementing the enhanced Layer 3 with visual discovery + comprehensive extraction + fallback scanning?**
 
 
+

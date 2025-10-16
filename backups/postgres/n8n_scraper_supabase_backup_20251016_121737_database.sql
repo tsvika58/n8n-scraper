@@ -1,0 +1,1 @@
+ERROR: SUPABASE_URL not set

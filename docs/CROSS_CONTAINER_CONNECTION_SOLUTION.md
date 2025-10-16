@@ -418,3 +418,4 @@ n8n-scraper/
 ✅ Real-time monitoring of all connections  
 ✅ Automatic enforcement and allocation  
 
+

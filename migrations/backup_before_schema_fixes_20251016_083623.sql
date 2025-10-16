@@ -1,0 +1,65 @@
+-- Backup of schema before critical fixes
+-- Created: 2025-10-16 08:36:24.257658
+
+-- workflow_extraction_snapshots.id: integer NOT NULL
+-- workflow_extraction_snapshots.workflow_id: character varying NULL
+-- workflow_extraction_snapshots.layer: character varying NOT NULL
+-- workflow_extraction_snapshots.payload: jsonb NOT NULL
+-- workflow_extraction_snapshots.created_at: timestamp without time zone NULL
+-- workflow_node_contexts.id: integer NOT NULL
+-- workflow_node_contexts.workflow_id: character varying NULL
+-- workflow_node_contexts.node_name: character varying NULL
+-- workflow_node_contexts.node_type: character varying NULL
+-- workflow_node_contexts.node_position: jsonb NULL
+-- workflow_node_contexts.sticky_title: character varying NULL
+-- workflow_node_contexts.sticky_content: text NULL
+-- workflow_node_contexts.sticky_markdown: text NULL
+-- workflow_node_contexts.match_confidence: double precision NULL
+-- workflow_node_contexts.extraction_method: character varying NULL
+-- workflow_node_contexts.extracted_at: timestamp without time zone NULL
+-- workflow_standalone_docs.id: integer NOT NULL
+-- workflow_standalone_docs.workflow_id: character varying NULL
+-- workflow_standalone_docs.doc_type: character varying NULL
+-- workflow_standalone_docs.doc_title: character varying NULL
+-- workflow_standalone_docs.doc_content: text NULL
+-- workflow_standalone_docs.doc_markdown: text NULL
+-- workflow_standalone_docs.doc_position: jsonb NULL
+-- workflow_standalone_docs.confidence_score: double precision NULL
+-- workflow_standalone_docs.extracted_at: timestamp without time zone NULL
+-- workflows.id: integer NOT NULL
+-- workflows.workflow_id: character varying NOT NULL
+-- workflows.url: text NOT NULL
+-- workflows.extracted_at: timestamp without time zone NOT NULL
+-- workflows.updated_at: timestamp without time zone NOT NULL
+-- workflows.processing_time: double precision NULL
+-- workflows.quality_score: double precision NULL
+-- workflows.layer1_success: boolean NULL
+-- workflows.layer2_success: boolean NULL
+-- workflows.layer3_success: boolean NULL
+-- workflows.error_message: text NULL
+-- workflows.retry_count: integer NULL
+-- workflows.last_scraped_at: timestamp without time zone NULL
+-- workflows.created_at: timestamp without time zone NULL
+-- workflows.version: character varying NULL
+-- workflows.fork_count: integer NULL
+-- workflows.clone_count: integer NULL
+-- workflows.star_count: integer NULL
+-- workflows.download_count: integer NULL
+-- workflows.is_public: boolean NULL
+-- workflows.is_featured: boolean NULL
+-- workflows.is_verified: boolean NULL
+-- workflows.is_premium: boolean NULL
+-- workflows.layer4_success: boolean NULL
+-- workflows.layer5_success: boolean NULL
+-- workflows.layer6_success: boolean NULL
+-- workflows.layer7_success: boolean NULL
+-- workflows.needs_validation: boolean NULL
+-- workflows.validation_reason: text NULL
+-- workflows.validation_priority: integer NULL
+-- workflows.scraping_status: character varying NULL
+-- workflows.scraping_quality_score: integer NULL
+-- workflows.overall_quality_score: integer NULL
+-- workflows.layer2_extracted_at: timestamp without time zone NULL
+-- workflows.layer3_extracted_at: timestamp without time zone NULL
+-- workflows.unified_extraction_success: boolean NULL
+-- workflows.unified_extraction_at: timestamp without time zone NULL

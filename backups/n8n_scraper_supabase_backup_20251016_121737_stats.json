@@ -1,0 +1,20 @@
+{
+  "backup_name": "n8n_scraper_supabase_backup_20251016_121737",
+  "timestamp": "2025-10-16T09:17:45Z",
+  "database": {
+    "provider": "Supabase",
+    "tables": {
+      "workflows": 6022,
+      "workflow_node_contexts": 0,
+      "workflow_standalone_docs": 0
+    },
+    "total_records": 6022
+  },
+  "system_info": {
+    "docker_version": "Docker version 28.4.0, build d8eb465",
+    "hostname": "macbookpro.lan",
+    "user": "tsvikavagman"
+  },
+  "backup_type": "supabase_full",
+  "cleanup_status": "clean_slate_after_l2_l3_cleanup"
+}

@@ -1,0 +1,47 @@
+{
+  "validation_summary": {
+    "overall_success": false,
+    "total_time": 4.586944,
+    "timestamp": "2025-10-15T22:40:54.102147",
+    "sections_validated": 4
+  },
+  "detailed_results": {
+    "schema_validation": {
+      "tables_exist": true,
+      "columns_exist": true,
+      "indexes_exist": true,
+      "foreign_keys": true,
+      "data_types": false,
+      "errors": [
+        "match_confidence should be FLOAT type"
+      ]
+    },
+    "crud_operations": {
+      "create": false,
+      "read": false,
+      "update": false,
+      "delete": false,
+      "errors": [
+        "CRUD validation error: (psycopg2.errors.ForeignKeyViolation) insert or update on table \"workflow_node_contexts\" violates foreign key constraint \"workflow_node_contexts_workflow_id_fkey\"\nDETAIL:  Key (workflow_id)=(test_validation_12345) is not present in table \"workflows\".\n\n[SQL: INSERT INTO workflow_node_contexts (workflow_id, node_name, node_type, node_position, sticky_title, sticky_content, sticky_markdown, match_confidence, extraction_method, extracted_at) VALUES (%(workflow_id)s, %(node_name)s, %(node_type)s, %(node_position)s, %(sticky_title)s, %(sticky_content)s, %(sticky_markdown)s, %(match_confidence)s, %(extraction_method)s, %(extracted_at)s) RETURNING workflow_node_contexts.id]\n[parameters: {'workflow_id': 'test_validation_12345', 'node_name': 'Test Node', 'node_type': 'test', 'node_position': '{\"x\": 100, \"y\": 200}', 'sticky_title': 'Test Sticky', 'sticky_content': 'Test content', 'sticky_markdown': '## Test Sticky\\n\\nTest content', 'match_confidence': 0.95, 'extraction_method': 'test', 'extracted_at': datetime.datetime(2025, 10, 15, 19, 40, 52, 195772)}]\n(Background on this error at: https://sqlalche.me/e/20/gkpj)"
+      ]
+    },
+    "data_integrity": {
+      "foreign_key_integrity": true,
+      "data_consistency": true,
+      "no_orphaned_records": true,
+      "jsonb_validity": true,
+      "errors": []
+    },
+    "performance_tests": {
+      "query_performance": true,
+      "index_usage": true,
+      "connection_pool": true,
+      "errors": []
+    },
+    "overall_success": false
+  },
+  "recommendations": [
+    "Fix schema issues: match_confidence should be FLOAT type",
+    "Fix CRUD operation issues: CRUD validation error: (psycopg2.errors.ForeignKeyViolation) insert or update on table \"workflow_node_contexts\" violates foreign key constraint \"workflow_node_contexts_workflow_id_fkey\"\nDETAIL:  Key (workflow_id)=(test_validation_12345) is not present in table \"workflows\".\n\n[SQL: INSERT INTO workflow_node_contexts (workflow_id, node_name, node_type, node_position, sticky_title, sticky_content, sticky_markdown, match_confidence, extraction_method, extracted_at) VALUES (%(workflow_id)s, %(node_name)s, %(node_type)s, %(node_position)s, %(sticky_title)s, %(sticky_content)s, %(sticky_markdown)s, %(match_confidence)s, %(extraction_method)s, %(extracted_at)s) RETURNING workflow_node_contexts.id]\n[parameters: {'workflow_id': 'test_validation_12345', 'node_name': 'Test Node', 'node_type': 'test', 'node_position': '{\"x\": 100, \"y\": 200}', 'sticky_title': 'Test Sticky', 'sticky_content': 'Test content', 'sticky_markdown': '## Test Sticky\\n\\nTest content', 'match_confidence': 0.95, 'extraction_method': 'test', 'extracted_at': datetime.datetime(2025, 10, 15, 19, 40, 52, 195772)}]\n(Background on this error at: https://sqlalche.me/e/20/gkpj)"
+  ]
+}
